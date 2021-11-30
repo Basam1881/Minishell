@@ -12,7 +12,7 @@ NO_COLOR    = \033[m
 #TESTER_COMMAND = #write the command you want to run the tester you have
 
 #Mention the Authors names over here
-AUTHORS = Bassam aNd MUTASEM 
+AUTHORS = Bassam & Moatasem 
 
 #mention the Team name here
 TEAM_NAME =  $(BLUE)٩◔̯◔۶$(GREEN) 𝕭 𝕹 𝕸  $(BLUE)ఠ ͟ಠ$(GREEN)
@@ -95,12 +95,6 @@ header:
 	@echo "\t██╔══██╗    ██║╚██╗██║    ██║╚██╔╝██║"
 	@echo "\t██████╔╝    ██║ ╚████║    ██║ ╚═╝ ██║"
 	@echo "\t╚═════╝     ╚═╝  ╚═══╝    ╚═╝     ╚═╝"
-	@echo
-	@printf "\n%b" "$(GREEN)"
-	@echo "\t\t              o    o"
-	@echo "\t\t   _$(WHITE)MINISHELL$(GREEN)_ )  ("
-	@echo "\t\t{(((((((((((( ( o_o)"
-	@echo "\t\t  /\/\/\/\/\/\ \`--"
 	@echo
 	@printf "\t$(LIGHT_BLUE)AUTHORS\t\t:\t$(GREEN)%b\n\t$(LIGHT_BLUE)TEAM NAME\t:\t$(GREEN)%b\n\t$(LIGHT_BLUE)NAME\t\t:\t$(GREEN)%b\n\t$(LIGHT_BLUE)DATE\t\t:\t$(GREEN)%b\n\n" "$(AUTHORS)" "$(TEAM_NAME)" "$(PROJECT_NAME)" "$(DATE)"
 	@echo "\t$(BYELLOW)LOADING...$(RED)\n"
