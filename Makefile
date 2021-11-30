@@ -110,7 +110,7 @@ header:
 	@mkdir -p $(LIBS_DIR)
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	@rm -rf $(OBJ_NAME) $(OBJS)
+	@rm -rf $(OBJ_NAME) $(OBJ_DIR)
 
 fclean: clean
 	@rm -rf $(LIBS_DIR) $(EXEC_NAME)
