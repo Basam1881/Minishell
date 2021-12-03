@@ -64,10 +64,6 @@ NAME_ALL = minishell.a
 #Here is the name of the executable file
 EXEC_NAME = minishell
 
-LIBTOOL = libtool --mode=link cc -static
-
-LIBTOOL = libtool -static
-
 all: header $(LIBS_DIR)${NAME} ${LIBFT_LIB} $(LIBS_DIR)${NAME_ALL}
 	@gcc $(LIBS_DIR)$(NAME_ALL) -lreadline -o $(EXEC_NAME)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n"
@@ -77,6 +73,7 @@ all: header $(LIBS_DIR)${NAME} ${LIBFT_LIB} $(LIBS_DIR)${NAME_ALL}
 
 ${LIBS_DIR}${NAME} : $(OBJ_NAME)
 	@ar -rc ${LIBS_DIR}$(NAME) $(OBJ_NAME)
+	@ranlib $(LIBS_DIR)$(NAME)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n"
 
 ${LIBFT_LIB}:
@@ -87,7 +84,8 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@gcc ${CFLAG} -c $< -o $@
 
 $(LIBS_DIR)${NAME_ALL} :
-	@$(LIBTOOL) -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+	@ranlib $(LIBS_DIR)$(NAME_ALL)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n"
 
 header:

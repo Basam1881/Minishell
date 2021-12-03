@@ -59,6 +59,7 @@ all: ${NAME}
 ${NAME}: ${OBJ_NAME}
 	@gcc -c ${CFLAG} ${SRC_NAME}
 	@ar -rc $(NAME) $(OBJ_NAME)
+	@ranlib ${NAME}
 
 %.o: %.c
 	@gcc ${CFLAG} -c $< -o ${<:%.c=%.o}
@@ -66,6 +67,7 @@ ${NAME}: ${OBJ_NAME}
 bonus: ${NAME} ${OBJ_BONUS}
 	@gcc -c ${CFLAG} ${SRC_BONUS}
 	@ar -rc ${NAME} ${OBJ_NAME} ${OBJ_BONUS}
+	@ranlib ${NAME}
 
 clean:
 	@rm -rf ${OBJ_NAME} ${OBJ_BONUS}
