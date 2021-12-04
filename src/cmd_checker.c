@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/02 20:22:21 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/04 15:31:02 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,10 @@ void	check_cmd(char *cmd)
 		wait(NULL);
 		if(pid == 0)
 			execve("/usr/bin/env", av, ev);
+	}
+	else if (!(ft_strcmp(av[0], "exit")))
+	{
+		printf("\033[m");
+		exit (0);
 	}
 }

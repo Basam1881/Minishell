@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/02 13:45:42 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/04 15:25:00 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@
 
 extern char **environ;
 void	check_cmd(char *cmd);
+// char    **shell_split(char *cmdline);
 
 #endif
