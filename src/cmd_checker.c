@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/02 20:22:21 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/04 03:11:14 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ void	check_cmd(char *cmd)
 		pid = fork();
 		wait(NULL);
 		if(pid == 0)
+		{
+			printf("%s\n", cmd);
 			execve("/bin/echo", av, ev);
+			exit(0);
+		}
 	}
 	else if (!(ft_strcmp(av[0], "pwd")))
 	{
