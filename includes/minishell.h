@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/02 13:45:42 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/05 06:25:57 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@
 
 extern char **environ;
 void	check_cmd(char *cmd);
+int		ft_chrindex(char *str, char c);
+int		ft_strlen2(char **str);
+void	ft_export(char *v);
+void	ft_unset(char *v);
 
 #endif
