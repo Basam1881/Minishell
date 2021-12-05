@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/04 15:31:02 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/05 09:55:46 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	check_cmd(char *cmd)
 	{
 		pid = fork();
 		wait(NULL);
-		if(pid == 0)
+		if (pid == 0)
 			execve("/bin/pwd", av, ev);
 	}
 	else if (!(ft_strcmp(av[0], "env")))
