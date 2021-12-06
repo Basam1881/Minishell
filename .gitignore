@@ -1,2 +1,3 @@
 /src/shellsplit
 /src/shellsplit.dSYM/*
+.vscode*
