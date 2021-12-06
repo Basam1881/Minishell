@@ -23,7 +23,7 @@ PROJECT_NAME = MINISHELL
 #write down the date you started working on your project
 DATE = 29 - 11 - 2021
 
-C_FILES = main.c cmd_checker.c
+C_FILES = main.c cmd_checker.c shellsplit.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))

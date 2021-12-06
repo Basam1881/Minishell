@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/05 09:55:46 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:49:58 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	check_cmd(char *cmd)
 
 	if (!*cmd)
 		return ;
-	av = ft_split(cmd, ' ');
+	av = cmd_split(cmd);
 	write(1, BYELLOW, 8);
 	if (!(ft_strcmp(av[0], "echo")))
 	{

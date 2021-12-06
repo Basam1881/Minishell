@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/04 15:25:00 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/05 16:38:02 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@
 # define IYELLOW  "\033[3;33m"
 # define NO_COLOR "\033[m"
 
+
 extern char **environ;
 void	check_cmd(char *cmd);
-// char    **shell_split(char *cmdline);
+char	**cmd_split(char *cmdline);
 
 #endif
