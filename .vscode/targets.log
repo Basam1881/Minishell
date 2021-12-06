@@ -8,11 +8,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Sun Dec  5 16:48:22 2021
+# Make data base, printed on Mon Dec  6 16:32:43 2021
 
 # Variables
 
- 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
@@ -48,7 +47,7 @@ VSCODE_VERBOSE_LOGGING = true
 # makefile (from `Makefile', line 62)
 NAME_ALL = minishell.a
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/zz/zyxvpxvq6csfxvn_n000c_wm0032q5/T/vscode-ipc-071eb2a1-d721-4f53-87e4-27d4783b7618.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/zz/zyxvpxvq6csfxvn_n000c_wm0032q5/T/vscode-ipc-eeb2288c-f002-4dc9-b280-30a2596bdd00.sock
 # environment
 VSCODE_CWD = /
 # makefile (from `Makefile', line 9)
@@ -70,7 +69,7 @@ LIBFT_DIR = ./libft/
 # makefile (from `Makefile', line 2)
 PURPLE = \033[1;35m
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.spzwLaDUtF/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.jE5CM5GDwS/Listeners
 # automatic
 %F = $(notdir $%)
 # makefile (from `Makefile', line 18)
@@ -184,7 +183,7 @@ SUFFIXES :=
 # default
 .INCLUDE_DIRS = /usr/local/include
 # makefile (from `Makefile', line 26)
-C_FILES = main.c cmd_checker.c shellsplit.c
+C_FILES = main.c cmd_checker.c shellsplit.c exit.c
 # makefile (from `Makefile', line 32)
 OBJ_NAME = $(addprefix $(OBJ_DIR), ${C_FILES:%.c=%.o})
 # environment
@@ -192,7 +191,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4333
+VSCODE_PID = 2777
 # makefile (from `Makefile', line 41)
 LIBFT_LIB = libft.a
 # makefile (from `Makefile', line 10)
@@ -340,7 +339,7 @@ header:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-05 16:39:28
+#  Last modified 2021-12-06 16:32:33
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -378,7 +377,7 @@ fclean: clean
 	@rm -rf $(LIBS_DIR) $(EXEC_NAME)
 	
 
-libraries/ft_minishell.a: objs/main.o objs/cmd_checker.o objs/shellsplit.o
+libraries/ft_minishell.a: objs/main.o objs/cmd_checker.o objs/shellsplit.o objs/exit.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -416,6 +415,12 @@ objs/cmd_checker.o:
 #  Modification time never checked.
 #  File has not been updated.
 
+# Not a target:
+objs/exit.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 libraries/minishell.a:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -427,7 +432,7 @@ libraries/minishell.a:
 	
 
 # files hash-table stats:
-# Load=16/1024=2%, Rehash=0, Collisions=2/44=5%
+# Load=17/1024=2%, Rehash=0, Collisions=2/46=4%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -437,8 +442,9 @@ libraries/minishell.a:
 # # of strings in strcache: 1
 # # of strcache buffers: 1
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+ 
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sun Dec  5 16:48:22 2021
+# Finished Make data base on Mon Dec  6 16:32:43 2021
 
  

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/05 16:38:02 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/06 16:32:03 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,18 @@
 # define IYELLOW  "\033[3;33m"
 # define NO_COLOR "\033[m"
 
-
-extern char **environ;
-void	check_cmd(char *cmd);
-char	**cmd_split(char *cmdline);
+typedef struct s_data
+{
+	char	**cmd;
+	char	*cmdline;
+	int		split_flag;
+	int		single_qoute_flag;
+	int		double_qoute_flag;
+}				t_data;
+extern char	**environ;
+void	check_cmd(t_data *data);
+char	**cmd_split(t_data *data);
+void	failed_split(t_data *data, int n);
+void	error(t_data *data, int n);
 
 #endif
