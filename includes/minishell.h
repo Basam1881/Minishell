@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/06 16:32:03 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/07 15:55:54 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
-
 # define PURPLE "\033[1;35m"
 # define BLUE "\033[1;34m"
 # define WHITE "\033[1;37m"
@@ -35,14 +34,20 @@ typedef struct s_data
 {
 	char	**cmd;
 	char	*cmdline;
+	char	**env;
 	int		split_flag;
 	int		single_qoute_flag;
 	int		double_qoute_flag;
 }				t_data;
-extern char	**environ;
-void	check_cmd(t_data *data);
-char	**cmd_split(t_data *data);
-void	failed_split(t_data *data, int n);
-void	error(t_data *data, int n);
+// extern char	**environ;
+t_data	g_data;
+void	check_cmd(void);
+char	**cmd_split(void);
+void	failed_split(int n);
+void	error(int n);
+int		ft_chrindex(char *str, char c);
+int		ft_strlen2(char **str);
+void	ft_export(char *v);
+void	ft_unset(char *v);
 
 #endif

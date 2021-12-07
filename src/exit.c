@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/06 16:30:57 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/07 15:33:16 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,29 @@
 /*
 	It's used to free the 2d array we have in case of a failed malloc
 */
-void	failed_split(t_data *data, int n)
+void	failed_split(int n)
 {
 	while (n >= 0)
 	{
-		free(data->cmd[n]);
+		free(g_data.cmd[n]);
 		n--;
 	}
-	free(data->cmd);
-	free(data->cmdline);
+	free(g_data.cmd);
+	free(g_data.cmdline);
 	exit (1);
 }
 
-void	error(t_data *data, int n)
+void	error(int n)
 {
 	int	i;
 
 	i = 0;
-	while (data->cmd[i])
+	while (g_data.cmd[i])
 	{
-		free(data->cmd[i]);
+		free(g_data.cmd[i]);
 		i++;
 	}
-	free(data->cmd);
-	free(data->cmdline);
+	free(g_data.cmd);
+	free(g_data.cmdline);
 	exit(n);
 }

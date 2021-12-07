@@ -23,7 +23,7 @@ PROJECT_NAME = MINISHELL
 #write down the date you started working on your project
 DATE = 29 - 11 - 2021
 
-C_FILES = main.c cmd_checker.c shellsplit.c exit.c
+C_FILES = main.c cmd_checker.c shellsplit.c exit.c ft_export.c ft_unset.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
@@ -83,8 +83,12 @@ ${LIBFT_LIB}:
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@gcc ${CFLAG} -c $< -o $@
 
+
+#For Mac use (libtool) and keep (ar) commented
+#For Linux use (ar) and keep (libtool) commented
 $(LIBS_DIR)${NAME_ALL} :
-	@libtool -static -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+#	@libtool -static -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
 	@ranlib $(LIBS_DIR)$(NAME_ALL)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n"
 
