@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/07 18:13:26 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 20:11:52 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,6 @@
 */
 static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 {
-	if ((data->cmdline[*x] == '\'' || data->cmdline[*x] == '"')
-		&& !data->single_qoute_flag && !data->double_qoute_flag)
-	{
-		if (data->cmdline[*x] == '\'')
-			data->single_qoute_flag = 1;
-		else
-			data->double_qoute_flag = 1;
-		(*x)++;
-	}
 	if ((data->cmdline[*x] == '\'' && data->single_qoute_flag)
 		|| (data->cmdline[*x] == '"' && data->double_qoute_flag))
 	{
@@ -37,7 +28,10 @@ static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 	}
 	else
 	{
-		if (data->split_flag == 2)
+		if (((data->cmdline[*x] == '$' && !data->double_qoute_flag && (data->cmdline[*x] == '_' || ft_isalpha()) || ) && data->split_flag && !data->single_qoute_flag
+			&& )
+			env_replacer(data, x, j);
+		else if (data->split_flag == 2)
 			data->cmd[*i][*j] = data->cmdline[*x];
 		if (data->split_flag)
 			(*j)++;
@@ -81,7 +75,18 @@ static void	check_arg(t_data *data, int *x, int *i)
 	while (data->cmdline[*x] && (data->cmdline[*x] != ' '
 			|| (data->cmdline[*x] == ' '
 				&& (data->single_qoute_flag || data->double_qoute_flag))))
+	{
+		if ((data->cmdline[*x] == '\'' || data->cmdline[*x] == '"')
+			&& !data->single_qoute_flag && !data->double_qoute_flag)
+		{
+			if (data->cmdline[*x] == '\'')
+				data->single_qoute_flag = 1;
+			else
+				data->double_qoute_flag = 1;
+			(*x)++;
+		}
 		qoutes_checker(data, x, i, &j);
+	}
 	check_arg_helper(data, i, &j);
 }
 
