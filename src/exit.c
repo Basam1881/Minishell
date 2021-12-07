@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 16:02:55 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 17:40:16 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	failed_split(t_data *data, int n)
 	exit (1);
 }
 
-void	error(t_data *data, int n)
+void	free_all(t_data *data)
 {
 	int	i;
 
@@ -39,5 +39,10 @@ void	error(t_data *data, int n)
 	}
 	free(data->cmd);
 	free(data->cmdline);
+}
+
+void	ft_exit(t_data *data, int n)
+{
+	free_all(data);
 	exit(n);
 }

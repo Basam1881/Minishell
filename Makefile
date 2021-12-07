@@ -66,7 +66,7 @@ EXEC_NAME = minishell
 
 all: header $(LIBS_DIR)${NAME} ${LIBFT_LIB} $(LIBS_DIR)${NAME_ALL}
 	@gcc $(LIBS_DIR)$(NAME_ALL) -lreadline -o $(EXEC_NAME)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n$(NO_COLOR)"
 	@echo "$(GREEN)*************************************************************************"
 	@echo "$(GREEN)*\t\t\t\t$(BYELLOW)READY\t\t\t\t\t$(GREEN)*"
 	@echo "$(GREEN)*************************************************************************$(NO_COLOR)"
@@ -74,7 +74,7 @@ all: header $(LIBS_DIR)${NAME} ${LIBFT_LIB} $(LIBS_DIR)${NAME_ALL}
 ${LIBS_DIR}${NAME} : $(OBJ_NAME)
 	@ar -rc ${LIBS_DIR}$(NAME) $(OBJ_NAME)
 	@ranlib $(LIBS_DIR)$(NAME)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n$(NO_COLOR)"
 
 ${LIBFT_LIB}:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) all && mv $(LIBFT_DIR)$(LIBFT_LIB) $(LIBS_DIR)
@@ -90,7 +90,7 @@ $(LIBS_DIR)${NAME_ALL} :
 #	@libtool -static -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
 	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
 	@ranlib $(LIBS_DIR)$(NAME_ALL)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n$(NO_COLOR)"
 
 header:
 	@printf "\n%b" "$(PURPLE)"

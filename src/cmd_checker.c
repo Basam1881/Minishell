@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 16:02:58 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 17:50:15 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,13 @@ void	check_cmd(t_data *data)
 	{
 		ft_unset(av[1]);
 	}
+	else if (!(ft_strcmp(av[0], "exit")))
+	{
+		printf("%s", NO_COLOR);
+		ft_exit(data, 0);
+	}
 	else
 	{
-		printf("%s: command not found\n", av[0]);
+		printf("bash: %s: command not found\n", av[0]);
 	}
 }
