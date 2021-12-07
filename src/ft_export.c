@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2021/12/07 15:33:18 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:02:53 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,33 +50,33 @@ void	ft_export(char *v)
 		return ;
 	}
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
-	envsize = ft_strlen2(g_data.env);
+	envsize = ft_strlen2(environ);
 	newenv = (char **)malloc(sizeof(char **) * (envsize + 2));
 	var = getenv(var_name);
 	if (!var)
 	{
 		i = 0;
-		while (g_data.env[i])
+		while (environ[i])
 		{
-			newenv[i] = g_data.env[i];
+			newenv[i] = environ[i];
 			i++;
 		}
 		newenv[i] = v;
 		i++;
 		newenv[i] = NULL;
-		g_data.env = newenv;
+		environ = newenv;
 	}
 	else
 	{
 		i = 0;
 		j = 0;
-		while (g_data.env[i])
+		while (environ[i])
 		{
-			while (var_name[j] == g_data.env[i][j] && var_name && g_data.env[i][j] != '=')
+			while (var_name[j] == environ[i][j] && var_name && environ[i][j] != '=')
 				j++;
-			if (!var_name[j] && g_data.env[i][j] == '=')
+			if (!var_name[j] && environ[i][j] == '=')
 			{
-				g_data.env[i] = v;
+				environ[i] = v;
 				break ;
 			}
 			i++;

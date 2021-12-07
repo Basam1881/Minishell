@@ -6,20 +6,20 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 15:33:11 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:02:58 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	check_cmd(void)
+void	check_cmd(t_data *data)
 {
 	char	**av;
 	pid_t	pid;
 
-	if (!*(g_data.cmdline))
+	if (!*data->cmdline)
 		return ;
-	av = cmd_split();
+	av = cmd_split(data);
 	write(1, BYELLOW, 8);
 	if (!(ft_strcmp(av[0], "echo")))
 	{
@@ -27,7 +27,7 @@ void	check_cmd(void)
 		wait(NULL);
 		if (pid == 0)
 		{
-			execve("/bin/echo", av, g_data.env);
+			execve("/bin/echo", av, environ);
 			exit(0);
 		}
 	}
@@ -36,14 +36,14 @@ void	check_cmd(void)
 		pid = fork();
 		wait(NULL);
 		if (pid == 0)
-			execve("/bin/pwd", av, g_data.env);
+			execve("/bin/pwd", av, environ);
 	}
 	else if (!(ft_strcmp(av[0], "env")))
 	{
 		pid = fork();
 		wait(NULL);
 		if (pid == 0)
-			execve("/usr/bin/env", av, g_data.env);
+			execve("/usr/bin/env", av, environ);
 	}
 	else if (!(ft_strcmp(av[0], "export")))
 	{

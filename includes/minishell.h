@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 15:55:54 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:03:01 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+
 # define PURPLE "\033[1;35m"
 # define BLUE "\033[1;34m"
 # define WHITE "\033[1;37m"
@@ -39,12 +40,11 @@ typedef struct s_data
 	int		single_qoute_flag;
 	int		double_qoute_flag;
 }				t_data;
-// extern char	**environ;
-t_data	g_data;
-void	check_cmd(void);
-char	**cmd_split(void);
-void	failed_split(int n);
-void	error(int n);
+extern char	**environ;
+void	check_cmd(t_data *data);
+char	**cmd_split(t_data *data);
+void	failed_split(t_data *data, int n);
+void	error(t_data *data, int n);
 int		ft_chrindex(char *str, char c);
 int		ft_strlen2(char **str);
 void	ft_export(char *v);

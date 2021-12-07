@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/07 15:33:24 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:03:19 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,30 @@
 	It's used to set the qoutes flags either to 1 or 0, so we
 	can tell if we are inside qoutes at the moment or not
 */
-static void	qoutes_checker(int *x, int *i, int *j)
+static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 {
-	if ((g_data.cmdline[*x] == '\'' || g_data.cmdline[*x] == '"')
-		&& !g_data.single_qoute_flag && !g_data.double_qoute_flag)
+	if ((data->cmdline[*x] == '\'' || data->cmdline[*x] == '"')
+		&& !data->single_qoute_flag && !data->double_qoute_flag)
 	{
-		if (g_data.cmdline[*x] == '\'')
-			g_data.single_qoute_flag = 1;
+		if (data->cmdline[*x] == '\'')
+			data->single_qoute_flag = 1;
 		else
-			g_data.double_qoute_flag = 1;
+			data->double_qoute_flag = 1;
 		(*x)++;
 	}
-	if ((g_data.cmdline[*x] == '\'' && g_data.single_qoute_flag)
-		|| (g_data.cmdline[*x] == '"' && g_data.double_qoute_flag))
+	if ((data->cmdline[*x] == '\'' && data->single_qoute_flag)
+		|| (data->cmdline[*x] == '"' && data->double_qoute_flag))
 	{
-		if (g_data.cmdline[*x] == '\'')
-			g_data.single_qoute_flag = 0;
+		if (data->cmdline[*x] == '\'')
+			data->single_qoute_flag = 0;
 		else
-			g_data.double_qoute_flag = 0;
+			data->double_qoute_flag = 0;
 	}
 	else
 	{
-		if (g_data.split_flag == 2)
-			g_data.cmd[*i][*j] = g_data.cmdline[*x];
-		if (g_data.split_flag)
+		if (data->split_flag == 2)
+			data->cmd[*i][*j] = data->cmdline[*x];
+		if (data->split_flag)
 			(*j)++;
 	}
 	(*x)++;
@@ -49,17 +49,17 @@ static void	qoutes_checker(int *x, int *i, int *j)
 	It's used to either malloc the size for the argument or
 	to put null at the end according the to the flag
 */
-static void	check_arg_helper(int *i, int *j)
+static void	check_arg_helper(t_data *data, int *i, int *j)
 {
-	if (g_data.split_flag)
+	if (data->split_flag)
 	{
-		if (g_data.split_flag == 2)
-			g_data.cmd[*i][*j] = 0;
+		if (data->split_flag == 2)
+			data->cmd[*i][*j] = 0;
 		else
 		{
-			g_data.cmd[*i] = (char *)malloc(sizeof(char) * (*j) + 1);
-			if (!g_data.cmd[*i])
-				failed_split(*i);
+			data->cmd[*i] = (char *)malloc(sizeof(char) * (*j) + 1);
+			if (!data->cmd[*i])
+				failed_split(data, *i);
 		}
 		(*i)++;
 	}
@@ -69,20 +69,20 @@ static void	check_arg_helper(int *i, int *j)
 	It's used to loop through each argument of any command
 	and check the qoutes...etc
 */
-static void	check_arg(int *x, int *i)
+static void	check_arg(t_data *data, int *x, int *i)
 {
 	int		j;
 
-	g_data.single_qoute_flag = 0;
-	g_data.double_qoute_flag = 0;
+	data->single_qoute_flag = 0;
+	data->double_qoute_flag = 0;
 	j = 0;
-	if (!g_data.split_flag)
+	if (!data->split_flag)
 		(*i)++;
-	while (g_data.cmdline[*x] && (g_data.cmdline[*x] != ' '
-			|| (g_data.cmdline[*x] == ' '
-				&& (g_data.single_qoute_flag || g_data.double_qoute_flag))))
-		qoutes_checker(x, i, &j);
-	check_arg_helper(i, &j);
+	while (data->cmdline[*x] && (data->cmdline[*x] != ' '
+			|| (data->cmdline[*x] == ' '
+				&& (data->single_qoute_flag || data->double_qoute_flag))))
+		qoutes_checker(data, x, i, &j);
+	check_arg_helper(data, i, &j);
 }
 
 /*
@@ -92,27 +92,27 @@ static void	check_arg(int *x, int *i)
 	flag 2 will copy the proper value from the string (cmdline)
 	to the arguments you have
 */
-static int	split_into_arg(void)
+static int	split_into_arg(t_data *data)
 {
 	int		i;
 	int		x;
 
 	i = 0;
 	x = 0;
-	while (g_data.cmdline[x])
+	while (data->cmdline[x])
 	{
-		if (g_data.cmdline[x] == ' ')
+		if (data->cmdline[x] == ' ')
 			x++;
 		else
-			check_arg(&x, &i);
+			check_arg(data, &x, &i);
 	}
-	if (g_data.split_flag == 2)
-		g_data.cmd[i] = 0;
-	else if (g_data.split_flag == 1)
+	if (data->split_flag == 2)
+		data->cmd[i] = 0;
+	else if (data->split_flag == 1)
 	{
-		g_data.cmd[x] = (char *)malloc(sizeof(char));
-		if (!g_data.cmd[x])
-			failed_split(x - 1);
+		data->cmd[x] = (char *)malloc(sizeof(char));
+		if (!data->cmd[x])
+			failed_split(data, x - 1);
 	}
 	return (i);
 }
@@ -121,20 +121,20 @@ static int	split_into_arg(void)
 	It's used to seperate the string (command) into arguments,
 	store them into 2d array and return it back
 */
-char	**cmd_split(void)
+char	**cmd_split(t_data *data)
 {
 	int		words;
 
-	if (!g_data.cmdline)
+	if (!data->cmdline)
 		return (ft_calloc(1, 1));
-	g_data.split_flag = 0;
-	words = split_into_arg();
-	g_data.cmd = (char **)malloc(sizeof(char *) * words + 1);
-	if (!(g_data.cmd))
+	data->split_flag = 0;
+	words = split_into_arg(data);
+	data->cmd = (char **)malloc(sizeof(char *) * words + 1);
+	if (!(data->cmd))
 		return (0);
-	g_data.split_flag = 1;
-	split_into_arg();
-	g_data.split_flag = 2;
-	split_into_arg();
-	return (g_data.cmd);
+	data->split_flag = 1;
+	split_into_arg(data);
+	data->split_flag = 2;
+	split_into_arg(data);
+	return (data->cmd);
 }

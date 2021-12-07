@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:54 by mal-guna          #+#    #+#             */
-/*   Updated: 2021/12/07 15:33:21 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:02:51 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ void	ft_unset(char *v)
 	char	**newenv;
 	int		envsize;
 
-	envsize = ft_strlen2(g_data.env);
+	envsize = ft_strlen2(environ);
 	newenv = (char **)malloc(sizeof(char **) * (envsize));
 
 	i = 0;
 	j = 0;
-	while(g_data.env[i])
+	while(environ[i])
 	{
-		while(v[j] == g_data.env[i][j] && v && g_data.env[i][j] != '=')
+		while(v[j] == environ[i][j] && v && environ[i][j] != '=')
 			j++;
-		if(!v[j] && g_data.env[i][j] == '=')
+		if(!v[j] && environ[i][j] == '=')
 		{
 			break;
 		}
@@ -40,14 +40,14 @@ void	ft_unset(char *v)
 	{
 		j = -1;
 		k = 0;
-		while(g_data.env[++j])
+		while(environ[++j])
 		{
-			newenv[k] = g_data.env[j];
+			newenv[k] = environ[j];
 			if(j == i)
 				continue ;
 			k++;
 		}
 		newenv[k] = NULL;
-		g_data.env = newenv;
+		environ = newenv;
 	}
 }
