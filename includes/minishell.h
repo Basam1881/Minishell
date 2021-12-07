@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 17:39:34 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/07 18:22:06 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ int		ft_strlen2(char **str);
 void	ft_export(char *v);
 void	ft_unset(char *v);
 void	free_all(t_data *data);
+void	initialize(t_data *data);
 
 #endif
