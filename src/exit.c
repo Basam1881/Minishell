@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 18:21:49 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/08 11:35:30 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	initialize(t_data *data)
 {
 	data->cmdline = NULL;
 	data->cmd = NULL;
+	data->no_env_arg_flag = 0;
 }
 
 /*

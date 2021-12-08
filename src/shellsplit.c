@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/07 20:11:52 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/08 19:30:46 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,14 @@ static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 	}
 	else
 	{
-		if (((data->cmdline[*x] == '$' && !data->double_qoute_flag && (data->cmdline[*x] == '_' || ft_isalpha()) || ) && data->split_flag && !data->single_qoute_flag
-			&& )
-			env_replacer(data, x, j);
+		if ((data->cmdline[*x] == '$' && data->cmdline[*x + 1] && data
+				->cmdline[*x + 1] != ' ' && data->split_flag && !data
+				->single_qoute_flag && !data->double_qoute_flag)
+			|| (data->cmdline[*x] == '$' && data->cmdline[*x + 1] && data
+				->cmdline[*x + 1] != ' ' && data->cmdline[*x + 1] != '"'
+				&& data->split_flag && !data->single_qoute_flag
+				&& data->double_qoute_flag))
+			env_replacer(data, x, i, j);
 		else if (data->split_flag == 2)
 			data->cmd[*i][*j] = data->cmdline[*x];
 		if (data->split_flag)

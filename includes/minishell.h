@@ -6,7 +6,7 @@
 /*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 19:47:44 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/08 11:34:40 by dfurneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_data
 	int		split_flag;
 	int		single_qoute_flag;
 	int		double_qoute_flag;
+	int		no_env_arg_flag;
 }				t_data;
 extern char	**environ;
 void	check_cmd(t_data *data);
@@ -51,6 +52,6 @@ void	ft_export(char *v);
 void	ft_unset(char *v);
 void	free_all(t_data *data);
 void	initialize(t_data *data);
-void	env_replacer(t_data *data, int *x, int *j);
+void	env_replacer(t_data *data, int *x, int *i, int *j);
 
 #endif
