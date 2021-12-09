@@ -87,8 +87,8 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 #For Mac use (libtool) and keep (ar) commented
 #For Linux use (ar) and keep (libtool) commented
 $(LIBS_DIR)${NAME_ALL} :
-#	@libtool -static -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
-	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+	@libtool -static -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+#	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
 	@ranlib $(LIBS_DIR)$(NAME_ALL)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n$(NO_COLOR)"
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shellsplit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/08 19:30:46 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/09 09:06:27 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 	else
 	{
 		if ((data->cmdline[*x] == '$' && data->cmdline[*x + 1] && data
-				->cmdline[*x + 1] != ' ' && data->split_flag && !data
+				->cmdline[*x + 1] != ' ' && !data
 				->single_qoute_flag && !data->double_qoute_flag)
 			|| (data->cmdline[*x] == '$' && data->cmdline[*x + 1] && data
 				->cmdline[*x + 1] != ' ' && data->cmdline[*x + 1] != '"'
-				&& data->split_flag && !data->single_qoute_flag
+				&& !data->single_qoute_flag
 				&& data->double_qoute_flag))
-			env_replacer(data, x, i, j);
+			env_checker(data, x, i, j);
 		else if (data->split_flag == 2)
 			data->cmd[*i][*j] = data->cmdline[*x];
 		if (data->split_flag)
@@ -52,9 +52,9 @@ static void	check_arg_helper(t_data *data, int *i, int *j)
 {
 	if (data->split_flag)
 	{
-		if (data->split_flag == 2)
+		if (data->split_flag == 2 && !data->no_env_arg_flag)
 			data->cmd[*i][*j] = 0;
-		else
+		else if (data->split_flag == 1 && !data->no_env_arg_flag)
 		{
 			data->cmd[*i] = (char *)malloc(sizeof(char) * (*j) + 1);
 			if (!data->cmd[*i])
@@ -93,6 +93,7 @@ static void	check_arg(t_data *data, int *x, int *i)
 		qoutes_checker(data, x, i, &j);
 	}
 	check_arg_helper(data, i, &j);
+	data->no_env_arg_flag = 0;
 }
 
 /*

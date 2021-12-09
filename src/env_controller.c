@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_controller.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:29:09 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/08 19:30:18 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/09 09:25:11 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,30 @@ static int	ft_strlen_to_space(char *s)
 	return (i);
 }
 
-void	env_replacer(t_data *data, int *x,int *i, int *j)
+static void	no_env_in_no_qoutes(t_data *data, char *new_s, int *i, int *x)
+{
+	if (!new_s)
+	{
+		if (!data->double_qoute_flag && !data->single_qoute_flag && data
+			->cmdline[*x - 1] == ' ' && data->cmdline[*x
+				+ ft_strlen_to_space(&data->cmdline[*x + 1]) + 1] == ' ')
+		{
+			(*i)--;
+			data->no_env_arg_flag = 1;
+		}
+	}
+}
+
+void	env_checker(t_data *data, int *x, int *i, int *j)
 {
 	int		new_len;
+	int		old_len;
 	char	*old_s;
 	char	*new_s;
 	int		n;
 
-	old_s = ft_substr(&data->cmdline[*x + 1], 0, ft_strlen_to_space(&data->cmdline[*x + 1]));
+	old_len = ft_strlen_to_space(&data->cmdline[*x + 1]);
+	old_s = ft_substr(&data->cmdline[*x + 1], 0, old_len);
 	new_s = getenv(old_s);
 	if (new_s && data->split_flag)
 	{
@@ -40,17 +56,11 @@ void	env_replacer(t_data *data, int *x,int *i, int *j)
 		{
 			n = 0;
 			while (n < new_len)
-			{
-				data->cmd[*i][*j] = new_s[n];
-				(*j)++;
-				n++;
-			}
+				data->cmd[*i][(*j)++] = new_s[n++];
 		}
 		(*j)--;
 	}
-	// else if(!new_s !data->split_flag)
-	// 	if (!data->double_qoute_flag && !data->single_qoute_flag && data->cmdline[*x -1] == ' ')
-	// 		(*i)--;
-	*x += ft_strlen_to_space(&data->cmdline[*x + 1]);
+	no_env_in_no_qoutes(data, new_s, i, x);
+	*x += old_len;
 	return ;
 }
