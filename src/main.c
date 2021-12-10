@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/10 12:28:38 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 02:20:24 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int	main(void)
 		data.cmdline = readline("\033[1;34m⚡⚡ ~/BnM_Minishell\
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m");
-// 		printf("data.cmdline = |%s|\n", data.cmdline);
-		// data.cmdline = "echo hi > beso";
+		// data.cmdline = "echo hi $LESS '' wow > beso || grep we wa << woo >> yes      | hi && trick & yeah";
 		if (!data.cmdline)
 			ft_exit(&data, 0);
 		if (data.cmdline && *data.cmdline)
@@ -33,16 +32,14 @@ int	main(void)
 		ultimate_3d_split(&data);
 		check_cmd(&data);
 		i = 0;
-		while (data.sep_cmds[i])
+		// printf("data.cmdline = |%s|\n", data.cmdline);
+		if (*data.cmdline)
+			free_all(&data);
+		else
 		{
-			free (data.sep_cmds[i]);
-			data.sep_cmds[i] = NULL;
-			i++;
+			free (data.cmdline);
+			data.cmdline = NULL;
 		}
-		free (data.sep_cmds);
-		data.sep_cmds = NULL;
-		free (data.cmdline);
-		data.cmdline = NULL;
 	}
 	free_all(&data);
 	return (0);

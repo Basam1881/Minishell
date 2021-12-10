@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/10 06:23:36 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 02:38:30 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ typedef struct s_data
 {
 	char	***cmd;
 	char	*cmdline;
-	char	**sep_cmds;
+	char	**sep_cmds;/*This is a 2d array of commands in a cmdline that will be seperated by operators*/
 	char	**env;
 	int		split_flag;
 	int		single_qoute_flag;
 	int		double_qoute_flag;
-	int		no_env_arg_flag;
-	int		dbl_op_f;
-	int		n;
+	int		no_env_arg_flag;/*This is a flag that becomes one when there is no equivilent environment variable to replace with*/
+	int		dbl_op_f;/*This is a flag for operators that has two chars like (|| or && or << or >>)*/
+	int		n;/*This is a counter for the number of commands. It can be used in both (cmd) and (sep_cmds) like (cmd[data->n][][] or sep_cmds[data->n][])*/
+	int		*ops_array;/*This the integer array that will store the operators*/
+	int		op_cnt;/*This is counter used for the operators array. It's good cuz it's in the structure so no need to keep passing it*/
 }				t_data;
 extern char	**environ;
 void	check_cmd(t_data *data);

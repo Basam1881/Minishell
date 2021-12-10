@@ -6,16 +6,16 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/10 12:01:07 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 02:23:17 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
-	It's used to set the qoutes flags either to 1 or 0, so we
-	can tell if we are inside qoutes at the moment or not
-*/
+/**
+*	It's used to set the qoutes flags either to 1 or 0, so we
+*	can tell if we are inside qoutes at the moment or not
+**/
 static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 {
 	if ((data->sep_cmds[data->n][*x] == '\'' && data->single_qoute_flag)
@@ -44,10 +44,10 @@ static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 	(*x)++;
 }
 
-/*
-	It's used to either malloc the size for the argument or
-	to put null at the end according the to the flag
-*/
+/**
+*	It's used to either malloc the size for the argument or
+*	to put null at the end according the to the flag
+**/
 static void	check_arg_helper(t_data *data, int *i, int *j)
 {
 	if (data->split_flag)
@@ -64,10 +64,10 @@ static void	check_arg_helper(t_data *data, int *i, int *j)
 	}
 }
 
-/*
-	It's used to loop through each argument of any command
-	and check the qoutes...etc
-*/
+/**
+*	It's used to loop through each argument of any command
+*	and check the qoutes...etc
+**/
 static void	check_arg(t_data *data, int *x, int *i)
 {
 	int		j;
@@ -102,7 +102,7 @@ static void	check_arg(t_data *data, int *x, int *i)
  * flag 1 will allocate a memory for the words (arguments)
  * flag 2 will copy the proper value from the string (sep_cmds)
  * to the arguments you have
- * */
+ **/
 static int	split_into_arg(t_data *data)
 {
 	int		i;
@@ -128,10 +128,10 @@ static int	split_into_arg(t_data *data)
 	return (i);
 }
 
-/*
-	It's used to seperate the string (command) into arguments,
-	store them into 2d array and return it back
-*/
+/**
+*	It's used to seperate the string (command) into arguments,
+*	store them into 2d array and return it back
+**/
 char	**cmd_split(t_data *data)
 {
 	int		words;
@@ -147,7 +147,7 @@ char	**cmd_split(t_data *data)
 	data->split_flag = 0;
 	words = split_into_arg(data);
 	// printf("words = %d\n", words);
-	data->cmd[data->n] = (char **)malloc(sizeof(char *) * words + 1);
+	data->cmd[data->n] = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!(data->cmd[data->n]))
 		return (0);
 	data->split_flag = 1;
