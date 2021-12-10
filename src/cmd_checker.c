@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/07 18:12:15 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/10 06:32:17 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_cmd(t_data *data)
 
 	if (!*data->cmdline)
 		return ;
-	av = cmd_split(data);
+	av = data->cmd[0];
 	write(1, BYELLOW, 8);
 	if (!(ft_strcmp(av[0], "echo")))
 	{

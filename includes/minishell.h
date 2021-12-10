@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/09 09:27:45 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/10 06:23:36 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,16 @@
 
 typedef struct s_data
 {
-	char	**cmd;
+	char	***cmd;
 	char	*cmdline;
+	char	**sep_cmds;
 	char	**env;
 	int		split_flag;
 	int		single_qoute_flag;
 	int		double_qoute_flag;
 	int		no_env_arg_flag;
+	int		dbl_op_f;
+	int		n;
 }				t_data;
 extern char	**environ;
 void	check_cmd(t_data *data);
@@ -53,5 +56,6 @@ void	ft_unset(char *v);
 void	free_all(t_data *data);
 void	initialize(t_data *data);
 void	env_checker(t_data *data, int *x, int *i, int *j);
+void	ultimate_3d_split(t_data *data);
 
 #endif

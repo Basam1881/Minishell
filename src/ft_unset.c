@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfurneau <dfurneau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:54 by mal-guna          #+#    #+#             */
-/*   Updated: 2021/12/07 16:02:51 by dfurneau         ###   ########.fr       */
+/*   Updated: 2021/12/09 10:03:53 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,27 @@ void	ft_unset(char *v)
 
 	envsize = ft_strlen2(environ);
 	newenv = (char **)malloc(sizeof(char **) * (envsize));
-
 	i = 0;
 	j = 0;
-	while(environ[i])
+	while (environ[i])
 	{
-		while(v[j] == environ[i][j] && v && environ[i][j] != '=')
+		while (v[j] == environ[i][j] && v && environ[i][j] != '=')
 			j++;
-		if(!v[j] && environ[i][j] == '=')
+		if (!v[j] && environ[i][j] == '=')
 		{
-			break;
+			break ;
 		}
 		i++;
 		j = 0;
 	}
-	if(!(i >= envsize))
+	if (!(i >= envsize))
 	{
 		j = -1;
 		k = 0;
-		while(environ[++j])
+		while (environ[++j])
 		{
 			newenv[k] = environ[j];
-			if(j == i)
+			if (j == i)
 				continue ;
 			k++;
 		}
