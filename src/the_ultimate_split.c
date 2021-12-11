@@ -6,66 +6,11 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 02:46:50 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 15:13:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-/**
- * This function is to check the operators
- * there operators are represented in numbers as following
- * 		1 = |
- *  	2 = >
- * 		3 = <
- * 		4 = ||
- * 		5 = >>
- * 		6 = <<
- * 		7 = &&
- **/
-void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag)
-{
-	if (!data->single_qoute_flag && !data->double_qoute_flag)
-	{
-		if ((data->cmdline[(*x)] == '|' && data->cmdline[(*x) + 1] != '|')
-			|| (data->cmdline[(*x)] == '>' && data->cmdline[(*x) + 1] != '>')
-			|| (data->cmdline[(*x)] == '<' && data->cmdline[(*x) + 1] != '<'))
-		{
-			if (flag)
-			{
-				if (data->cmdline[(*x)] == '|')
-					data->ops_array[data->op_cnt] = 1;
-				else if (data->cmdline[(*x)] == '>')
-					data->ops_array[data->op_cnt] = 2;
-				else if (data->cmdline[(*x)] == '<')
-					data->ops_array[data->op_cnt] = 3;
-				data->op_cnt++;
-			}
-			(*ops_cnt)++;
-		}
-		else if ((data->cmdline[(*x)] == '|' && data->cmdline[(*x) + 1] == '|')
-			|| (data->cmdline[(*x)] == '>' && data->cmdline[(*x) + 1] == '>')
-			|| (data->cmdline[(*x)] == '<' && data->cmdline[(*x) + 1] == '<')
-			|| (data->cmdline[(*x)] == '&' && data->cmdline[(*x) + 1] == '&'))
-		{
-			if (flag)
-			{
-				if (data->cmdline[(*x)] == '|')
-					data->ops_array[data->op_cnt] = 4;
-				else if (data->cmdline[(*x)] == '>')
-					data->ops_array[data->op_cnt] = 5;
-				else if (data->cmdline[(*x)] == '<')
-					data->ops_array[data->op_cnt] = 6;
-				else if (data->cmdline[(*x)] == '&')
-					data->ops_array[data->op_cnt] = 7;
-				data->op_cnt++;
-			}
-			data->dbl_op_f = 1;
-			(*ops_cnt)++;
-			(*x)++;
-		}
-	}
-}
-
 
 /**
  * This function is to check the qoutes for the 3d array split
@@ -93,7 +38,7 @@ void	qoutes_checker_3d(t_data *data, int *x)
 
 /**
  * This function is allocate each command for sep_cmds
- * **/
+ **/
 void	alloc_cmd(t_data *data, int *i, int *old_x, int x)
 {
 	int	j;
@@ -145,7 +90,7 @@ void	alloc_last_cmd(t_data *data, int *i, int *old_x, int *x)
 
 /**
  * This function is to get sep_cmds from cmdline
- * **/
+ **/
 void	sep_cmds_creator(t_data *data)
 {
 	int	ops_cnt;
@@ -173,7 +118,7 @@ void	sep_cmds_creator(t_data *data)
  * This is the ultimate 3d split
  * Nothing to explain It's the best 
  * PEACE
- * **/
+ **/
 void	ultimate_3d_split(t_data *data)
 {
 	int	x;

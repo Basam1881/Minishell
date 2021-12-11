@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 03:03:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 15:08:22 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ void	free_all(t_data *data);
 void	initialize(t_data *data);
 void	env_checker(t_data *data, int *x, int *i, int *j);
 void	ultimate_3d_split(t_data *data);
+void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag);
 
 #endif

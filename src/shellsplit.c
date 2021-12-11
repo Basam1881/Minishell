@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/11 02:23:17 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 15:20:17 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 	}
 	else
 	{
-		if ((data->sep_cmds[data->n][*x] == '$' && data->sep_cmds[data->n][*x + 1] && data
-				->sep_cmds[data->n][*x + 1] != ' ' && !data
-				->single_qoute_flag && !data->double_qoute_flag)
-			|| (data->sep_cmds[data->n][*x] == '$' && data->sep_cmds[data->n][*x + 1] && data
-				->sep_cmds[data->n][*x + 1] != ' ' && data->sep_cmds[data->n][*x + 1] != '"'
-				&& !data->single_qoute_flag
+		if ((data->sep_cmds[data->n][*x] == '$' && data->sep_cmds[data
+				->n][*x + 1] && data->sep_cmds[data->n][*x + 1] != ' '
+				&& !data->single_qoute_flag && !data->double_qoute_flag)
+			|| (data->sep_cmds[data->n][*x] == '$' && data->sep_cmds[data
+			->n][*x + 1] && data->sep_cmds[data->n][*x + 1] != ' ' && data
+			->sep_cmds[data->n][*x + 1] != '"' && !data->single_qoute_flag
 				&& data->double_qoute_flag))
 			env_checker(data, x, i, j);
 		else if (data->split_flag == 2)
@@ -81,8 +81,8 @@ static void	check_arg(t_data *data, int *x, int *i)
 			|| (data->sep_cmds[data->n][*x] == ' '
 				&& (data->single_qoute_flag || data->double_qoute_flag))))
 	{
-		if ((data->sep_cmds[data->n][*x] == '\'' || data->sep_cmds[data->n][*x] == '"')
-			&& !data->single_qoute_flag && !data->double_qoute_flag)
+		if ((data->sep_cmds[data->n][*x] == '\'' || data->sep_cmds[data->n][*x]
+			== '"') && !data->single_qoute_flag && !data->double_qoute_flag)
 		{
 			if (data->sep_cmds[data->n][*x] == '\'')
 				data->single_qoute_flag = 1;
@@ -146,7 +146,6 @@ char	**cmd_split(t_data *data)
 	}
 	data->split_flag = 0;
 	words = split_into_arg(data);
-	// printf("words = %d\n", words);
 	data->cmd[data->n] = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!(data->cmd[data->n]))
 		return (0);
@@ -154,6 +153,5 @@ char	**cmd_split(t_data *data)
 	split_into_arg(data);
 	data->split_flag = 2;
 	split_into_arg(data);
-	// printf("sep_cmds[0] = %s\tsep_cmds[1] = %s\n", data->sep_cmds[0], data->sep_cmds[1]);
 	return (data->cmd[data->n]);
 }

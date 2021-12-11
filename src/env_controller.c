@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:29:09 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/10 06:28:45 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 15:14:38 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	no_env_in_no_qoutes(t_data *data, char *new_s, int *i, int *x)
 	{
 		if (!data->double_qoute_flag && !data->single_qoute_flag && data
 			->sep_cmds[data->n][*x - 1] == ' ' && data->sep_cmds[data->n][*x
-				+ ft_strlen_to_space(&data->sep_cmds[data->n][*x + 1]) + 1] == ' ')
+				+ ft_strlen_to_space(&data
+				->sep_cmds[data->n][*x + 1]) + 1] == ' ')
 		{
 			(*i)--;
 			data->no_env_arg_flag = 1;

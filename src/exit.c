@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 01:36:00 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 15:17:56 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,10 @@ void	failed_split(t_data *data, int n)
 		data->n--;
 	}
 	free (data->cmd);
-	data->cmd = NULL;
 	while (data->sep_cmds[i])
 		free (data->sep_cmds[i++]);
 	free (data->sep_cmds);
-	data->sep_cmds = NULL;
 	free(data->cmdline);
-	data->cmdline = NULL;
 	exit (1);
 }
 
@@ -65,7 +62,6 @@ void	free_all(t_data *data)
 	if (!*data->cmdline)
 	{
 		free(data->cmdline);
-		data->cmdline = NULL;
 		return ;
 	}
 	while (data->cmd[i])
@@ -76,13 +72,13 @@ void	free_all(t_data *data)
 		free (data->cmd[i++]);
 	}
 	free (data->cmd);
-	data->cmd = NULL;
+	i = 0;
 	while (data->sep_cmds[i])
 		free (data->sep_cmds[i++]);
 	free (data->sep_cmds);
-	data->sep_cmds = NULL;
 	free(data->cmdline);
-	data->cmdline = NULL;
+	free(data->ops_array);
+	initialize(data);
 }
 
 void	ft_exit(t_data *data, int n)

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/10 06:32:17 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/11 15:27:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	check_cmd(t_data *data)
 		wait(NULL);
 		if (pid == 0)
 			execve("/bin/pwd", av, environ);
+	}
+	else if (!(ft_strcmp(av[0], "cd")))
+	{
+		pid = fork();
+		wait(NULL);
+		if (pid == 0)
+			execve("/usr/bin/cd", av, environ);
 	}
 	else if (!(ft_strcmp(av[0], "env")))
 	{
