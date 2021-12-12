@@ -23,7 +23,9 @@ PROJECT_NAME = MINISHELL
 #write down the date you started working on your project
 DATE = 29 - 11 - 2021
 
-C_FILES = main.c cmd_checker.c ft_export.c ft_unset.c
+C_FILES = main.c exit.c cmd_checker.c env_controller.c\
+		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
+		operators.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
@@ -66,7 +68,7 @@ EXEC_NAME = minishell
 
 all: header $(LIBS_DIR)${NAME} ${LIBFT_LIB} $(LIBS_DIR)${NAME_ALL}
 	@gcc $(LIBS_DIR)$(NAME_ALL) -lreadline -o $(EXEC_NAME)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n$(NO_COLOR)"
 	@echo "$(GREEN)*************************************************************************"
 	@echo "$(GREEN)*\t\t\t\t$(BYELLOW)READY\t\t\t\t\t$(GREEN)*"
 	@echo "$(GREEN)*************************************************************************$(NO_COLOR)"
@@ -74,7 +76,7 @@ all: header $(LIBS_DIR)${NAME} ${LIBFT_LIB} $(LIBS_DIR)${NAME_ALL}
 ${LIBS_DIR}${NAME} : $(OBJ_NAME)
 	@ar -rc ${LIBS_DIR}$(NAME) $(OBJ_NAME)
 	@ranlib $(LIBS_DIR)$(NAME)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n$(NO_COLOR)"
 
 ${LIBFT_LIB}:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) all && mv $(LIBFT_DIR)$(LIBFT_LIB) $(LIBS_DIR)
@@ -83,10 +85,14 @@ ${LIBFT_LIB}:
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@gcc ${CFLAG} -c $< -o $@
 
+
+#For Mac use (libtool) and keep (ar) commented
+#For Linux use (ar) and keep (libtool) commented
 $(LIBS_DIR)${NAME_ALL} :
-	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+	@libtool -static -o $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
+#	@ar -rcT $(LIBS_DIR)$(NAME_ALL) $(LIBS_DIR)$(NAME) $(LIBS_DIR)$(LIBFT_LIB)
 	@ranlib $(LIBS_DIR)$(NAME_ALL)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Final Library Is Done\n$(NO_COLOR)"
 
 header:
 	@printf "\n%b" "$(PURPLE)"

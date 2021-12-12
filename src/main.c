@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/05 03:54:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2021/12/11 15:53:38 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,31 @@
 
 int	main(void)
 {
-	char	*cmd;
+	t_data	data;
+
+	initialize(&data);
 	printf("\033[?1049h\033[H");
 	while (1)
 	{
-		cmd = readline("\033[1;34m⚡⚡ ~/BnM_Minishell \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)--\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m");
-		if (!cmd)
-			return (0);
-		if (ft_strchr(cmd, 34) || ft_strchr(cmd, 39))
-		if (cmd && *cmd)
-			add_history(cmd);
-		check_cmd(cmd);
-		free (cmd);
-	}	
+		data.cmdline = readline("\033[1;34m⚡⚡ ~/BnM_Minishell\
+\033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
+-\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m");
+		// data.cmdline = "echo hi $_ '' wow > beso || grep we wa << woo >> yes      | hi && trick & yeah";
+		if (!data.cmdline)
+			ft_exit(&data, 0);
+		if (data.cmdline && *data.cmdline)
+			add_history(data.cmdline);
+		ultimate_3d_split(&data);
+		check_cmd(&data);
+		// printf("data.cmdline = |%s|\n", data.cmdline);
+		if (*data.cmdline)
+			free_all(&data);
+		else
+		{
+			free (data.cmdline);
+			initialize(&data);
+		}
+	}
+	free_all(&data);
 	return (0);
 }
