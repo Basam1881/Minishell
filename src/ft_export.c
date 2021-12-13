@@ -44,11 +44,11 @@ void	ft_export(char *v)
 	int		envsize;
 	char	*var_name;
 	char	*var;
-
 	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
 	{
 		return ;
 	}
+	
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
 	envsize = ft_strlen2(environ);
 	newenv = (char **)malloc(sizeof(char **) * (envsize + 2));

@@ -31,15 +31,9 @@ void	execute_commands(t_data *data, int *i)
 	else if (!(ft_strcmp(data->cmd[*i][0], "grep"))) 
 			execve("/usr/bin/grep", data->cmd[*i], environ);
 	else if (!(ft_strcmp(data->cmd[*i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
-	{
-		ft_export(data->cmd[*i][1]);
 		exit(0);
-	}
 	else if (!(ft_strcmp(data->cmd[*i][0], "unset")))
-	{
-		ft_unset(data->cmd[*i][1]);
 		exit(0);
-	}
 	else if (!(ft_strcmp(data->cmd[*i][0], "exit")))
 	{
 		printf("%s", NO_COLOR);
@@ -57,14 +51,14 @@ void	check_cmd(t_data *data)
 	int		fd[2];
 	int		fdrd;
 	i = 0; 
-	j = 2; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
+	j = data->op_cnt + 1; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
 	if (!*data->cmdline)
 		return ;
 	write(1, BYELLOW, 8);
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
 	while(j--)
 	{
-		if(data->ops_array[i] == 2 || data->ops_array[i] == 3)
+		if(data->ops_array[i] == 2 || data->ops_array[i] == 5)
 			j--;
 		pid = fork(); // create child process
 		if (pid == 0) // only child process goes here
@@ -73,10 +67,10 @@ void	check_cmd(t_data *data)
 				dup2(fd[1], STDOUT_FILENO);
 			else if(data->ops_array[i] == 2) // 2 is redirect, so we must redirect stdout to the file given on input.
 			{
-				fdrd = open(data->cmd[i+1][0], O_RDWR | O_CREAT, S_IRWXU);
+				fdrd = open(data->cmd[i+1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
 				dup2(fdrd, STDOUT_FILENO);
 			}
-			else if(data->ops_array[i] == 3) // 3 is redirect append, so we must redirect stdout to the file given on input.
+			else if(data->ops_array[i] == 5) // 3 is redirect append, so we must redirect stdout to the file given on input.
 			{
 				fdrd = open(data->cmd[i+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
 				dup2(fdrd, STDOUT_FILENO);
@@ -85,6 +79,7 @@ void	check_cmd(t_data *data)
 			{
 				dup2(1, STDOUT_FILENO);
 				dup2(0, STDIN_FILENO);
+				j--;
 			}
 			if (data->ops_array[i-1] == 1 && i != 0)
 				dup2(fd[0], STDIN_FILENO);
@@ -92,6 +87,14 @@ void	check_cmd(t_data *data)
 			close(fd[1]);
 			close(fd[0]);
 			execute_commands(data, &i); // check for commands and execute them
+		}
+		else if (!(ft_strcmp(data->cmd[i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
+		{
+			ft_export(ft_strdup(data->cmd[i][1]));
+		}
+		else if (!(ft_strcmp(data->cmd[i][0], "unset")))
+		{
+			ft_unset(ft_strdup(data->cmd[i][1]));
 		}
 		i++;
 	}

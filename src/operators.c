@@ -67,7 +67,7 @@ void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag)
 			|| (data->cmdline[(*x)] == '&' && data->cmdline[(*x) + 1] == '&'))
 		{
 			if (flag)
-				ops_assigner(data, x, 1);
+				ops_assigner(data, x, 0);
 			data->dbl_op_f = 1;
 			(*ops_cnt)++;
 			(*x)++;
