@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 15:17:56 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/14 12:17:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,37 +52,69 @@ void	failed_split(t_data *data, int n)
 	exit (1);
 }
 
-void	free_all(t_data *data)
+void	free_big_data(t_data *data)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
+	if (data->cmd)
+	{
+		while (data->cmd[i])
+		{
+			j = 0;
+			while (data->cmd[i][j])
+				free (data->cmd[i][j++]);
+			free (data->cmd[i++]);
+		}
+		free (data->cmd);
+	}
+	i = 0;
+	if (data->sep_cmds)
+	{
+		while (data->sep_cmds[i])
+			free (data->sep_cmds[i++]);
+		free (data->sep_cmds);
+	}
+}
+
+void	free_all(t_data *data)
+{
+	if (!data->cmdline)
+		return ;
 	if (!*data->cmdline)
 	{
 		free(data->cmdline);
 		return ;
 	}
-	while (data->cmd[i])
-	{
-		j = 0;
-		while (data->cmd[i][j])
-			free (data->cmd[i][j++]);
-		free (data->cmd[i++]);
-	}
-	free (data->cmd);
-	i = 0;
-	while (data->sep_cmds[i])
-		free (data->sep_cmds[i++]);
-	free (data->sep_cmds);
+	free_big_data(data);
 	free(data->cmdline);
-	free(data->ops_array);
+	if (data->ops_array)
+		free(data->ops_array);
 	initialize(data);
 }
 
 void	ft_exit(t_data *data, int n)
 {
 	free_all(data);
+	if (n == 1)
+	{
+		perror("Error. (Check your malloc functions)");
+		printf("zsh: %s\n", strerror(errno));
+		printf("exit with code: %d\n", errno);
+	}
+	else if (n == 2)
+	{
+		perror("Error. (Check your read functions)");
+		printf("zsh: %s\n", strerror(errno));
+		printf("exit with code: %d\n", errno);
+	}
+	else if (n == 3)
+	{
+		perror("Error. (Check your write functions)");
+		printf("zsh: %s\n", strerror(errno));
+		printf("exit with code: %d\n", errno);
+	}
 	exit(n);
 }

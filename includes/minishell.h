@@ -6,9 +6,15 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 15:08:22 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/14 13:14:33 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/**
+ * ------------------------------------------------------------------------------
+ * |							Include Libraries								|
+ * ------------------------------------------------------------------------------
+ **/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -20,6 +26,15 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <termios.h>
+# include <errno.h>
+
+/**
+ * ------------------------------------------------------------------------------
+ * |							Define Variables								|
+ * ------------------------------------------------------------------------------
+ **/
 
 # define PURPLE "\033[1;35m"
 # define BLUE "\033[1;34m"
@@ -30,23 +45,59 @@
 # define BYELLOW  "\033[1;33m"
 # define IYELLOW  "\033[3;33m"
 # define NO_COLOR "\033[m"
+# define MAC_PROMPT "\033[1;34m⚡⚡ BnM_Minishell\
+\033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
+-\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
+# define LINUX_PROMPT " BnM_Minishell--$>"
 
+/**
+ * ------------------------------------------------------------------------------
+ * |							Define Structures								|
+ * ------------------------------------------------------------------------------
+ **/
+
+/**
+ * sep_cmds: 2d array of commands in 
+ * 		a cmdline that will be seperated by operators
+ * no_env_arg_flag: flag that becomes one when 
+ * 		there is no equivilent environment variable to replace with
+ * dbl_op_f: flag for operators
+ * 		that has two chars like (|| or && or << or >>)
+ * n: counter for the number of commands. It can be used
+ * 		in both (cmd) and (sep_cmds) like (cmd[data->n][][] or sep_cmds[data->n][])
+ * ops_array: integer array that will store the operators
+ * op_cnt: counter used for the operators array.
+ * 		It's good cuz it's in the structure so no need to keep passing it
+ **/
 typedef struct s_data
 {
 	char	***cmd;
 	char	*cmdline;
-	char	**sep_cmds;/*This is a 2d array of commands in a cmdline that will be seperated by operators*/
+	char	**sep_cmds;
 	char	**env;
 	int		split_flag;
 	int		single_qoute_flag;
 	int		double_qoute_flag;
-	int		no_env_arg_flag;/*This is a flag that becomes one when there is no equivilent environment variable to replace with*/
-	int		dbl_op_f;/*This is a flag for operators that has two chars like (|| or && or << or >>)*/
-	int		n;/*This is a counter for the number of commands. It can be used in both (cmd) and (sep_cmds) like (cmd[data->n][][] or sep_cmds[data->n][])*/
-	int		*ops_array;/*This the integer array that will store the operators*/
-	int		op_cnt;/*This is counter used for the operators array. It's good cuz it's in the structure so no need to keep passing it*/
+	int		no_env_arg_flag;
+	int		dbl_op_f;
+	int		n;
+	int		*ops_array;
+	int		op_cnt;
 }				t_data;
+
+/**
+ * ------------------------------------------------------------------------------
+ * |						Declare Global Variables							|
+ * ------------------------------------------------------------------------------
+ **/
+
 extern char	**environ;
+
+/**
+ * ------------------------------------------------------------------------------
+ * |							Functions Prototypes							|
+ * ------------------------------------------------------------------------------
+ **/
 void	check_cmd(t_data *data);
 char	**cmd_split(t_data *data);
 void	failed_split(t_data *data, int n);
@@ -60,5 +111,7 @@ void	initialize(t_data *data);
 void	env_checker(t_data *data, int *x, int *i, int *j);
 void	ultimate_3d_split(t_data *data);
 void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag);
+void	ft_cd(t_data *data);
+void	sig_handler(int signum, siginfo_t *info, void *ucontext);
 
 #endif

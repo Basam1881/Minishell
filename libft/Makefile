@@ -55,6 +55,7 @@ NAME = libft.a
 .PHONY: all clean fclean re
 
 all: ${NAME}
+	 @echo > /dev/null
 
 ${NAME}: ${OBJ_NAME}
 	@gcc -c ${CFLAG} ${SRC_NAME}

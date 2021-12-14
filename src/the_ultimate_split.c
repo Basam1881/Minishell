@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 15:13:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/14 11:12:14 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,11 +139,11 @@ void	ultimate_3d_split(t_data *data)
 	data->ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));
 	if (!data->cmd || !data->sep_cmds)
 		ft_exit(data, 1);
+	data->op_cnt = 0;
 	sep_cmds_creator(data);
 	data->n = 0;
 	while (data->n < ops_cnt + 1)
 		data->cmd[data->n++] = cmd_split(data);
 	data->cmd[data->n] = 0;
 	data->n = 0;
-	data->op_cnt = 0;
 }

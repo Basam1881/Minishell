@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/11 15:12:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/14 11:13:18 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag)
 			|| (data->cmdline[(*x)] == '&' && data->cmdline[(*x) + 1] == '&'))
 		{
 			if (flag)
-				ops_assigner(data, x, 1);
+				ops_assigner(data, x, 0);
 			data->dbl_op_f = 1;
 			(*ops_cnt)++;
 			(*x)++;
