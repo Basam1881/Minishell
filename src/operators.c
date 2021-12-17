@@ -6,35 +6,35 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/14 11:13:18 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/17 02:20:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	ops_assigner(t_data *data, int *x, int flag)
+static void	ops_assigner(int *x, int flag)
 {
 	if (flag == 1)
 	{
-		if (data->cmdline[(*x)] == '|')
-			data->ops_array[data->op_cnt] = 1;
-		else if (data->cmdline[(*x)] == '>')
-			data->ops_array[data->op_cnt] = 2;
-		else if (data->cmdline[(*x)] == '<')
-			data->ops_array[data->op_cnt] = 3;
-		data->op_cnt++;
+		if (g_data.cmdline[(*x)] == '|')
+			g_data.ops_array[g_data.op_cnt] = 1;
+		else if (g_data.cmdline[(*x)] == '>')
+			g_data.ops_array[g_data.op_cnt] = 2;
+		else if (g_data.cmdline[(*x)] == '<')
+			g_data.ops_array[g_data.op_cnt] = 3;
+		g_data.op_cnt++;
 	}
 	else
 	{
-		if (data->cmdline[(*x)] == '|')
-			data->ops_array[data->op_cnt] = 4;
-		else if (data->cmdline[(*x)] == '>')
-			data->ops_array[data->op_cnt] = 5;
-		else if (data->cmdline[(*x)] == '<')
-			data->ops_array[data->op_cnt] = 6;
-		else if (data->cmdline[(*x)] == '&')
-			data->ops_array[data->op_cnt] = 7;
-		data->op_cnt++;
+		if (g_data.cmdline[(*x)] == '|')
+			g_data.ops_array[g_data.op_cnt] = 4;
+		else if (g_data.cmdline[(*x)] == '>')
+			g_data.ops_array[g_data.op_cnt] = 5;
+		else if (g_data.cmdline[(*x)] == '<')
+			g_data.ops_array[g_data.op_cnt] = 6;
+		else if (g_data.cmdline[(*x)] == '&')
+			g_data.ops_array[g_data.op_cnt] = 7;
+		g_data.op_cnt++;
 	}
 }
 
@@ -49,26 +49,26 @@ static void	ops_assigner(t_data *data, int *x, int flag)
  * 		6 = <<
  * 		7 = &&
  **/
-void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag)
+void	operators_checker(int *x, int *ops_cnt, int flag)
 {
-	if (!data->single_qoute_flag && !data->double_qoute_flag)
+	if (!g_data.single_qoute_flag && !g_data.double_qoute_flag)
 	{
-		if ((data->cmdline[(*x)] == '|' && data->cmdline[(*x) + 1] != '|')
-			|| (data->cmdline[(*x)] == '>' && data->cmdline[(*x) + 1] != '>')
-			|| (data->cmdline[(*x)] == '<' && data->cmdline[(*x) + 1] != '<'))
+		if ((g_data.cmdline[(*x)] == '|' && g_data.cmdline[(*x) + 1] != '|')
+			|| (g_data.cmdline[(*x)] == '>' && g_data.cmdline[(*x) + 1] != '>')
+			|| (g_data.cmdline[(*x)] == '<' && g_data.cmdline[(*x) + 1] != '<'))
 		{
 			if (flag)
-				ops_assigner(data, x, 1);
+				ops_assigner(x, 1);
 			(*ops_cnt)++;
 		}
-		else if ((data->cmdline[(*x)] == '|' && data->cmdline[(*x) + 1] == '|')
-			|| (data->cmdline[(*x)] == '>' && data->cmdline[(*x) + 1] == '>')
-			|| (data->cmdline[(*x)] == '<' && data->cmdline[(*x) + 1] == '<')
-			|| (data->cmdline[(*x)] == '&' && data->cmdline[(*x) + 1] == '&'))
+		else if ((g_data.cmdline[(*x)] == '|' && g_data.cmdline[(*x) + 1] == '|')
+			|| (g_data.cmdline[(*x)] == '>' && g_data.cmdline[(*x) + 1] == '>')
+			|| (g_data.cmdline[(*x)] == '<' && g_data.cmdline[(*x) + 1] == '<')
+			|| (g_data.cmdline[(*x)] == '&' && g_data.cmdline[(*x) + 1] == '&'))
 		{
 			if (flag)
-				ops_assigner(data, x, 0);
-			data->dbl_op_f = 1;
+				ops_assigner(x, 0);
+			g_data.dbl_op_f = 1;
 			(*ops_cnt)++;
 			(*x)++;
 		}

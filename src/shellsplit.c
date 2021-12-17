@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/11 15:20:17 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/17 02:26:06 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@
 *	It's used to set the qoutes flags either to 1 or 0, so we
 *	can tell if we are inside qoutes at the moment or not
 **/
-static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
+static void	qoutes_checker(int *x, int *i, int *j)
 {
-	if ((data->sep_cmds[data->n][*x] == '\'' && data->single_qoute_flag)
-		|| (data->sep_cmds[data->n][*x] == '"' && data->double_qoute_flag))
+	if ((g_data.sep_cmds[g_data.n][*x] == '\'' && g_data.single_qoute_flag)
+		|| (g_data.sep_cmds[g_data.n][*x] == '"' && g_data.double_qoute_flag))
 	{
-		if (data->sep_cmds[data->n][*x] == '\'')
-			data->single_qoute_flag = 0;
+		if (g_data.sep_cmds[g_data.n][*x] == '\'')
+			g_data.single_qoute_flag = 0;
 		else
-			data->double_qoute_flag = 0;
+			g_data.double_qoute_flag = 0;
 	}
 	else
 	{
-		if ((data->sep_cmds[data->n][*x] == '$' && data->sep_cmds[data
-				->n][*x + 1] && data->sep_cmds[data->n][*x + 1] != ' '
-				&& !data->single_qoute_flag && !data->double_qoute_flag)
-			|| (data->sep_cmds[data->n][*x] == '$' && data->sep_cmds[data
-			->n][*x + 1] && data->sep_cmds[data->n][*x + 1] != ' ' && data
-			->sep_cmds[data->n][*x + 1] != '"' && !data->single_qoute_flag
-				&& data->double_qoute_flag))
-			env_checker(data, x, i, j);
-		else if (data->split_flag == 2)
-			data->cmd[data->n][*i][*j] = data->sep_cmds[data->n][*x];
-		if (data->split_flag)
+		if ((g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
+				.n][*x + 1] && g_data.sep_cmds[g_data.n][*x + 1] != ' '
+				&& !g_data.single_qoute_flag && !g_data.double_qoute_flag)
+			|| (g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
+			.n][*x + 1] && g_data.sep_cmds[g_data.n][*x + 1] != ' ' && g_data
+			.sep_cmds[g_data.n][*x + 1] != '"' && !g_data.single_qoute_flag
+				&& g_data.double_qoute_flag))
+			env_checker(x, i, j);
+		else if (g_data.split_flag == 2)
+			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		if (g_data.split_flag)
 			(*j)++;
 	}
 	(*x)++;
@@ -48,17 +48,17 @@ static void	qoutes_checker(t_data *data, int *x, int *i, int *j)
 *	It's used to either malloc the size for the argument or
 *	to put null at the end according the to the flag
 **/
-static void	check_arg_helper(t_data *data, int *i, int *j)
+static void	check_arg_helper(int *i, int *j)
 {
-	if (data->split_flag)
+	if (g_data.split_flag)
 	{
-		if (data->split_flag == 2 && !data->no_env_arg_flag)
-			data->cmd[data->n][*i][*j] = 0;
-		else if (data->split_flag == 1 && !data->no_env_arg_flag)
+		if (g_data.split_flag == 2 && !g_data.no_env_arg_flag)
+			g_data.cmd[g_data.n][*i][*j] = 0;
+		else if (g_data.split_flag == 1 && !g_data.no_env_arg_flag)
 		{
-			data->cmd[data->n][*i] = (char *)malloc(sizeof(char) * (*j) + 1);
-			if (!data->cmd[data->n][*i])
-				failed_split(data, *i);
+			g_data.cmd[g_data.n][*i] = (char *)malloc(sizeof(char) * (*j) + 1);
+			if (!g_data.cmd[g_data.n][*i])
+				failed_split(*i);
 		}
 		(*i)++;
 	}
@@ -68,32 +68,32 @@ static void	check_arg_helper(t_data *data, int *i, int *j)
 *	It's used to loop through each argument of any command
 *	and check the qoutes...etc
 **/
-static void	check_arg(t_data *data, int *x, int *i)
+static void	check_arg(int *x, int *i)
 {
 	int		j;
 
-	data->single_qoute_flag = 0;
-	data->double_qoute_flag = 0;
+	g_data.single_qoute_flag = 0;
+	g_data.double_qoute_flag = 0;
 	j = 0;
-	if (!data->split_flag)
+	if (!g_data.split_flag)
 		(*i)++;
-	while (data->sep_cmds[data->n][*x] && (data->sep_cmds[data->n][*x] != ' '
-			|| (data->sep_cmds[data->n][*x] == ' '
-				&& (data->single_qoute_flag || data->double_qoute_flag))))
+	while (g_data.sep_cmds[g_data.n][*x] && (g_data.sep_cmds[g_data.n][*x] != ' '
+			|| (g_data.sep_cmds[g_data.n][*x] == ' '
+				&& (g_data.single_qoute_flag || g_data.double_qoute_flag))))
 	{
-		if ((data->sep_cmds[data->n][*x] == '\'' || data->sep_cmds[data->n][*x]
-			== '"') && !data->single_qoute_flag && !data->double_qoute_flag)
+		if ((g_data.sep_cmds[g_data.n][*x] == '\'' || g_data.sep_cmds[g_data.n][*x]
+			== '"') && !g_data.single_qoute_flag && !g_data.double_qoute_flag)
 		{
-			if (data->sep_cmds[data->n][*x] == '\'')
-				data->single_qoute_flag = 1;
+			if (g_data.sep_cmds[g_data.n][*x] == '\'')
+				g_data.single_qoute_flag = 1;
 			else
-				data->double_qoute_flag = 1;
+				g_data.double_qoute_flag = 1;
 			(*x)++;
 		}
-		qoutes_checker(data, x, i, &j);
+		qoutes_checker(x, i, &j);
 	}
-	check_arg_helper(data, i, &j);
-	data->no_env_arg_flag = 0;
+	check_arg_helper(i, &j);
+	g_data.no_env_arg_flag = 0;
 }
 
 /**
@@ -103,27 +103,27 @@ static void	check_arg(t_data *data, int *x, int *i)
  * flag 2 will copy the proper value from the string (sep_cmds)
  * to the arguments you have
  **/
-static int	split_into_arg(t_data *data)
+static int	split_into_arg(void)
 {
 	int		i;
 	int		x;
 
 	i = 0;
 	x = 0;
-	while (data->sep_cmds[data->n][x])
+	while (g_data.sep_cmds[g_data.n][x])
 	{
-		if (data->sep_cmds[data->n][x] == ' ')
+		if (g_data.sep_cmds[g_data.n][x] == ' ')
 			x++;
 		else
-			check_arg(data, &x, &i);
+			check_arg(&x, &i);
 	}
-	if (data->split_flag == 2)
-		data->cmd[data->n][i] = 0;
-	else if (data->split_flag == 1)
+	if (g_data.split_flag == 2)
+		g_data.cmd[g_data.n][i] = 0;
+	else if (g_data.split_flag == 1)
 	{
-		data->cmd[data->n][x] = (char *)malloc(sizeof(char));
-		if (!data->cmd[data->n][x])
-			failed_split(data, x - 1);
+		g_data.cmd[g_data.n][x] = (char *)malloc(sizeof(char));
+		if (!g_data.cmd[g_data.n][x])
+			failed_split(x - 1);
 	}
 	return (i);
 }
@@ -132,26 +132,26 @@ static int	split_into_arg(t_data *data)
 *	It's used to seperate the string (command) into arguments,
 *	store them into 2d array and return it back
 **/
-char	**cmd_split(t_data *data)
+char	**cmd_split(void)
 {
 	int		words;
 
-	if (!data->sep_cmds[data->n])
+	if (!g_data.sep_cmds[g_data.n])
 	{
-		data->cmd[data->n] = (char **)malloc(sizeof(char *) + 1);
-		if (!(data->cmd[data->n]))
+		g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) + 1);
+		if (!(g_data.cmd[g_data.n]))
 			return (0);
-		data->cmd[data->n] = NULL;
-		return (data->cmd[data->n]);
+		g_data.cmd[g_data.n] = NULL;
+		return (g_data.cmd[g_data.n]);
 	}
-	data->split_flag = 0;
-	words = split_into_arg(data);
-	data->cmd[data->n] = (char **)malloc(sizeof(char *) * (words + 1));
-	if (!(data->cmd[data->n]))
+	g_data.split_flag = 0;
+	words = split_into_arg();
+	g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!(g_data.cmd[g_data.n]))
 		return (0);
-	data->split_flag = 1;
-	split_into_arg(data);
-	data->split_flag = 2;
-	split_into_arg(data);
-	return (data->cmd[data->n]);
+	g_data.split_flag = 1;
+	split_into_arg();
+	g_data.split_flag = 2;
+	split_into_arg();
+	return (g_data.cmd[g_data.n]);
 }

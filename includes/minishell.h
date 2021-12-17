@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/14 13:14:33 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/17 03:26:28 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
+# include <fcntl.h>
 
 /**
  * ------------------------------------------------------------------------------
@@ -83,6 +84,9 @@ typedef struct s_data
 	int		n;
 	int		*ops_array;
 	int		op_cnt;
+	char	**environ;
+	pid_t	c_pid;
+	int		pid;
 }				t_data;
 
 /**
@@ -91,27 +95,28 @@ typedef struct s_data
  * ------------------------------------------------------------------------------
  **/
 
-extern char	**environ;
+t_data	g_data;
 
 /**
  * ------------------------------------------------------------------------------
  * |							Functions Prototypes							|
  * ------------------------------------------------------------------------------
  **/
-void	check_cmd(t_data *data);
-char	**cmd_split(t_data *data);
-void	failed_split(t_data *data, int n);
-void	ft_exit(t_data *data, int n);
+void	check_cmd(void);
+char	**cmd_split(void);
+void	failed_split(int n);
+void	ft_exit(int n);
 int		ft_chrindex(char *str, char c);
 int		ft_strlen2(char **str);
 void	ft_export(char *v);
 void	ft_unset(char *v);
-void	free_all(t_data *data);
-void	initialize(t_data *data);
-void	env_checker(t_data *data, int *x, int *i, int *j);
-void	ultimate_3d_split(t_data *data);
-void	operators_checker(t_data *data, int *x, int *ops_cnt, int flag);
-void	ft_cd(t_data *data);
+void	free_all(void);
+void	initialize(void);
+void	env_checker(int *x, int *i, int *j);
+void	ultimate_3d_split(void);
+void	operators_checker(int *x, int *ops_cnt, int flag);
+void	ft_cd(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
+void	execute_commands(int *i);
 
 #endif
