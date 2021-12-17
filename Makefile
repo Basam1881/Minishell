@@ -34,7 +34,7 @@ SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
 OBJ_NAME = $(addprefix $(OBJ_DIR), ${C_FILES:%.c=%.o})
 
 #mention the compilation flags here
-CFLAG = -Wall -Wextra -Werror
+CFLAG =  -Wall -Wextra -Werror
 
 #Here is the libft directory
 LIBFT_DIR = ./libft/

@@ -52,6 +52,7 @@ void	check_cmd(void)
 	int		fd[2];
 	int		fdrd;
 	i = 0; 
+	printf("%d\n", g_data.ops_array[0]);
 	j = g_data.op_cnt + 1; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
 	if (!*g_data.cmdline)
 		return ;
@@ -59,7 +60,7 @@ void	check_cmd(void)
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
 	while(j--)
 	{
-		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 5)
+		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 3 || g_data.ops_array[i] == 5)
 			j--;
 		g_data.c_pid = fork(); // create child process
 		if (g_data.c_pid == 0) // only child process goes here
@@ -71,7 +72,12 @@ void	check_cmd(void)
 				fdrd = open(g_data.cmd[i+1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
 				dup2(fdrd, STDOUT_FILENO);
 			}
-			else if(g_data.ops_array[i] == 5) // 3 is redirect append, so we must redirect stdout to the file given on input.
+			else if(g_data.ops_array[i] == 3) // 3 is redirect input <
+			{
+				fdrd = open(g_data.cmd[i+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
+				dup2(fdrd, STDIN_FILENO);
+			}
+			else if(g_data.ops_array[i] == 5) // 5 is redirect append, so we must redirect stdout to the file given on input.
 			{
 				fdrd = open(g_data.cmd[i+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
 				dup2(fdrd, STDOUT_FILENO);
