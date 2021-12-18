@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 02:38:25 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/17 21:14:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int ac, char **av, char **ev)
 	printf("\033[?1049h\033[H");
 	while (1)
 	{
+		g_data.c_pid = 1;
 		g_data.cmdline = readline(MAC_PROMPT);
 		// g_data.cmdline = "echo hi $_ '' wow > beso || grep we wa << woo >> yes      | hi && trick & yeah";
 		if (!g_data.cmdline)

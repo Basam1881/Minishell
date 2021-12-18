@@ -6,24 +6,35 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 04:00:17 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/18 04:13:47 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-/*
-	always check the paths of executebles, i had to change some of them when i used my laptop.
-*/
+/**
+ * TODO: add the error part to execve for m_branch
+ * TODO: move the exit function to the parent part not for the child
+ * TODO: remove the export and unset function from the child part as well
+ * ? Do we need to make sure that child processors are freed before passing them to execve!!
+ **/
 void	execute_commands(int *i)
 {
 	if (!(ft_strcmp(g_data.cmd[*i][0], "echo")))
-			execve("/bin/echo", g_data.cmd[*i], g_data.environ);
+	{
+		if (execve("/bin/echo", g_data.cmd[*i], g_data.environ) == -1)
+			printf("zsh: %s\n",strerror(errno));
+	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "pwd")))
 	{
-		execve("/bin/pwd", g_data.cmd[*i], g_data.environ);
+		// printf("g_data.cmd_path: %s\n", g_data.cmd_path);
+		if (execve(g_data.cmd_path, g_data.cmd[*i], g_data.environ) == -1)
+			printf("zsh: %s\n",strerror(errno));
 	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
-			execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ);
+	{
+		if (execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ) == -1)
+			printf("zsh: %s\n",strerror(errno));
+	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "env")))
 			execve("/usr/bin/env", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "cat")))
@@ -59,6 +70,7 @@ void	check_cmd(void)
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
 	while(j--)
 	{
+		cmd_filter(i);
 		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 5)
 			j--;
 		g_data.c_pid = fork(); // create child process
