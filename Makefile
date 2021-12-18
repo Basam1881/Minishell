@@ -25,7 +25,7 @@ DATE = 29 - 11 - 2021
 
 C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
-		operators.c ft_cd.c sig_handler.c
+		operators.c ft_cd.c sig_handler.c cmd_filter.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
@@ -73,6 +73,7 @@ all: header ${LIBFT_LIB} $(LIBS_DIR)$(NAME)
 	@echo "$(GREEN)*************************************************************************"
 	@echo "$(GREEN)*\t\t\t\t$(BYELLOW)READY\t\t\t\t\t$(GREEN)*"
 	@echo "$(GREEN)*************************************************************************$(NO_COLOR)"
+	@clear
 
 ${LIBS_DIR}${NAME} : $(OBJ_NAME)
 	@ar -rc ${LIBS_DIR}$(NAME) $(OBJ_NAME)
