@@ -146,6 +146,7 @@ clean:
 	@rm -rf $(OBJ_NAME) $(OBJ_DIR)
 
 fclean: clean
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
 	@rm -rf $(LIBS_DIR) $(EXEC_NAME)
 
 re: fclean all
