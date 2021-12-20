@@ -27,7 +27,7 @@ void restore(void) {
     attributes.c_lflag &= ~ ECHO;
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
  **/
-
+/*
 void	sig_handler(int signum, siginfo_t *info, void *ucontext)
 {
 	(void) signum;
@@ -40,3 +40,4 @@ void	sig_handler(int signum, siginfo_t *info, void *ucontext)
 	rl_on_new_line();
 	rl_redisplay();
 }
+*/

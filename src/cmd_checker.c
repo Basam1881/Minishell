@@ -49,63 +49,133 @@ void	check_cmd(void)
 {
 	int		i;
 	int		j;
+	int 	y;
 	int		fd[2];
+	int     fd2[2];
 	int		fdrd;
+	g_data.file_input = 0;
 	i = 0; 
-	printf("%d\n", g_data.ops_array[0]);
-	j = g_data.op_cnt + 1; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
+	j = 0;
+	//j = g_data.op_cnt + 1; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
 	if (!*g_data.cmdline)
 		return ;
+	int fdout = dup(STDOUT_FILENO);
+	int fdin = dup(STDIN_FILENO);
+
+	//printf("> = %d\n", g_data.ops_array[0]);
+	//printf("< = %d\n", g_data.ops_array[1]);
+	//printf(">> = %d\n", g_data.ops_array[2]);
+	//printf("<< = %d\n", g_data.ops_array[3]);
+
+	/*
+	| = 1
+	> = 2
+	< = 3
+	>> = 5
+	<< = 6
+	*/
 	write(1, BYELLOW, 8);
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
-	while(j--)
-	{
-		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 3 || g_data.ops_array[i] == 5)
-			j--;
+	//printf("%s\n", g_data.cmd[1][0]);
+	while(g_data.cmd[i])
+	{		
+		printf("hey\n");
+		pipe(fd);
+		if(i != 0)
+		{
+			dup2(fd2[0], fd[0]);
+			dup2(fd2[1], fd[1]);
+			close(fd2[0]);
+			close(fd2[1]);
+		}
+		pipe(fd2);
+			y = i;
+			if (g_data.ops_array[j] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.
+			{
+				dup2(fd[1], STDOUT_FILENO);
+				i++;
+				j++;
+			}
+			else if(g_data.ops_array[j] == 2 || g_data.ops_array[j] == 3 || g_data.ops_array[j] == 5) // 3 is redirect input <
+			{
+
+				while(g_data.ops_array[j] != 1 && j < g_data.op_cnt)
+				{
+
+					if(g_data.ops_array[j] == 2)
+					{
+						fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
+						dup2(fdrd, STDOUT_FILENO);
+						close(fdrd);
+					}
+					if(g_data.ops_array[j] == 5)
+					{
+						fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
+						dup2(fdrd, STDOUT_FILENO);
+						close(fdrd);
+					}
+					if(g_data.ops_array[j] == 3)
+					{
+						fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
+						dup2(fdrd, STDIN_FILENO);
+						close(fdrd);
+						g_data.file_input = 1;
+					}
+					j++;
+
+				}
+				if(j == g_data.op_cnt)
+					i = j + 1;
+				else
+					i = j + 1;
+			}
+			else
+			{
+				i++;
+			}
+
+			if(y != 0)
+			{
+				if (g_data.ops_array[j-1] == 1 )
+				{
+					dup2(fd[0], STDIN_FILENO);
+					if(j == g_data.op_cnt)
+					{
+						if(g_data.ops_array[j] != 1)
+							dup2(fdout, STDOUT_FILENO);
+
+					}
+				}
+			}
 		g_data.c_pid = fork(); // create child process
 		if (g_data.c_pid == 0) // only child process goes here
 		{
-			if (g_data.ops_array[i] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.
-				dup2(fd[1], STDOUT_FILENO);
-			else if(g_data.ops_array[i] == 2) // 2 is redirect, so we must redirect stdout to the file given on input.
-			{
-				fdrd = open(g_data.cmd[i+1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
-				dup2(fdrd, STDOUT_FILENO);
-			}
-			else if(g_data.ops_array[i] == 3) // 3 is redirect input <
-			{
-				fdrd = open(g_data.cmd[i+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
-				dup2(fdrd, STDIN_FILENO);
-			}
-			else if(g_data.ops_array[i] == 5) // 5 is redirect append, so we must redirect stdout to the file given on input.
-			{
-				fdrd = open(g_data.cmd[i+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
-				dup2(fdrd, STDOUT_FILENO);
-			}
-			else // if there is no pipe or redirect reset everything to nomral. still not sure but i think we can remove this part.
-			{
-				dup2(1, STDOUT_FILENO);
-				dup2(0, STDIN_FILENO);
-				j--;
-			}
-			if (g_data.ops_array[i-1] == 1 && i != 0)
-				dup2(fd[0], STDIN_FILENO);
 			close(fd[1]);
 			close(fd[0]);
-			execute_commands(&i); // check for commands and execute them
+			execute_commands(&y); // check for commands and execute them
 		}
-		else if (!(ft_strcmp(g_data.cmd[i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
+		else if (!(ft_strcmp(g_data.cmd[y][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
 		{
-			ft_export(ft_strdup(g_data.cmd[i][1]));
+			ft_export(ft_strdup(g_data.cmd[y][1]));
 		}
-		else if (!(ft_strcmp(g_data.cmd[i][0], "unset")))
+		else if (!(ft_strcmp(g_data.cmd[y][0], "unset")))
 		{
-			ft_unset(ft_strdup(g_data.cmd[i][1]));
+			ft_unset(ft_strdup(g_data.cmd[y][1]));
 		}
-		i++;
-	}
-	close(fd[0]);
-	close(fd[1]);
-	while(i--)
+		dup2(fd[0], fd2[0]);
+		dup2(fd[1], fd2[1]);
+		close(fd[0]);
+		close(fd[1]);
 		wait(0);
+	}
+	dup2(fdin, STDIN_FILENO);
+	dup2(fdout, STDOUT_FILENO);
+	
+	//close(fd[0]);
+	//close(fd[1]);
+	/*while(i--)
+		wait(0);
+	*/
+	
+	//wait(0);
 }

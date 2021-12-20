@@ -21,8 +21,8 @@ int	main(int ac, char **av, char **ev)
 	g_data.environ = ev;
 	sig_sig.sa_flags = 0;
 	sig_sig.sa_mask = 0;
-	sig_sig.sa_sigaction = &sig_handler;
-	sigaction(SIGINT, &sig_sig, NULL);
+	//sig_sig.sa_sigaction = &sig_handler;
+	//sigaction(SIGINT, &sig_sig, NULL);
 	initialize();
 	printf("\033[?1049h\033[H");
 	while (1)

@@ -84,6 +84,7 @@ typedef struct s_data
 	int		n;
 	int		*ops_array;
 	int		op_cnt;
+	int     file_input;
 	char	**environ;
 	pid_t	c_pid;
 	int		pid;
