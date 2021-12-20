@@ -44,17 +44,21 @@ void	ft_export(char *v)
 	int		envsize;
 	char	*var_name;
 	char	*var;
+	printf("|%s|\n", v);
 
-	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
-	{
+	if ((size_t)ft_chrindex(v, '=') == ft_strlen(v)-1)
+	{		
 		return ;
 	}
+
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
+	printf("var_name = |%s|\n", var_name);
 	envsize = ft_strlen2(g_data.environ);
 	newenv = (char **)malloc(sizeof(char **) * (envsize + 2));
 	var = getenv(var_name);
 	if (!var)
 	{
+		printf("var = |%s|\n", var);
 		i = 0;
 		while (g_data.environ[i])
 		{
@@ -68,6 +72,7 @@ void	ft_export(char *v)
 	}
 	else
 	{
+		printf("here\n");
 		i = 0;
 		j = 0;
 		while (g_data.environ[i])
