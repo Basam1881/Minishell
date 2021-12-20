@@ -22,8 +22,6 @@ void	execute_commands(int *i)
 	{
 		execve("/bin/pwd", g_data.cmd[*i], g_data.environ);
 	}
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
-			execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "env")))
 			execve("/usr/bin/env", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "cat")))
@@ -32,15 +30,12 @@ void	execute_commands(int *i)
 			execve("/bin/ls", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "grep"))) 
 			execve("/usr/bin/grep", g_data.cmd[*i], g_data.environ);
+	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
+			execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
 		exit(0);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "unset")))
 		exit(0);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "exit")))
-	{
-		printf("%s", NO_COLOR);
-		ft_exit(0);
-	}
 	else
 		printf("bash: %s: command not found\n", g_data.cmd[*i][0]);
 }
@@ -79,7 +74,6 @@ void	check_cmd(void)
 	//printf("%s\n", g_data.cmd[1][0]);
 	while(g_data.cmd[i])
 	{		
-		printf("hey\n");
 		pipe(fd);
 		if(i != 0)
 		{
@@ -147,14 +141,7 @@ void	check_cmd(void)
 					}
 				}
 			}
-		g_data.c_pid = fork(); // create child process
-		if (g_data.c_pid == 0) // only child process goes here
-		{
-			close(fd[1]);
-			close(fd[0]);
-			execute_commands(&y); // check for commands and execute them
-		}
-		else if (!(ft_strcmp(g_data.cmd[y][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
+		if (!(ft_strcmp(g_data.cmd[y][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
 		{
 			ft_export(ft_strdup(g_data.cmd[y][1]));
 		}
@@ -162,6 +149,22 @@ void	check_cmd(void)
 		{
 			ft_unset(ft_strdup(g_data.cmd[y][1]));
 		}
+		else if (!(ft_strcmp(g_data.cmd[y][0], "exit")))
+		{
+			printf("%s", NO_COLOR);
+			ft_exit(0);
+		}
+		else
+		{
+			g_data.c_pid = fork(); // create child process
+			if (g_data.c_pid == 0) // only child process goes here
+			{
+				close(fd[1]);
+				close(fd[0]);
+				execute_commands(&y); // check for commands and execute them
+			}
+		}
+
 		dup2(fd[0], fd2[0]);
 		dup2(fd[1], fd2[1]);
 		close(fd[0]);
