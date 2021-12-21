@@ -30,8 +30,6 @@ void	execute_commands(int *i)
 			execve("/bin/ls", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "grep"))) 
 			execve("/usr/bin/grep", g_data.cmd[*i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
-			execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
 		exit(0);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "unset")))
@@ -154,6 +152,8 @@ void	check_cmd(void)
 			while(g_data.cmd[y][k])
 				ft_unset(ft_strdup(g_data.cmd[y][k++]));
 		}
+		else if (!(ft_strcmp(g_data.cmd[y][0], "cd")))
+			ft_cd();
 		else if (!(ft_strcmp(g_data.cmd[y][0], "exit")))
 		{
 			printf("%s", NO_COLOR);
