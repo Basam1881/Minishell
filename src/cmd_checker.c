@@ -45,6 +45,7 @@ void	check_cmd(void)
 	int		i;
 	int		j;
 	int 	y;
+	int 	k;
 	int		fd[2];
 	int     fd2[2];
 	int		fdrd;
@@ -143,11 +144,15 @@ void	check_cmd(void)
 			}
 		if (!(ft_strcmp(g_data.cmd[y][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
 		{
-			ft_export(ft_strdup(g_data.cmd[y][1]));
+			k = 1;
+			while(g_data.cmd[y][k])
+				ft_export(ft_strdup(g_data.cmd[y][k++]));
 		}
 		else if (!(ft_strcmp(g_data.cmd[y][0], "unset")))
 		{
-			ft_unset(ft_strdup(g_data.cmd[y][1]));
+			k = 1;
+			while(g_data.cmd[y][k])
+				ft_unset(ft_strdup(g_data.cmd[y][k++]));
 		}
 		else if (!(ft_strcmp(g_data.cmd[y][0], "exit")))
 		{

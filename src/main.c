@@ -12,13 +12,13 @@
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **ev)
+int	main(int ac, char **av, char **envp)
 {
 	struct sigaction	sig_sig;
 
 	(void) ac;
 	(void) av;
-	g_data.environ = ev;
+	g_data.environ = envp;
 	sig_sig.sa_flags = 0;
 	sig_sig.sa_mask = 0;
 	//sig_sig.sa_sigaction = &sig_handler;
