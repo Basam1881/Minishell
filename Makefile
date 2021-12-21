@@ -25,7 +25,7 @@ DATE = 29 - 11 - 2021
 
 C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
-		operators.c ft_cd.c sig_handler.c cmd_filter.c
+		operators.c ft_cd.c sig_handler.c cmd_filter.c ft_exit.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))

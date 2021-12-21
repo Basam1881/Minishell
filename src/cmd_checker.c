@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 04:13:47 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/21 05:20:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
  * TODO: add the error part to execve for m_branch
  * TODO: move the exit function to the parent part not for the child
  * TODO: remove the export and unset function from the child part as well
+ * TODO: if the command is not found then exit the child process with 127
  * ? Do we need to make sure that child processors are freed before passing them to execve!!
  **/
 void	execute_commands(int *i)
@@ -22,38 +23,36 @@ void	execute_commands(int *i)
 	if (!(ft_strcmp(g_data.cmd[*i][0], "echo")))
 	{
 		if (execve("/bin/echo", g_data.cmd[*i], g_data.environ) == -1)
-			printf("zsh: %s\n",strerror(errno));
+			printf("zsh: %s\nexit: %d\n", strerror(errno), errno);
 	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "pwd")))
 	{
 		// printf("g_data.cmd_path: %s\n", g_data.cmd_path);
 		if (execve(g_data.cmd_path, g_data.cmd[*i], g_data.environ) == -1)
-			printf("zsh: %s\n",strerror(errno));
+			printf("zsh: %s\n", strerror(errno));
 	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
 	{
 		if (execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ) == -1)
-			printf("zsh: %s\n",strerror(errno));
+			printf("zsh: %s\n", strerror(errno));
 	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "env")))
-			execve("/usr/bin/env", g_data.cmd[*i], g_data.environ);
+		execve("/usr/bin/env", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "cat")))
-			execve("/bin/cat", g_data.cmd[*i], g_data.environ);
+		execve("/bin/cat", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "ls")))
-			execve("/bin/ls", g_data.cmd[*i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "grep"))) 
-			execve("/usr/bin/grep", g_data.cmd[*i], g_data.environ);
+		execve("/bin/ls", g_data.cmd[*i], g_data.environ);
+	else if (!(ft_strcmp(g_data.cmd[*i][0], "grep")))
+		execve("/usr/bin/grep", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
-		exit(0);
+		ft_exit(g_data.exit_status);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "unset")))
-		exit(0);
+		ft_exit(g_data.exit_status);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "exit")))
-	{
-		printf("%s", NO_COLOR);
-		ft_exit(0);
-	}
+		ft_exit(g_data.exit_status);
 	else
 		printf("bash: %s: command not found\n", g_data.cmd[*i][0]);
+	ft_exit(127);
 }
 
 void	check_cmd(void)
@@ -62,18 +61,20 @@ void	check_cmd(void)
 	int		j;
 	int		fd[2];
 	int		fdrd;
-	i = 0; 
+
+	i = 0;
 	j = g_data.op_cnt + 1; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
 	if (!*g_data.cmdline)
 		return ;
-	write(1, BYELLOW, 8);
+	write(1, BYELLOW , 8);
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
 	while(j--)
 	{
-		cmd_filter(i);
+		// cmd_filter(i);
 		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 5)
 			j--;
 		g_data.c_pid = fork(); // create child process
+		save_exit_status();
 		if (g_data.c_pid == 0) // only child process goes here
 		{
 			if (g_data.ops_array[i] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.
@@ -108,10 +109,15 @@ void	check_cmd(void)
 		{
 			ft_unset(ft_strdup(g_data.cmd[i][1]));
 		}
+		else if (!(ft_strcmp(g_data.cmd[i][0], "exit")))
+		{
+			// printf("cmd\n");
+			cmd_exit(i);
+		}
 		i++;
 	}
 	close(fd[0]);
 	close(fd[1]);
-	while(i--)
-		wait(0);
+	while (i--)
+		wait(NULL);
 }

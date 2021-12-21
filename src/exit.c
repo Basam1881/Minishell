@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 02:12:44 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/21 04:45:07 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	initialize(void)
 {
+	// printf("HERE\n");
 	g_data.cmdline = NULL;
 	g_data.cmd = NULL;
 	g_data.sep_cmds = NULL;
@@ -24,6 +25,7 @@ void	initialize(void)
 	g_data.dbl_op_f = 0;
 	g_data.n = 0;
 	g_data.op_cnt = 0;
+	g_data.c_pid = 0;
 }
 
 /*
@@ -49,7 +51,7 @@ void	failed_split(int n)
 		free (g_data.sep_cmds[i++]);
 	free (g_data.sep_cmds);
 	free(g_data.cmdline);
-	exit (1);
+	exit (ENOMEM);
 }
 
 void	free_big_g_data(void)
@@ -95,10 +97,13 @@ void	free_all(void)
 	initialize();
 }
 
+/**
+ * TODO: check the errno for common functions like malloc, read, write and return the errno for them and print their error messages from here
+ */
 void	ft_exit(int n)
 {
 	free_all();
-	if (n == 1)
+	if (n == ENOMEM)
 	{
 		perror("Error. (Check your malloc functions)");
 		printf("zsh: %s\n", strerror(errno));

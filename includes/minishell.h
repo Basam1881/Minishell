@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 03:56:25 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/20 02:38:10 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+#include <sys/types.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
@@ -88,6 +89,8 @@ typedef struct s_data
 	char	**environ;
 	pid_t	c_pid;
 	int		pid;
+	int		exit_status;
+	int		c_exit_flag;
 }				t_data;
 
 /**
@@ -120,5 +123,8 @@ void	ft_cd(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
 void	execute_commands(int *i);
 void	cmd_filter(int i);
+void	save_exit_status(void);
+void	cmd_exit(int i);
+void	env_exit(int *x, int *i, int *j);
 
 #endif

@@ -6,14 +6,38 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 04:13:53 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/21 05:17:54 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /**
- * This finction should be called from cmd_checker function
+ * save_exit_status() function is used to let the parent process wait 
+ * 		for the child process, then after the child process die
+ * 		the parent process check the exit status for the child process only.
+ * 		(the exit status for the other commands that doesn't need child process
+ * 		will be checked insided the functions' themselves)
+ * TODO: check the exit status for export, unset and cd for all conditions and save their exit status in g_data.exit_status
+ */
+void	save_exit_status(void)
+{
+	int		status;
+	wait(&status);
+	if (g_data.c_pid != 0)
+	{
+		// if (g_data.c_exit_flag)
+		// {
+			// printf ("exit\n");
+			g_data.exit_status = WEXITSTATUS(status);
+			g_data.c_exit_flag = 0;
+		// }
+		// printf ("exit child with %d\n", g_data.exit_status);
+	}
+}
+
+/**
+ * This function should be called from cmd_checker function
  * It should be called for each command
  * It will not return anything but it will change the value of g_data.cmd_path
  * g_data.cmd_path is a variable that contain the path joined with the command.
@@ -25,13 +49,15 @@ void	cmd_filter(int i)
 {
 	char	**path;
 	int		j;
+	char	*en;
 
 	path = NULL;
 	if (g_data.cmd[i][0][0] == '/' || g_data.cmd[i][0][0] == '.')
 		g_data.cmd_path = g_data.cmd[i][0];
 	else
 	{
-		path = ft_split(getenv("PATH"), ':');
+		en = getenv("PATH");
+		path = ft_split(en, ':');
 		j = 0;
 		while (path[j])
 		{

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 21:14:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/21 04:47:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,19 @@ int	main(int ac, char **av, char **ev)
 	(void) ac;
 	(void) av;
 	g_data.environ = ev;
+	g_data.exit_status = 0;
+	g_data.c_exit_flag = 0;
 	sig_sig.sa_flags = 0;
 	sig_sig.sa_mask = 0;
 	sig_sig.sa_sigaction = &sig_handler;
 	sigaction(SIGINT, &sig_sig, NULL);
+	sigaction(SIGQUIT, &sig_sig, NULL);
 	initialize();
 	printf("\033[?1049h\033[H");
 	while (1)
 	{
-		g_data.c_pid = 1;
 		g_data.cmdline = readline(MAC_PROMPT);
-		// g_data.cmdline = "echo hi $_ '' wow > beso || grep we wa << woo >> yes      | hi && trick & yeah";
+		// g_data.cmdline = "echo $?";
 		if (!g_data.cmdline)
 			ft_exit(0);
 		if (g_data.cmdline && *g_data.cmdline)

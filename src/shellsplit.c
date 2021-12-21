@@ -6,15 +6,16 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/17 02:26:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/20 03:12:49 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /**
-*	It's used to set the qoutes flags either to 1 or 0, so we
-*	can tell if we are inside qoutes at the moment or not
+ * It's used to set the qoutes flags either to 1 or 0, so we 
+ * can tell if we are inside qoutes at the moment or not
+ * TODO: fix the condition for the enviroment variables to check if after the name is not digit nor character nor underscore
 **/
 static void	qoutes_checker(int *x, int *i, int *j)
 {
@@ -28,6 +29,9 @@ static void	qoutes_checker(int *x, int *i, int *j)
 	}
 	else
 	{
+		if (g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
+				.n][*x + 1] == '?' && !g_data.single_qoute_flag)
+			env_exit(x, i, j);
 		if ((g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
 				.n][*x + 1] && g_data.sep_cmds[g_data.n][*x + 1] != ' '
 				&& !g_data.single_qoute_flag && !g_data.double_qoute_flag)

@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/26 17:00:07 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/20 17:57:15 by bnaji            ###   ########.fr       */
+/*   Created: 2021/12/19 08:48:02 by bnaji             #+#    #+#             */
+/*   Updated: 2021/12/20 00:19:13 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	cmd_exit(int i)
 {
-	int		i;
+	int	n;
 
-	if (dst > src)
+	if (!g_data.cmd[i][1])
 	{
-		i = (int)len - 1;
-		while (i >= 0)
-		{
-			((char *)dst)[i] = ((char *)src)[i];
-			i--;
-		}
+		printf("%s\n", NO_COLOR);
+		ft_exit(g_data.exit_status);
+	}
+	else if (g_data.cmd[i][1] && !g_data.cmd[i][2])
+	{
+		printf("%s\n", NO_COLOR);
+		n = ft_atoi(g_data.cmd[i][1]);
+		ft_exit(n);
 	}
 	else
 	{
-		ft_memcpy(dst, src, len);
+		printf("exit: too many arguments\n");
+		g_data.exit_status = 1;
 	}
-	return (dst);
 }
