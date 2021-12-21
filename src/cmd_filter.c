@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/21 05:17:54 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/22 02:13:46 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@
 void	save_exit_status(void)
 {
 	int		status;
+
 	wait(&status);
 	if (g_data.c_pid != 0)
 	{
-		// if (g_data.c_exit_flag)
-		// {
-			// printf ("exit\n");
+		if (!g_data.c_exit_flag)
+		{
 			g_data.exit_status = WEXITSTATUS(status);
-			g_data.c_exit_flag = 0;
-		// }
+		}
+		g_data.c_exit_flag = 0;
 		// printf ("exit child with %d\n", g_data.exit_status);
 	}
 }

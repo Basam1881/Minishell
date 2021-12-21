@@ -6,12 +6,15 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/21 04:47:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/22 02:07:24 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/**
+ * TODO: don't forget to clear the history before you exit the program
+ */
 int	main(int ac, char **av, char **ev)
 {
 	struct sigaction	sig_sig;
