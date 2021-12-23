@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/22 02:07:24 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 12:00:02 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **ev)
 	while (1)
 	{
 		g_data.cmdline = readline(MAC_PROMPT);
-		// g_data.cmdline = "echo $?";
+		// g_data.cmdline = " ";
 		if (!g_data.cmdline)
 			ft_exit(0);
 		if (g_data.cmdline && *g_data.cmdline)

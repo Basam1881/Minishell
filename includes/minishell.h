@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/20 02:38:10 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 21:45:24 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_data
 	int		pid;
 	int		exit_status;
 	int		c_exit_flag;
+	int		empty_flag;
 }				t_data;
 
 /**
@@ -126,5 +127,6 @@ void	cmd_filter(int i);
 void	save_exit_status(void);
 void	cmd_exit(int i);
 void	env_exit(int *x, int *i, int *j);
+int		empty_cmd_checker(void);
 
 #endif

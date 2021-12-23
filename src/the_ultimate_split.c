@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 00:50:10 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 21:26:47 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	alloc_cmd(int *i, int *old_x, int x)
 	if (g_data.dbl_op_f)
 		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x));
 	else
-		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x) + 1);
+		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x + 1));
 	if (!g_data.sep_cmds[*i])
 		ft_exit(1);
 	j = 0;
@@ -75,7 +75,7 @@ void	alloc_last_cmd(int *i, int *old_x, int *x)
 {
 	int	j;
 
-	g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (*x - *old_x) + 1);
+	g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (*x - *old_x + 1));
 	j = 0;
 	while (*old_x < *x)
 	{
@@ -126,7 +126,7 @@ void	ultimate_3d_split(void)
 
 	x = 0;
 	ops_cnt = 0;
-	if (!*g_data.cmdline)
+	if (!*g_data.cmdline || empty_cmd_checker())
 		return ;
 	while (g_data.cmdline[x])
 	{

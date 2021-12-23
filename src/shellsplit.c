@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/20 03:12:49 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 11:20:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,6 @@ static int	split_into_arg(void)
 	}
 	if (g_data.split_flag == 2)
 		g_data.cmd[g_data.n][i] = 0;
-	else if (g_data.split_flag == 1)
-	{
-		g_data.cmd[g_data.n][x] = (char *)malloc(sizeof(char));
-		if (!g_data.cmd[g_data.n][x])
-			failed_split(x - 1);
-	}
 	return (i);
 }
 

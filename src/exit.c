@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/21 04:45:07 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 22:53:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	initialize(void)
 {
-	// printf("HERE\n");
 	g_data.cmdline = NULL;
 	g_data.cmd = NULL;
 	g_data.sep_cmds = NULL;
@@ -26,6 +25,7 @@ void	initialize(void)
 	g_data.n = 0;
 	g_data.op_cnt = 0;
 	g_data.c_pid = 0;
+	g_data.empty_flag = 0;
 }
 
 /*
@@ -85,13 +85,12 @@ void	free_all(void)
 {
 	if (!g_data.cmdline)
 		return ;
-	if (!*g_data.cmdline)
+	if (*g_data.cmdline)
 	{
 		free(g_data.cmdline);
 		return ;
 	}
 	free_big_g_data();
-	free(g_data.cmdline);
 	if (g_data.ops_array)
 		free(g_data.ops_array);
 	initialize();

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/22 02:28:14 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 11:26:49 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,17 @@ void	check_cmd(void)
 
 	i = 0;
 	j = g_data.op_cnt + 1; // This was suppoed to be the number of operators, but for some reason op_cnt is 1 always so i put it manual for now;
-	if (!*g_data.cmdline)
+	if (!g_data.cmd)
 		return ;
 	write(1, BYELLOW , 8);
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
 	while(j--)
 	{
-		cmd_filter(i);
+		// cmd_filter(i);
 		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 5)
 			j--;
 		g_data.c_pid = fork(); // create child process
-		save_exit_status();
+		// save_exit_status();
 		if (g_data.c_pid == 0) // only child process goes here
 		{
 			if (g_data.ops_array[i] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.

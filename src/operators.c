@@ -6,11 +6,25 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 02:20:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/23 22:54:43 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	empty_cmd_checker(void)
+{
+	int	i;
+
+	i = 0;
+	if (!*g_data.cmdline)
+		return (1);
+	while (g_data.cmdline[i] == ' ')
+		i++;
+	if (!g_data.cmdline[i])
+		return (1);
+	return (0);
+}
 
 static void	ops_assigner(int *x, int flag)
 {
@@ -59,6 +73,16 @@ void	operators_checker(int *x, int *ops_cnt, int flag)
 		{
 			if (flag)
 				ops_assigner(x, 1);
+			else
+			{
+				if (g_data.empty_flag)
+					g_data.empty_flag = 0;
+				else
+				{
+					printf ("zsh: parse error near `%c'\n", g_data.cmdline[(*x)]);
+					ft_exit (1);
+				}
+			}
 			(*ops_cnt)++;
 		}
 		else if ((g_data.cmdline[(*x)] == '|' && g_data.cmdline[(*x) + 1] == '|')
@@ -68,9 +92,21 @@ void	operators_checker(int *x, int *ops_cnt, int flag)
 		{
 			if (flag)
 				ops_assigner(x, 0);
+			else
+			{
+				if (g_data.empty_flag)
+					g_data.empty_flag = 0;
+				else
+				{
+					printf ("zsh: parse error near `%c'\n", g_data.cmdline[(*x)]);
+					ft_exit (1);
+				}
+			}
 			g_data.dbl_op_f = 1;
 			(*ops_cnt)++;
 			(*x)++;
 		}
+		else if (ft_isalpha(g_data.cmdline[(*x)]) || ft_isdigit(g_data.cmdline[(*x)]) || g_data.cmdline[(*x)] == '_')
+			g_data.empty_flag = 1;
 	}
 }
