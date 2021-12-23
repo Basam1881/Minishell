@@ -119,5 +119,6 @@ void	operators_checker(int *x, int *ops_cnt, int flag);
 void	ft_cd(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
 void	execute_commands(int *i);
+int copy_fd(int fd1);
 
 #endif

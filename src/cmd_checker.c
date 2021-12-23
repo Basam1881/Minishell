@@ -38,6 +38,11 @@ void	execute_commands(int *i)
 		printf("bash: %s: command not found\n", g_data.cmd[*i][0]);
 }
 
+	int copy_fd(int fd1)
+	{
+		return (dup(fd1));
+	}
+
 void	check_cmd(void)
 {
 	int		i;
@@ -47,6 +52,10 @@ void	check_cmd(void)
 	int		fd[2];
 	int     fd2[2];
 	int		fdrd;
+	fd[0]= -1;
+	fd[1]= -1;
+	fd2[0]= -1;
+	fd2[1]= -1;
 	g_data.file_input = 0;
 	i = 0; 
 	j = 0;
@@ -69,20 +78,41 @@ void	check_cmd(void)
 	<< = 6
 	*/
 	write(1, BYELLOW, 8);
-	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
-	//printf("%s\n", g_data.cmd[1][0]);
+	pipe(fd);
+	//char *test = malloc(sizeof(char *) * 1000);
+
 	while(g_data.cmd[i])
 	{		
-		pipe(fd);
+		y = i;
+		pipe(fd2);
 		if(i != 0)
 		{
-			dup2(fd2[0], fd[0]);
-			dup2(fd2[1], fd[1]);
-			close(fd2[0]);
-			close(fd2[1]);
+			int n = 1;
+			int w = 0;
+			char test[200];
+			//dup2(fdout, STDOUT_FILENO);
+
+			while(n==1)
+			{
+				n = read(fd[0], test, 1);
+				w = w + n;
+				printf("%s\n", test);
+			}
+			printf("kdjflakjd\n");
+			// char *test1 = malloc(sizeof(char) * n + 1);
+			// test1[n]='\0';
+			// while(n--)
+			// {
+			// 	test1[n] = test[n];
+			// }
+			w = write(fd2[1], test, w);
+
+			// if(y == 1)	
+			// {	
+			// 	dup2(fdout, STDOUT_FILENO);
+			// 	printf("|%s|\n", test);
+			// }
 		}
-		pipe(fd2);
-			y = i;
 			if (g_data.ops_array[j] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.
 			{
 				dup2(fd[1], STDOUT_FILENO);
@@ -115,7 +145,6 @@ void	check_cmd(void)
 						g_data.file_input = 1;
 					}
 					j++;
-
 				}
 				if(j == g_data.op_cnt)
 					i = j + 1;
@@ -129,15 +158,12 @@ void	check_cmd(void)
 
 			if(y != 0)
 			{
-				if (g_data.ops_array[j-1] == 1 )
+				if (g_data.ops_array[j-1] == 1)
 				{
-					dup2(fd[0], STDIN_FILENO);
-					if(j == g_data.op_cnt)
-					{
-						if(g_data.ops_array[j] != 1)
-							dup2(fdout, STDOUT_FILENO);
 
-					}
+					dup2(fd2[0], STDIN_FILENO);
+					if(g_data.ops_array[j] != 1)
+						dup2(fdout, STDOUT_FILENO);
 				}
 			}
 		if (!(ft_strcmp(g_data.cmd[y][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
@@ -164,26 +190,26 @@ void	check_cmd(void)
 			g_data.c_pid = fork(); // create child process
 			if (g_data.c_pid == 0) // only child process goes here
 			{
-				close(fd[1]);
+				close(fd2[1]);
+				close(fd2[0]);
 				close(fd[0]);
+				close(fd[1]);
 				execute_commands(&y); // check for commands and execute them
 			}
 		}
-
-		dup2(fd[0], fd2[0]);
-		dup2(fd[1], fd2[1]);
-		close(fd[0]);
-		close(fd[1]);
+		close(fd2[0]);
+		close(fd2[1]);
 		wait(0);
 	}
+	close(fd[0]);
+	close(fd[1]);
 	dup2(fdin, STDIN_FILENO);
 	dup2(fdout, STDOUT_FILENO);
 	
-	//close(fd[0]);
-	//close(fd[1]);
-	/*while(i--)
-		wait(0);
-	*/
+	// close(fd[0]);
+	// close(fd[1]);
+	// while(i--)
+	// 	wait(0);
 	
 	//wait(0);
 }
