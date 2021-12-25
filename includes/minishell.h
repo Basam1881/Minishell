@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 03:26:28 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/18 03:56:25 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@
 typedef struct s_data
 {
 	char	***cmd;
+	char	*cmd_path;
 	char	*cmdline;
 	char	**sep_cmds;
 	char	**env;
@@ -84,10 +85,12 @@ typedef struct s_data
 	int		n;
 	int		*ops_array;
 	int		op_cnt;
-	int     file_input;
 	char	**environ;
 	pid_t	c_pid;
 	int		pid;
+	int		pipes;
+	int		pipe_flag;
+	int		output_flag;
 }				t_data;
 
 /**
@@ -119,6 +122,6 @@ void	operators_checker(int *x, int *ops_cnt, int flag);
 void	ft_cd(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
 void	execute_commands(int *i);
-int copy_fd(int fd1);
+void	cmd_filter(int i);
 
 #endif

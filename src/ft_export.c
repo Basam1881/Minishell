@@ -40,35 +40,20 @@ void	ft_export(char *v)
 {
 	int		i;
 	int		j;
-	int		l;
 	char	**newenv;
 	int		envsize;
 	char	*var_name;
-	int		var;
-	char	*temp;
+	char	*var;
 
-	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v) || (size_t)ft_chrindex(v, '=') == 0)
-	{		
+	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
+	{
 		return ;
 	}
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
 	envsize = ft_strlen2(g_data.environ);
 	newenv = (char **)malloc(sizeof(char **) * (envsize + 2));
-	l = 0;
-	var = 0;
-	while(g_data.environ[l])
-	{
-		temp = ft_substr(g_data.environ[l], 0, ft_chrindex(v, '='));
-		if(!ft_strcmp(temp, var_name))
-		{
-			var = 1;
-			free(temp);
-			break;
-		}
-		free(temp);
-		l++;
-	}
-	if (var == 0)
+	var = getenv(var_name);
+	if (!var)
 	{
 		i = 0;
 		while (g_data.environ[i])

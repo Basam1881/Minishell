@@ -24,6 +24,9 @@ void	initialize(void)
 	g_data.dbl_op_f = 0;
 	g_data.n = 0;
 	g_data.op_cnt = 0;
+	g_data.pipes = -1;
+	g_data.pipe_flag = 0;
+	g_data.output_flag = 0;
 }
 
 /*
