@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/23 21:26:47 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/24 23:46:13 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	sep_cmds_creator(void)
 
 /**
  * This is the ultimate 3d split
- * Nothing to explain It's the best 
+ * Nothing to explain It's the best
  * PEACE
  **/
 void	ultimate_3d_split(void)
@@ -131,9 +131,17 @@ void	ultimate_3d_split(void)
 	while (g_data.cmdline[x])
 	{
 		qoutes_checker_3d(&x);
-		operators_checker(&x, &ops_cnt, 0);
+		if (operators_checker(&x, &ops_cnt, 0))
+			return ;
 		x++;
 	}
+	if (ops_cnt && !g_data.empty_flag)
+	{
+		printf ("zsh: parse error near `\\n'\n");
+		g_data.exit_status = 1;
+		return ;
+	}
+	g_data.empty_flag = 0;
 	g_data.cmd = (char ***)malloc(sizeof(char **) * (ops_cnt + 2));
 	g_data.sep_cmds = (char **)malloc(sizeof(char *) * (ops_cnt + 2));
 	g_data.ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));

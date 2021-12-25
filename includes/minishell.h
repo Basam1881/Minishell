@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/23 21:45:24 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/25 05:04:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
-#include <sys/types.h>
+# include <sys/types.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
@@ -119,8 +119,10 @@ void	free_all(void);
 void	initialize(void);
 void	env_checker(int *x, int *i, int *j);
 void	ultimate_3d_split(void);
-void	operators_checker(int *x, int *ops_cnt, int flag);
-void	ft_cd(void);
+int		operators_checker(int *x, int *ops_cnt, int flag);
+void	ft_cd(int i);
+void	ft_pwd(int i);
+void	ft_env(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
 void	execute_commands(int *i);
 void	cmd_filter(int i);

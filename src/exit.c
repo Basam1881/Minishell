@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/23 22:53:37 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/25 04:59:20 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,7 @@ void	free_all(void)
 	if (!g_data.cmdline)
 		return ;
 	if (*g_data.cmdline)
-	{
 		free(g_data.cmdline);
-		return ;
-	}
 	free_big_g_data();
 	if (g_data.ops_array)
 		free(g_data.ops_array);
@@ -97,7 +94,9 @@ void	free_all(void)
 }
 
 /**
- * TODO: check the errno for common functions like malloc, read, write and return the errno for them and print their error messages from here
+ * TODO: check the errno for common functions like malloc, read, \
+ * 		TODO: write and return the errno for them and print their \ 
+ * 		TODO: error messages from here
  */
 void	ft_exit(int n)
 {

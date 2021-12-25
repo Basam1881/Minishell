@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/23 11:26:49 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/25 05:03:45 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void	execute_commands(int *i)
 	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
 	{
-		if (execve("/usr/bin/cd", g_data.cmd[*i], g_data.environ) == -1)
-			printf("zsh: %s\n", strerror(errno));
+		ft_cd(*i);
 	}
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "env")))
 		execve("/usr/bin/env", g_data.cmd[*i], g_data.environ);
@@ -73,11 +72,11 @@ void	check_cmd(void)
 	pipe(fd); // create the pipe fd[0] =  read side of the pipe , fd[1] = write side of the pipe
 	while(j--)
 	{
-		// cmd_filter(i);
+		cmd_filter(i);
 		if(g_data.ops_array[i] == 2 || g_data.ops_array[i] == 5)
 			j--;
 		g_data.c_pid = fork(); // create child process
-		// save_exit_status();
+		save_exit_status();
 		if (g_data.c_pid == 0) // only child process goes here
 		{
 			if (g_data.ops_array[i] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.
@@ -120,8 +119,8 @@ void	check_cmd(void)
 			cmd_exit(i);
 		}
 		i++;
+		// printf("HEREPPP\n");
 	}
-	// printf("HEREPPP\n");
 	close(fd[0]);
 	close(fd[1]);
 	while (i--)
