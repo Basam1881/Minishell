@@ -27,6 +27,8 @@ void	initialize(void)
 	g_data.pipes = -1;
 	g_data.pipe_flag = 0;
 	g_data.output_flag = 0;
+	g_data.fdout = dup(STDOUT_FILENO);
+	g_data.fdin = dup(STDIN_FILENO);
 }
 
 /*

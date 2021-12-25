@@ -91,6 +91,11 @@ typedef struct s_data
 	int		pipes;
 	int		pipe_flag;
 	int		output_flag;
+	int 	x;
+	int 	y;
+	int		fdout;
+	int		fdin;
+	int		fd[][2];
 }				t_data;
 
 /**
@@ -121,7 +126,7 @@ void	ultimate_3d_split(void);
 void	operators_checker(int *x, int *ops_cnt, int flag);
 void	ft_cd(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
-void	execute_commands(int *i);
+void	execute_commands(int i);
 void	cmd_filter(int i);
 
 #endif
