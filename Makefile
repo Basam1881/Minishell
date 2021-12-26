@@ -91,7 +91,7 @@ ${LIBFT_LIB}:
 
 ${GNL_LIB}:
 	@$(MAKE) --no-print-directory -C $(GNL_DIR) all && cp $(GNL_DIR)$(GNL_LIB) $(LIBS_DIR)
-	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)LIBFT Is Done\n"
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)GNL Is Done\n"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@gcc ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
