@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 /*
-	always check the paths of executebles, i had to change some of them when i used my laptop.
+	This funciton will simply execute the commands using execve 
 */
 void	execute_commands(int i)
 {
@@ -32,7 +32,7 @@ void	execute_commands(int i)
 			execve("/usr/bin/grep", g_data.cmd[i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[i][0], "wc"))) 
 			execve("/usr/bin/wc", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
+	else if (!(ft_strcmp(g_data.cmd[i][0], "export")))
 		exit(0);
 	else if (!(ft_strcmp(g_data.cmd[i][0], "unset")))
 		exit(0);
@@ -40,23 +40,33 @@ void	execute_commands(int i)
 		printf("bash: %s: command not found\n", g_data.cmd[i][0]);
 }
 
-char	**ft_strjoin_2d(char **str, char *str2)
+/* 
+	This function will be called if there are more arguments other than file name ( only with redirections )
+*/
+void	ft_strjoin_2d(char *str2)
 {
 	char **res;
 	int i;
 
 	i = 0;
-	res = malloc(sizeof(char *) * (ft_strlen2(str) + 2));
-	while(str[i])
+	res = malloc(sizeof(char *) * (ft_strlen2(g_data.cmd[g_data.y]) + 2));
+	while(g_data.cmd[g_data.y][i])
 	{
-		res[i] = str[i];
+		res[i] = ft_strdup(g_data.cmd[g_data.y][i]);
 		i++;
 	}
-	res[i++] = str2;
+	res[i++] = ft_strdup(str2);
 	res[i] = NULL;
-	free(str);
-	return (res);
+	i = 0;
+	while(g_data.cmd[g_data.y][i])
+		free(g_data.cmd[g_data.y][i++]);
+	free(g_data.cmd[g_data.y][i]);
+	free(g_data.cmd[g_data.y]);
+	g_data.cmd[g_data.y] = res;
 }
+/* 
+	this function will redirect the input source to the read side of the pipe (Only if needed !)
+*/
 void	pipe_read()
 {
 	if (g_data.ops_array[g_data.x-1] == 1)
@@ -65,17 +75,22 @@ void	pipe_read()
 			{
 				if(g_data.x == g_data.op_cnt)
 					dup2(g_data.fdout, STDOUT_FILENO);
-				dup2(g_data.fd[g_data.pipes][0], STDIN_FILENO);
+				if(!g_data.input_flag)
+					dup2(g_data.fd[g_data.pipes][0], STDIN_FILENO);
 				close(g_data.fd[g_data.pipes][0]);
 			}
 			else
 			{
-				dup2(g_data.fd[g_data.pipes-1][0], STDIN_FILENO);
+				if(!g_data.input_flag)
+					dup2(g_data.fd[g_data.pipes-1][0], STDIN_FILENO);
 				close(g_data.fd[g_data.pipes-1][0]);
 			}
 		}
 }
 
+/* 
+	this function will redirect the output source to the write side of the pipe (Only if needed !)
+*/
 void	pipe_write(char *type, int *i, int *j)
 {
 	if (ft_strcmp(type, "write") == 0)
@@ -98,10 +113,14 @@ void	pipe_write(char *type, int *i, int *j)
 	}
 }
 
+/* 
+	this function will handle the rederctions and link the givein files to the stdout or stdin, also it will use ft_strjoin_2d to append any extry args to g_data.cmd
+*/
 void	handle_redirection(int op, int j)
 {
 	int fdrd;
-
+	int inputfd[2];
+	char *temp;
 	if(op == 2)
 	{
 		fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
@@ -118,18 +137,40 @@ void	handle_redirection(int op, int j)
 	}
 	else if(op == 3)
 	{
-		fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT , S_IRWXU);
+		fdrd = open(g_data.cmd[j+1][0], O_RDWR , S_IRWXU);
 		dup2(fdrd, STDIN_FILENO);
 		close(fdrd);
+		g_data.input_flag = 1;
+	}
+	else if(op == 6)
+	{
+		pipe(inputfd);
+		//dup2(g_data.fdin, STDIN_FILENO);
+		while(1)
+		{	
+			temp = get_next_line(g_data.fdin);
+			if ((ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1) || !ft_strcmp(temp, "\n")) == 0 && temp)
+				break;
+			write(inputfd[1], temp, ft_strlen(temp));
+			free(temp);
+			temp = NULL;
+		}
+		//dup2(g_data.fdin, STDIN_FILENO);
+		dup2(inputfd[0], STDIN_FILENO);
+		close(inputfd[0]);
+		close(inputfd[1]);
+		g_data.input_flag = 1;
 	}
 }
-
+/* 
+	this function will check for any pipes or redirections and call the crosponding fucntions to handle them.
+*/
 void	check_op(int *i, int *j)
 {
 	int n;
-	if (g_data.ops_array[*j] == 1) // 1 is pipe, so we must redirect stdout to the write side of the pipe.
+	if (g_data.ops_array[*j] == 1)
 		pipe_write("write", i, j);
-	else if(g_data.ops_array[*j] == 2 || g_data.ops_array[*j] == 3 || g_data.ops_array[*j] == 5) // 3 is redirect input <
+	else if(g_data.ops_array[*j] == 2 || g_data.ops_array[*j] == 3 || g_data.ops_array[*j] == 5 || g_data.ops_array[*j] == 6)
 	{
 		while(g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
 		{
@@ -140,11 +181,12 @@ void	check_op(int *i, int *j)
 				handle_redirection(5, *j);
 			else if(g_data.ops_array[*j] == 3)
 				handle_redirection(3, *j);
+			else if(g_data.ops_array[*j] == 6)
+				handle_redirection(6, *j);
 			while(g_data.cmd[*j + 1][n])
 			{
-				g_data.cmd[g_data.y] = ft_strjoin_2d(g_data.cmd[g_data.y], g_data.cmd[*j + 1][n]);
+				ft_strjoin_2d(g_data.cmd[*j + 1][n]);
 				n++;
-				perror("LOLAM HERE\n");
 			}
 			(*j)++;
 		}
@@ -155,13 +197,15 @@ void	check_op(int *i, int *j)
 	else
 		(*i)++;
 }
-
+/* 
+	this is the last step in the while loop, this function will check the command and execute it after all the redirections, piping are done privously
+*/
 void	handle_cmd()
 {
 	int k;
 
 	k = 1;
-	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
+	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")))
 		while(g_data.cmd[g_data.y][k])
 				ft_export(ft_strdup(g_data.cmd[g_data.y][k++]));
 	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "unset")))
@@ -176,8 +220,8 @@ void	handle_cmd()
 	}
 	else
 	{
-		g_data.c_pid = fork(); // create child process
-		if (g_data.c_pid == 0) // only child process goes here
+		g_data.c_pid = fork();
+		if (g_data.c_pid == 0)
 		{	
 			if(g_data.ops_array[g_data.x] == 1)
 				close(g_data.fd[g_data.pipes][1]);
@@ -195,7 +239,6 @@ void	check_cmd(void)
 	j = 0;
 	if (!*g_data.cmdline)
 		return ;
-	printf("|%s| \n", g_data.cmd[1][1]);
 	// | = 1	> = 2	< = 3	>> = 5	<< = 6
 	write(1, BYELLOW, 8);
 	while(g_data.cmd[i])
@@ -203,6 +246,7 @@ void	check_cmd(void)
 		g_data.y = i;
 		g_data.x = j;
 		g_data.output_flag = 0;
+		g_data.input_flag = 0;
 		check_op(&i, &j);
 		if(g_data.y != 0)
 			pipe_read();

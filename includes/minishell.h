@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include <string.h>
 # include "../libft/libft.h"
+# include "../gnl/get_next_line.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
@@ -91,10 +92,12 @@ typedef struct s_data
 	int		pipes;
 	int		pipe_flag;
 	int		output_flag;
+	int		input_flag;
 	int 	x;
 	int 	y;
 	int		fdout;
 	int		fdin;
+	char	**test_str; // this is just temp to test ft_strjoin_2d
 	int		fd[][2];
 }				t_data;
 
