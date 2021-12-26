@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/25 05:03:45 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/25 19:09:23 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,7 @@
  **/
 void	execute_commands(int *i)
 {
-	if (!(ft_strcmp(g_data.cmd[*i][0], "echo")))
-	{
-		if (execve("/bin/echo", g_data.cmd[*i], g_data.environ) == -1)
-			printf("zsh: %s\nexit: %d\n", strerror(errno), errno);
-	}
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "pwd")))
-	{
-		// printf("g_data.cmd_path: %s\n", g_data.cmd_path);
-		if (execve(g_data.cmd_path, g_data.cmd[*i], g_data.environ) == -1)
-			printf("zsh: %s\n", strerror(errno));
-	}
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "cd")))
-	{
-		ft_cd(*i);
-	}
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "env")))
-		execve("/usr/bin/env", g_data.cmd[*i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "cat")))
+	if (!(ft_strcmp(g_data.cmd[*i][0], "cat")))
 		execve("/bin/cat", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "ls")))
 		execve("/bin/ls", g_data.cmd[*i], g_data.environ);
@@ -46,11 +29,7 @@ void	execute_commands(int *i)
 		execve("/usr/bin/clear", g_data.cmd[*i], g_data.environ);
 	else if (!(ft_strcmp(g_data.cmd[*i][0], "grep")))
 		execve("/usr/bin/grep", g_data.cmd[*i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "export"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
-		ft_exit(g_data.exit_status);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "unset")))
-		ft_exit(g_data.exit_status);
-	else if (!(ft_strcmp(g_data.cmd[*i][0], "exit")))
+	else if (!(ft_strcmp(g_data.cmd[*i][0], "export")) || !(ft_strcmp(g_data.cmd[*i][0], "unset")) || !(ft_strcmp(g_data.cmd[*i][0], "exit")) || !(ft_strcmp(g_data.cmd[*i][0], "cd")) || !(ft_strcmp(g_data.cmd[*i][0], "pwd")) || !(ft_strcmp(g_data.cmd[*i][0], "env")) || !(ft_strcmp(g_data.cmd[*i][0], "echo"))) // export and unset are acting weried when i used the 3d array, i will fix them tommrow.
 		ft_exit(g_data.exit_status);
 	else
 		printf("bash: %s: command not found\n", g_data.cmd[*i][0]);
@@ -114,10 +93,15 @@ void	check_cmd(void)
 			ft_unset(ft_strdup(g_data.cmd[i][1]));
 		}
 		else if (!(ft_strcmp(g_data.cmd[i][0], "exit")))
-		{
-			// printf("cmd\n");
 			cmd_exit(i);
-		}
+		else if (!(ft_strcmp(g_data.cmd[i][0], "cd")))
+			ft_cd(i);
+		else if (!(ft_strcmp(g_data.cmd[i][0], "pwd")))
+			ft_pwd(i);
+		else if (!(ft_strcmp(g_data.cmd[i][0], "echo")))
+			ft_echo(i);
+		else if (!(ft_strcmp(g_data.cmd[i][0], "env")))
+			ft_env();
 		i++;
 		// printf("HEREPPP\n");
 	}

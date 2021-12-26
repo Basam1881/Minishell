@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:15:01 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/25 05:16:18 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/25 20:38:15 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,16 @@
  */
 void	ft_cd(int i)
 {
-	// printf("%s\n", g_data.cmd[i][1]);
-	chdir(g_data.cmd[i][1]);
+	if (g_data.cmd[i][2])
+	{
+		printf("cd: string not in pwd: %s\n", g_data.cmd[i][1]);
+		g_data.exit_status = 1;
+	}
+	else if (chdir(g_data.cmd[i][1]) == -1)
+	{
+		printf("cd: %s: %s\n", strerror(errno), g_data.cmd[i][1]);
+		g_data.exit_status = 1;
+	}
 	// execve("/bin/pwd", NULL, NULL);
 }
 
@@ -30,7 +38,7 @@ void	ft_echo(int i)
 	n_flag = 0;
 	if (!(ft_strcmp(g_data.cmd[i][1], "-n")))
 		n_flag = 1;
-	j = 0;
+	j = 1;
 	while (g_data.cmd[i][j])
 	{
 		ft_putstr_fd(g_data.cmd[i][j], 1);
@@ -49,8 +57,7 @@ void	ft_pwd(int i)
 
 	if (g_data.cmd[i][1])
 	{
-		perror("pwd: ");
-		printf("too many arguments\n");
+		printf("pwd: too many arguments\n");
 		g_data.exit_status = 1;
 	}
 	ret = getcwd(buffer, sizeof(buffer));
@@ -58,8 +65,8 @@ void	ft_pwd(int i)
 		printf("%s\n", buffer);
 	else
 	{
-		perror("pwd: ");
-		printf("%s\n", strerror(errno));
+		printf("pwd: %s\n", strerror(errno));
+		g_data.exit_status = 1;
 	}
 }
 
