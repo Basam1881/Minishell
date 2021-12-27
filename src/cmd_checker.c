@@ -16,28 +16,12 @@
 */
 void	execute_commands(int i)
 {
-	if (!(ft_strcmp(g_data.cmd[i][0], "echo")))
-			execve("/bin/echo", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "pwd")))
-	{
-		execve("/bin/pwd", g_data.cmd[i], g_data.environ);
+	if(execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
+	{	
+		dup2(2, 1);
+		printf("BnM Shell: %s: command not found\n", g_data.cmd[i][0]);
+		exit (127);
 	}
-	else if (!(ft_strcmp(g_data.cmd[i][0], "env")))
-			execve("/usr/bin/env", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "cat")))
-			execve("/bin/cat", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "ls")))
-			execve("/bin/ls", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "grep"))) 
-			execve("/usr/bin/grep", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "wc"))) 
-			execve("/usr/bin/wc", g_data.cmd[i], g_data.environ);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "export")))
-		exit(0);
-	else if (!(ft_strcmp(g_data.cmd[i][0], "unset")))
-		exit(0);
-	else
-		printf("bash: %s: command not found\n", g_data.cmd[i][0]);
 }
 
 /* 
@@ -116,7 +100,7 @@ void	pipe_write(char *type, int *i, int *j)
 /* 
 	this function will handle the rederctions and link the givein files to the stdout or stdin, also it will use ft_strjoin_2d to append any extry args to g_data.cmd
 */
-void	handle_redirection(int op, int j)
+int	handle_redirection(int op, int j)
 {
 	int fdrd;
 	int inputfd[2];
@@ -124,21 +108,54 @@ void	handle_redirection(int op, int j)
 	if(op == 2)
 	{
 		fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
-		dup2(fdrd, STDOUT_FILENO);
+		if (fdrd == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
+		if(dup2(fdrd, STDOUT_FILENO) == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
 		close(fdrd);
 		g_data.output_flag = 1;
 	}
 	else if(op == 5)
 	{
 		fdrd = open(g_data.cmd[j+1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
-		dup2(fdrd, STDOUT_FILENO);
+		if (fdrd == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
+		if(dup2(fdrd, STDOUT_FILENO) == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
 		close(fdrd);
 		g_data.output_flag = 1;
 	}
 	else if(op == 3)
 	{
 		fdrd = open(g_data.cmd[j+1][0], O_RDWR , S_IRWXU);
-		dup2(fdrd, STDIN_FILENO);
+		if (fdrd == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
+		if(dup2(fdrd, STDIN_FILENO) == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
 		close(fdrd);
 		g_data.input_flag = 1;
 	}
@@ -156,16 +173,22 @@ void	handle_redirection(int op, int j)
 			temp = NULL;
 		}
 		//dup2(g_data.fdin, STDIN_FILENO);
-		dup2(inputfd[0], STDIN_FILENO);
+		if(dup2(inputfd[0], STDIN_FILENO) == -1)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			return (1);
+		}
 		close(inputfd[0]);
 		close(inputfd[1]);
 		g_data.input_flag = 1;
 	}
+	return (0);
 }
 /* 
 	this function will check for any pipes or redirections and call the crosponding fucntions to handle them.
 */
-void	check_op(int *i, int *j)
+int	check_op(int *i, int *j)
 {
 	int n;
 	if (g_data.ops_array[*j] == 1)
@@ -175,14 +198,10 @@ void	check_op(int *i, int *j)
 		while(g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
 		{
 			n = 1;
-			if(g_data.ops_array[*j] == 2)
-				handle_redirection(2, *j);
-			else if(g_data.ops_array[*j] == 5)
-				handle_redirection(5, *j);
-			else if(g_data.ops_array[*j] == 3)
-				handle_redirection(3, *j);
-			else if(g_data.ops_array[*j] == 6)
-				handle_redirection(6, *j);
+			if(handle_redirection(g_data.ops_array[*j], *j))
+			{
+				return (1);
+			}
 			while(g_data.cmd[*j + 1][n])
 			{
 				ft_strjoin_2d(g_data.cmd[*j + 1][n]);
@@ -196,6 +215,7 @@ void	check_op(int *i, int *j)
 	}
 	else
 		(*i)++;
+	return (0);
 }
 /* 
 	this is the last step in the while loop, this function will check the command and execute it after all the redirections, piping are done privously
@@ -242,12 +262,17 @@ void	check_cmd(void)
 	// | = 1	> = 2	< = 3	>> = 5	<< = 6
 	write(1, BYELLOW, 8);
 	while(g_data.cmd[i])
-	{		
+	{	
 		g_data.y = i;
 		g_data.x = j;
 		g_data.output_flag = 0;
 		g_data.input_flag = 0;
-		check_op(&i, &j);
+		cmd_filter(i);
+		// printf("|%s|\n", g_data.cmd_path);
+		// g_data.cmd[g_data.y][0] = g_data.cmd_path;
+		// printf("~%d~ ~%s~\n", i, g_data.cmd[g_data.y][0]);
+		if(check_op(&i, &j))
+			break ;
 		if(g_data.y != 0)
 			pipe_read();
 		if(g_data.pipe_flag == 1)

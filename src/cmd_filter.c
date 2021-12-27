@@ -27,6 +27,11 @@ void	cmd_filter(int i)
 	int		j;
 
 	path = NULL;
+	if(g_data.cmd_path)
+	{
+		free(g_data.cmd_path);
+		g_data.cmd_path = NULL;
+	}
 	if (g_data.cmd[i][0][0] == '/' || g_data.cmd[i][0][0] == '.')
 		g_data.cmd_path = g_data.cmd[i][0];
 	else
@@ -39,7 +44,7 @@ void	cmd_filter(int i)
 			path[j] = ft_strjoin(path[j], g_data.cmd[i][0]);
 			if (!access(path[j], F_OK))
 			{
-				g_data.cmd_path = path[j];
+				g_data.cmd_path = ft_strdup(path[j]);
 				j = 0;
 				while (path[j])
 					free(path[j++]);
