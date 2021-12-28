@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 21:14:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/28 09:45:06 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	main(int ac, char **av, char **ev)
 	g_data.environ = ev;
 	sig_sig.sa_flags = 0;
 	sig_sig.sa_mask = 0;
-	//sig_sig.sa_sigaction = &sig_handler;
-	//sigaction(SIGINT, &sig_sig, NULL);
+	sig_sig.sa_sigaction = &sig_handler;
+	sigaction(SIGINT, &sig_sig, NULL);
 	initialize();
 	printf("\033[?1049h\033[H");
 	while (1)

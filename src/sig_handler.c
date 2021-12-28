@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:17:55 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 00:50:20 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/28 09:44:49 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void restore(void) {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
  **/
 
-/* void	sig_handler(int signum, siginfo_t *info, void *ucontext)
+void	sig_handler(int signum, siginfo_t *info, void *ucontext)
 {
 	(void) signum;
 	(void) info;
@@ -52,4 +52,4 @@ void restore(void) {
 	write(0, "\n", 1);
 	rl_redisplay();
 	// }
-} */
+}
