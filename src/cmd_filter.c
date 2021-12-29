@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/22 02:13:46 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/29 02:55:45 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	save_exit_status(void)
 			g_data.exit_status = WEXITSTATUS(status);
 		}
 		g_data.c_exit_flag = 0;
-		// printf ("exit child with %d\n", g_data.exit_status);
 	}
 }
 
@@ -49,15 +48,18 @@ void	cmd_filter(int i)
 {
 	char	**path;
 	int		j;
-	char	*en;
 
 	path = NULL;
+	if(g_data.cmd_path)
+	{
+		free(g_data.cmd_path);
+		g_data.cmd_path = NULL;
+	}
 	if (g_data.cmd[i][0][0] == '/' || g_data.cmd[i][0][0] == '.')
 		g_data.cmd_path = g_data.cmd[i][0];
 	else
 	{
-		en = getenv("PATH");
-		path = ft_split(en, ':');
+		path = ft_split(getenv("PATH"), ':');
 		j = 0;
 		while (path[j])
 		{
@@ -65,7 +67,7 @@ void	cmd_filter(int i)
 			path[j] = ft_strjoin(path[j], g_data.cmd[i][0]);
 			if (!access(path[j], F_OK))
 			{
-				g_data.cmd_path = path[j];
+				g_data.cmd_path = ft_strdup(path[j]);
 				j = 0;
 				while (path[j])
 					free(path[j++]);

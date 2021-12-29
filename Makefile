@@ -25,7 +25,7 @@ DATE = 29 - 11 - 2021
 
 C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
-		operators.c ft_cd.c sig_handler.c cmd_filter.c ft_exit.c
+		operators.c builtin_cmds.c sig_handler.c cmd_filter.c ft_exit.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
@@ -45,6 +45,12 @@ LIBFT_LIB = libft.a
 #Here are all the libraries you have created
 LIBS = $(addprefix $(LIBS_DIR), *.a)
 
+#Here is the gnl directory
+GNL_DIR = ./gnl/
+
+#Here is the gnl library
+GNL_LIB = gnl.a
+
 #Here is the the source directory for .c files of your project
 SRC_DIR = ./src/
 
@@ -61,12 +67,12 @@ LIBS_DIR = ./libraries/
 NAME = minishell.a
 
 #Here is the final library that contains all the objects files needed for this project
-ALL_LIBS = $(LIBS_DIR)$(NAME) $(LIBS_DIR)${LIBFT_LIB}
+ALL_LIBS = $(LIBS_DIR)$(NAME) $(LIBS_DIR)${LIBFT_LIB} $(LIBS_DIR)${GNL_LIB}
 
 #Here is the name of the executable file
 EXEC_NAME = minishell
 
-all: header ${LIBFT_LIB} $(LIBS_DIR)$(NAME)
+all: header ${LIBFT_LIB} ${GNL_LIB} $(LIBS_DIR)$(NAME)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n$(NO_COLOR)"
 	@gcc $(ALL_LIBS) -lreadline -L/usr/local/Cellar/readline/8.1/lib -o $(EXEC_NAME)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n$(NO_COLOR)"
@@ -82,6 +88,10 @@ ${LIBS_DIR}${NAME} : $(OBJ_NAME)
 ${LIBFT_LIB}:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) all && cp $(LIBFT_DIR)$(LIBFT_LIB) $(LIBS_DIR)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)LIBFT Is Done\n"
+
+${GNL_LIB}:
+	@$(MAKE) --no-print-directory -C $(GNL_DIR) all && cp $(GNL_DIR)$(GNL_LIB) $(LIBS_DIR)
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)GNL Is Done\n"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@gcc ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
@@ -143,10 +153,12 @@ header:
 	@mkdir -p $(LIBS_DIR)
 clean:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
+	@$(MAKE) --no-print-directory -C $(GNL_DIR) clean
 	@rm -rf $(OBJ_NAME) $(OBJ_DIR)
 
 fclean: clean
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
+	@$(MAKE) --no-print-directory -C $(GNL_DIR) fclean
 	@rm -rf $(LIBS_DIR) $(EXEC_NAME)
 
 re: fclean all

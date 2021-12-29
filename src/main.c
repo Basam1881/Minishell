@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/24 10:59:01 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/29 04:10:42 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,17 @@ int	main(int ac, char **av, char **ev)
 	sigaction(SIGINT, &sig_sig, NULL);
 	sigaction(SIGQUIT, &sig_sig, NULL);
 	initialize();
-	printf("\033[?1049h\033[H");
+	printf(CLEAR_SCREEN);
 	while (1)
 	{
 		g_data.cmdline = readline(MAC_PROMPT);
-		// g_data.cmdline = " ";
+		// g_data.cmdline = "echo hi > 1 > 2 > 3";
 		if (!g_data.cmdline)
-			ft_exit(0);
+			exit_shell(0);
 		if (g_data.cmdline && *g_data.cmdline)
 			add_history(g_data.cmdline);
 		ultimate_3d_split();
 		check_cmd();
 		free_all();
 	}
-	return (0);
 }

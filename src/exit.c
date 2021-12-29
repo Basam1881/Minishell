@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/25 04:59:20 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/29 04:11:13 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,16 @@ void	failed_split(int n)
 		free (g_data.sep_cmds[i++]);
 	free (g_data.sep_cmds);
 	free(g_data.cmdline);
-	exit (ENOMEM);
+	error_printer();
+}
+
+void	failed_sep_cmds(int n)
+{
+	while (n >= 0)
+		free(g_data.sep_cmds[n--]);
+	free(g_data.sep_cmds);
+	g_data.sep_cmds = NULL;
+	error_printer();
 }
 
 void	free_big_g_data(void)
@@ -93,31 +102,22 @@ void	free_all(void)
 	initialize();
 }
 
-/**
- * TODO: check the errno for common functions like malloc, read, \
- * 		TODO: write and return the errno for them and print their \ 
- * 		TODO: error messages from here
- */
-void	ft_exit(int n)
+void	error_printer(void)
 {
 	free_all();
-	if (n == ENOMEM)
-	{
-		perror("Error. (Check your malloc functions)");
-		printf("zsh: %s\n", strerror(errno));
-		printf("exit with code: %d\n", errno);
-	}
-	else if (n == 2)
-	{
-		perror("Error. (Check your read functions)");
-		printf("zsh: %s\n", strerror(errno));
-		printf("exit with code: %d\n", errno);
-	}
-	else if (n == 3)
-	{
-		perror("Error. (Check your write functions)");
-		printf("zsh: %s\n", strerror(errno));
-		printf("exit with code: %d\n", errno);
-	}
+	ft_putstr_fd("bash: ", 2);
+	perror(strerror(errno));
+	g_data.exit_status = 1;
+}
+
+/**
+ * TODO: check the errno for common functions like malloc, read, \
+ * 		TODO: write and return the errno for them and print their \
+ * 		TODO: error messages from here
+ */
+void	exit_shell(int n)
+{
+	free_all();
+	clear_history();
 	exit(n);
 }

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/25 00:36:22 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/28 15:53:54 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static void	ops_assigner(int *x, int flag)
  * TODO: Cover the previous conditions for quotes and without them
  * TODO: exit with 1 from these errors
  * TODO: check the permission of the file before using it
+ * TODO: you should be able to create files with symbols even without qoutes (you need to remove the else if condition that check if it's a alpha, digit or _)
  **/
 int	operators_checker(int *x, int *ops_cnt, int flag)
 {
@@ -86,7 +87,9 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 					g_data.empty_flag = 0;
 				else
 				{
-					printf ("zsh: parse error near `%c'\n", g_data.cmdline[(*x)]);
+					ft_putstr_fd("zsh: parse error near `", 2);
+					ft_putchar_fd(g_data.cmdline[(*x)], 2);
+					ft_putstr_fd("'\n", 2);
 					g_data.exit_status = 1;
 					return (1);
 				}
@@ -106,7 +109,9 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 					g_data.empty_flag = 0;
 				else
 				{
-					printf ("zsh: parse error near `%c'\n", g_data.cmdline[(*x)]);
+					ft_putstr_fd("zsh: parse error near `", 2);
+					ft_putchar_fd(g_data.cmdline[(*x)], 2);
+					ft_putstr_fd("'\n", 2);
 					return (1);
 				}
 			}
@@ -118,10 +123,9 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 			g_data.empty_flag = 1;
 		else if (!g_data.empty_flag && ((g_data.cmdline[(*x)] == '\'' && g_data.cmdline[(*x - 1)] == '\'') || (g_data.cmdline[(*x)] == '"' && g_data.cmdline[(*x - 1)] == '"')))
 		{
-			printf ("zsh: no such file or directory: \n");
+			perror("zsh: no such file or directory: \n");
 			return (1);
 		}
-			
 	}
 	else
 		if (!flag)

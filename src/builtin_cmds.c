@@ -1,0 +1,114 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cmds.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/14 11:15:01 by bnaji             #+#    #+#             */
+/*   Updated: 2021/12/29 04:16:10 by bnaji            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+/**
+ * TODO: add errors and make it for any n of commands
+ */
+void	ft_cd(void)
+{
+	int		i;
+	char	*tmp;
+
+	if (g_data.cmd[g_data.y][2])
+	{
+		ft_putstr_fd("cd: string not in pwd: ", 2);
+		ft_putstr_fd(g_data.cmd[g_data.y][1], 2);
+		ft_putchar_fd('\n', 2);
+		g_data.exit_status = 1;
+		return ;
+	}
+	if (!getcwd(g_data.pwd_dir_path, sizeof(g_data.pwd_dir_path)))
+		perror("failure in updating the environment variable: OLDPWD");
+	i = chdir(g_data.cmd[g_data.y][1]);
+	if (!i)
+	{
+		tmp = ft_strjoin_moa("OLDPWD=", g_data.pwd_dir_path);
+		ft_export(tmp);
+		free(tmp);
+		if (!getcwd(g_data.pwd_dir_path, sizeof(g_data.pwd_dir_path)))
+			perror("failure in updating the environment variable: PWD");
+		tmp = ft_strjoin_moa("PWD=", g_data.pwd_dir_path);
+		ft_export(tmp);
+		free(tmp);
+	}
+	else if (i == -1)
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(g_data.cmd[g_data.y][1], 2);
+		ft_putchar_fd('\n', 2);
+		g_data.exit_status = 1;
+		return ;
+	}
+	g_data.exit_status = 0;
+}
+
+void	ft_echo(void)
+{
+	int	n_flag;
+	int	j;
+
+	n_flag = 0;
+	if (!(ft_strcmp(g_data.cmd[g_data.y][1], "-n")))
+		n_flag = 1;
+	j = 1;
+	while (g_data.cmd[g_data.y][j])
+	{
+		ft_putstr_fd(g_data.cmd[g_data.y][j], 1);
+		ft_putchar_fd(' ', 1);
+		j++;
+	}
+	ft_putchar_fd('\b', 1);
+	if (!n_flag)
+		ft_putchar_fd('\n', 1);
+	g_data.exit_status = 0;
+}
+
+void	ft_pwd(void)
+{
+	char	*ret;
+
+	if (g_data.cmd[g_data.y][1])
+	{
+		perror("pwd: too many arguments\n");
+		g_data.exit_status = 1;
+		return ;
+	}
+	ret = getcwd(g_data.pwd_dir_path, sizeof(g_data.pwd_dir_path));
+	if (ret)
+		printf("%s\n", g_data.pwd_dir_path);
+	else
+	{
+		ft_putstr_fd("pwd: ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putchar_fd('\n', 2);
+		g_data.exit_status = 1;
+		return ;
+	}
+	g_data.exit_status = 0;
+}
+
+void	ft_env(void)
+{
+	int	i;
+
+	i = 0;
+	while (g_data.environ[i])
+	{
+		printf("%s\n", g_data.environ[i]);
+		i++;
+	}
+	g_data.exit_status = 0;
+}

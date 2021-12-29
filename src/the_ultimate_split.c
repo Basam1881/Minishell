@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/24 23:46:13 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/28 15:23:09 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	qoutes_checker_3d(int *x)
 /**
  * This function is allocate each command for sep_cmds
  **/
-void	alloc_cmd(int *i, int *old_x, int x)
+int	alloc_cmd(int *i, int *old_x, int x)
 {
 	int	j;
 
@@ -49,7 +49,10 @@ void	alloc_cmd(int *i, int *old_x, int x)
 	else
 		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x + 1));
 	if (!g_data.sep_cmds[*i])
-		ft_exit(1);
+	{
+		failed_sep_cmds(*i);
+		return (1);
+	}
 	j = 0;
 	while (*old_x < x)
 	{
@@ -66,16 +69,22 @@ void	alloc_cmd(int *i, int *old_x, int x)
 	g_data.sep_cmds[*i][j] = 0;
 	(*old_x)++;
 	(*i)++;
+	return (0);
 }
 
 /**
  * This function is allocate last command for sep_cmds
  * **/
-void	alloc_last_cmd(int *i, int *old_x, int *x)
+int	alloc_last_cmd(int *i, int *old_x, int *x)
 {
 	int	j;
 
 	g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (*x - *old_x + 1));
+	if (!g_data.sep_cmds[*i])
+	{
+		failed_sep_cmds(*i);
+		return (1);
+	}
 	j = 0;
 	while (*old_x < *x)
 	{
@@ -86,12 +95,13 @@ void	alloc_last_cmd(int *i, int *old_x, int *x)
 	g_data.sep_cmds[*i][j] = 0;
 	(*i)++;
 	g_data.sep_cmds[*i] = 0;
+	return (0);
 }
 
 /**
  * This function is to get sep_cmds from cmdline
  **/
-void	sep_cmds_creator(void)
+int	sep_cmds_creator(void)
 {
 	int	ops_cnt;
 	int	i;
@@ -108,10 +118,15 @@ void	sep_cmds_creator(void)
 		operators_checker(&x, &ops_cnt, 1);
 		g_data.ops_array[g_data.op_cnt] = '\0';
 		if (ops_cnt != i)
-			alloc_cmd(&i, &old_x, x);
+		{
+			if (alloc_cmd(&i, &old_x, x))
+				return (1);
+		}
 		x++;
 	}
-	alloc_last_cmd(&i, &old_x, &x);
+	if (alloc_last_cmd(&i, &old_x, &x))
+		return (1);
+	return (0);
 }
 
 /**
@@ -137,7 +152,7 @@ void	ultimate_3d_split(void)
 	}
 	if (ops_cnt && !g_data.empty_flag)
 	{
-		printf ("zsh: parse error near `\\n'\n");
+		ft_putstr_fd("zsh: parse error near `\\n'\n", 2);
 		g_data.exit_status = 1;
 		return ;
 	}
@@ -145,13 +160,22 @@ void	ultimate_3d_split(void)
 	g_data.cmd = (char ***)malloc(sizeof(char **) * (ops_cnt + 2));
 	g_data.sep_cmds = (char **)malloc(sizeof(char *) * (ops_cnt + 2));
 	g_data.ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));
-	if (!g_data.cmd || !g_data.sep_cmds)
-		ft_exit(1);
+	if (!g_data.cmd || !g_data.sep_cmds || !g_data.ops_array)
+	{
+		error_printer();
+		return ;
+	}
 	g_data.op_cnt = 0;
-	sep_cmds_creator();
+	if (sep_cmds_creator())
+		return ;
 	g_data.n = 0;
 	while (g_data.n < ops_cnt + 1)
-		g_data.cmd[g_data.n++] = cmd_split();
+	{
+		g_data.cmd[g_data.n] = cmd_split();
+		if (!g_data.cmd[g_data.n])
+			return ;
+		g_data.n++;
+	}
 	g_data.cmd[g_data.n] = 0;
 	g_data.n = 0;
 }

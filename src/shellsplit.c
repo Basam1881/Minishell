@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/23 11:20:37 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/28 14:34:16 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	qoutes_checker(int *x, int *i, int *j)
 *	It's used to either malloc the size for the argument or
 *	to put null at the end according the to the flag
 **/
-static void	check_arg_helper(int *i, int *j)
+static int	check_arg_helper(int *i, int *j)
 {
 	if (g_data.split_flag)
 	{
@@ -62,17 +62,21 @@ static void	check_arg_helper(int *i, int *j)
 		{
 			g_data.cmd[g_data.n][*i] = (char *)malloc(sizeof(char) * (*j) + 1);
 			if (!g_data.cmd[g_data.n][*i])
+			{
 				failed_split(*i);
+				return (1);
+			}
 		}
 		(*i)++;
 	}
+	return (0);
 }
 
 /**
 *	It's used to loop through each argument of any command
 *	and check the qoutes...etc
 **/
-static void	check_arg(int *x, int *i)
+static int	check_arg(int *x, int *i)
 {
 	int		j;
 
@@ -96,8 +100,10 @@ static void	check_arg(int *x, int *i)
 		}
 		qoutes_checker(x, i, &j);
 	}
-	check_arg_helper(i, &j);
+	if (check_arg_helper(i, &j))
+		return (1);
 	g_data.no_env_arg_flag = 0;
+	return (0);
 }
 
 /**
@@ -119,7 +125,10 @@ static int	split_into_arg(void)
 		if (g_data.sep_cmds[g_data.n][x] == ' ')
 			x++;
 		else
-			check_arg(&x, &i);
+		{
+			if (check_arg(&x, &i))
+				return (-1);
+		}
 	}
 	if (g_data.split_flag == 2)
 		g_data.cmd[g_data.n][i] = 0;
@@ -138,7 +147,7 @@ char	**cmd_split(void)
 	{
 		g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) + 1);
 		if (!(g_data.cmd[g_data.n]))
-			return (0);
+			return (NULL);
 		g_data.cmd[g_data.n] = NULL;
 		return (g_data.cmd[g_data.n]);
 	}
@@ -146,9 +155,10 @@ char	**cmd_split(void)
 	words = split_into_arg();
 	g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!(g_data.cmd[g_data.n]))
-		return (0);
+		return (NULL);
 	g_data.split_flag = 1;
-	split_into_arg();
+	if (split_into_arg() == -1)
+		return (NULL);
 	g_data.split_flag = 2;
 	split_into_arg();
 	return (g_data.cmd[g_data.n]);
