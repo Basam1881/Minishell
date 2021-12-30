@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/29 04:10:42 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:45:17 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,19 @@
  */
 int	main(int ac, char **av, char **ev)
 {
-	struct sigaction	sig_sig;
-
 	(void) ac;
 	(void) av;
 	g_data.environ = ev;
-	g_data.exit_status = 0;
-	g_data.c_exit_flag = 0;
-	sig_sig.sa_flags = 0;
-	sig_sig.sa_mask = 0;
-	sig_sig.sa_sigaction = &sig_handler;
-	sigaction(SIGINT, &sig_sig, NULL);
-	sigaction(SIGQUIT, &sig_sig, NULL);
-	initialize();
+	init();
+	reset();
 	printf(CLEAR_SCREEN);
 	while (1)
 	{
 		g_data.cmdline = readline(MAC_PROMPT);
-		// g_data.cmdline = "echo hi > 1 > 2 > 3";
+		// g_data.cmdline = "echo hi | echo wow";
 		if (!g_data.cmdline)
 			exit_shell(0);
+		g_data.under_process_flag = 1;
 		if (g_data.cmdline && *g_data.cmdline)
 			add_history(g_data.cmdline);
 		ultimate_3d_split();

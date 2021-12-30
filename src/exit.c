@@ -6,27 +6,11 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/29 04:11:13 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:47:29 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	initialize(void)
-{
-	g_data.cmdline = NULL;
-	g_data.cmd = NULL;
-	g_data.sep_cmds = NULL;
-	g_data.ops_array = NULL;
-	g_data.no_env_arg_flag = 0;
-	g_data.double_qoute_flag = 0;
-	g_data.single_qoute_flag = 0;
-	g_data.dbl_op_f = 0;
-	g_data.n = 0;
-	g_data.op_cnt = 0;
-	g_data.c_pid = 0;
-	g_data.empty_flag = 0;
-}
 
 /*
 	It's used to free the 2d array we have in case of a failed malloc
@@ -99,14 +83,14 @@ void	free_all(void)
 	free_big_g_data();
 	if (g_data.ops_array)
 		free(g_data.ops_array);
-	initialize();
+	reset();
 }
 
 void	error_printer(void)
 {
 	free_all();
-	ft_putstr_fd("bash: ", 2);
-	perror(strerror(errno));
+	ft_putstr_fd("BNM bash: ", 2);
+	ft_putstr_fd(strerror(errno), 2);
 	g_data.exit_status = 1;
 }
 

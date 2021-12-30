@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/28 15:53:54 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:40:06 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 					g_data.empty_flag = 0;
 				else
 				{
-					ft_putstr_fd("zsh: parse error near `", 2);
+					ft_putstr_fd("BNM bash: syntax error near unexpected token `", 2);
 					ft_putchar_fd(g_data.cmdline[(*x)], 2);
 					ft_putstr_fd("'\n", 2);
 					g_data.exit_status = 1;
@@ -109,7 +109,7 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 					g_data.empty_flag = 0;
 				else
 				{
-					ft_putstr_fd("zsh: parse error near `", 2);
+					ft_putstr_fd("BNM bash: syntax error near unexpected token `", 2);
 					ft_putchar_fd(g_data.cmdline[(*x)], 2);
 					ft_putstr_fd("'\n", 2);
 					return (1);
@@ -121,9 +121,9 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 		}
 		else if ((ft_isalpha(g_data.cmdline[(*x)]) || ft_isdigit(g_data.cmdline[(*x)]) || g_data.cmdline[(*x)] == '_') && !flag)
 			g_data.empty_flag = 1;
-		else if (!g_data.empty_flag && ((g_data.cmdline[(*x)] == '\'' && g_data.cmdline[(*x - 1)] == '\'') || (g_data.cmdline[(*x)] == '"' && g_data.cmdline[(*x - 1)] == '"')))
+		else if (!flag && !g_data.empty_flag && ((g_data.cmdline[(*x)] == '\'' && g_data.cmdline[(*x - 1)] == '\'') || (g_data.cmdline[(*x)] == '"' && g_data.cmdline[(*x - 1)] == '"')))
 		{
-			perror("zsh: no such file or directory: \n");
+			ft_putstr_fd("BNM bash: no such file or directory: \n", 2);
 			return (1);
 		}
 	}

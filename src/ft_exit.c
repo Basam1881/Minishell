@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/19 08:48:02 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/29 04:14:03 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 10:53:30 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_exit(void)
 	}
 	else
 	{
-		perror("exit: too many arguments\n");
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		g_data.exit_status = 1;
 	}
 }

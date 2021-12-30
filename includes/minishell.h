@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/29 04:15:56 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:45:50 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_data
 	int		pipe_flag;
 	int		output_flag;
 	int		input_flag;
+	int		under_process_flag;
 	int		x;
 	int		y;
 	int		fdout;
@@ -131,9 +132,10 @@ int		ft_strlen2(char **str);
 void	ft_export(char *v);
 void	ft_unset(char *v);
 void	free_all(void);
-void	initialize(void);
+void	reset(void);
+void	init(void);
 void	env_checker(int *x, int *i, int *j);
-void	ultimate_3d_split(void);
+int		ultimate_3d_split(void);
 int		operators_checker(int *x, int *ops_cnt, int flag);
 void	ft_cd(void);
 void	ft_echo(void);
