@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:17:55 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/29 04:09:36 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 12:46:41 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,20 @@ void	sigquit_handler(void)
 
 void	sigint_handler(void)
 {
-	if (g_data.c_pid)
+	if (g_data.under_process_flag)
 	{
-		kill(g_data.c_pid, SIGINT);
-		write(0, "\n", 1);
-		g_data.exit_status = 130;
-		g_data.c_exit_flag = 1;
+		if (g_data.c_pid)
+		{
+			kill(g_data.c_pid, SIGINT);
+			write(1, "\n", 1);
+			g_data.exit_status = 130;
+			g_data.c_exit_flag = 1;
+		}
+		else
+		{
+			write(0, "\n", 1);
+			g_data.exit_status = 130;
+		}
 	}
 	else
 	{
@@ -49,7 +57,7 @@ void	sigint_handler(void)
 		write(0, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_data.exit_status = 130;
+		g_data.exit_status = 1;
 	}
 }
 

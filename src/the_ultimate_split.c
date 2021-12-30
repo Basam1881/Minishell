@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/28 15:23:09 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:38:57 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	sep_cmds_creator(void)
  * Nothing to explain It's the best
  * PEACE
  **/
-void	ultimate_3d_split(void)
+int	ultimate_3d_split(void)
 {
 	int	x;
 	int	ops_cnt;
@@ -142,19 +142,19 @@ void	ultimate_3d_split(void)
 	x = 0;
 	ops_cnt = 0;
 	if (!*g_data.cmdline || empty_cmd_checker())
-		return ;
+		return (1);
 	while (g_data.cmdline[x])
 	{
 		qoutes_checker_3d(&x);
 		if (operators_checker(&x, &ops_cnt, 0))
-			return ;
+			return (1);
 		x++;
 	}
 	if (ops_cnt && !g_data.empty_flag)
 	{
-		ft_putstr_fd("zsh: parse error near `\\n'\n", 2);
+		ft_putstr_fd("BNM bash: syntax error near unexpected token `newline'\n", 2);
 		g_data.exit_status = 1;
-		return ;
+		return (1);
 	}
 	g_data.empty_flag = 0;
 	g_data.cmd = (char ***)malloc(sizeof(char **) * (ops_cnt + 2));
@@ -163,19 +163,20 @@ void	ultimate_3d_split(void)
 	if (!g_data.cmd || !g_data.sep_cmds || !g_data.ops_array)
 	{
 		error_printer();
-		return ;
+		return (1);
 	}
 	g_data.op_cnt = 0;
 	if (sep_cmds_creator())
-		return ;
+		return (1);
 	g_data.n = 0;
 	while (g_data.n < ops_cnt + 1)
 	{
 		g_data.cmd[g_data.n] = cmd_split();
 		if (!g_data.cmd[g_data.n])
-			return ;
+			return (1);
 		g_data.n++;
 	}
 	g_data.cmd[g_data.n] = 0;
 	g_data.n = 0;
+	return (0);
 }

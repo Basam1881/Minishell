@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/29 04:28:12 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 19:18:03 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,21 @@
 */
 void	execute_commands(int i)
 {
-	if (execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
+	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "echo")))
+		ft_echo();
+	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
+		ft_env();
+	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "pwd")))
+		ft_pwd();
+	else if (execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
 	{
-		ft_putstr_fd("bash: command not found: ", 2);
+		ft_putstr_fd("BNM bash: ", 2);
 		ft_putstr_fd(g_data.cmd[i][0], 2);
+		ft_putstr_fd(": command not found", 2);
 		ft_putchar_fd('\n', 2);
 		exit_shell (127);
 	}
+	exit_shell(0);
 }
 
 /* 
@@ -109,7 +117,7 @@ void	pipe_write(char *type, int *i, int *j)
 	}
 }
 
-/* 
+/*
 	this function will handle the rederctions and link the givein files to the stdout or stdin, also it will use ft_strjoin_2d to append any extry args to g_data.cmd
 */
 int	handle_redirection(int op, int j)
@@ -177,7 +185,7 @@ int	handle_redirection(int op, int j)
 		pipe(inputfd);
 		//dup2(g_data.fdin, STDIN_FILENO);
 		while (1)
-		{	
+		{
 			temp = get_next_line(g_data.fdin);
 			if ((ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1) || !ft_strcmp(temp, "\n")) == 0 && temp)
 				break ;
@@ -233,7 +241,7 @@ int	check_op(int *i, int *j)
 	return (0);
 }
 
-/* 
+/*
 	this is the last step in the while loop, this function will check the command and execute it after all the redirections, piping are done privously
 */
 void	handle_cmd(void)
@@ -249,17 +257,12 @@ void	handle_cmd(void)
 			ft_unset(ft_strdup(g_data.cmd[g_data.y][k++]));
 	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "cd")))
 		ft_cd();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "echo")))
-		ft_echo();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
-		ft_env();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "pwd")))
-		ft_pwd();
 	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "exit")))
 		ft_exit();
 	else
 	{
 		g_data.c_pid = fork();
+		wait(NULL);
 		if (g_data.c_pid == 0)
 		{
 			if (g_data.ops_array[g_data.x] == 1)
@@ -281,7 +284,7 @@ void	check_cmd(void)
 	// | = 1	> = 2	< = 3	>> = 5	<< = 6
 	write(1, BYELLOW, 8);
 	while (g_data.cmd[i])
-	{	
+	{
 		g_data.y = i;
 		g_data.x = j;
 		g_data.output_flag = 0;
@@ -300,6 +303,7 @@ void	check_cmd(void)
 		if (g_data.ops_array[g_data.x] == 1)
 			close(g_data.fd[g_data.pipes][1]);
 		save_exit_status();
+		// printf("i: %d\tg_data.y: %d\n", i, g_data.y);
 	}
 	dup2(g_data.fdin, STDIN_FILENO);
 	dup2(g_data.fdout, STDOUT_FILENO);
