@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/31 07:29:58 by mal-guna         ###   ########.fr       */
+/*   Updated: 2021/12/31 07:44:26 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void	insert_array(char **expandded_array, int i, int *j)
 	free(g_data.cmd[i]);
 	g_data.cmd[i] = res;
 }
-void	handle_wild_card(int i)
+int	handle_wild_card(int i)
 {
 	int j;
 	char **expanded_array;
@@ -201,12 +201,32 @@ void	handle_wild_card(int i)
 	{
 		if(ft_strchr(g_data.cmd[i][j], '*'))
 		{
+			write(2, "here\n", 5);
 			expanded_array = expand_wild_card(g_data.cmd[i][j]);
-			insert_array(expanded_array, i, &j);
+			write(2, "here\n", 5);
+			if(expanded_array)
+			{
+				if(i > 0)
+				{
+				
+					if(g_data.ops_array[i-1] == 2)
+					{
+						if(j == 0 && ft_strlen2(expanded_array)  > 1)
+						{
+							perror("Ambigous Redirect\n");
+							return (-1);	
+						}
+					}
+				}
+				insert_array(expanded_array, i, &j);
+			}
+			write(2, "here\n", 5);
+
 		}
 		if(g_data.cmd[i][j])
 			j++;
 	}
+	return (0);
 }
 
 void	execute_commands(int i)
@@ -407,7 +427,12 @@ int	check_op(int *i, int *j)
 		while (g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
 		{
 			n = 1;
-			handle_wild_card(*j + 1);
+			if(handle_wild_card(*j + 1) == -1)
+			{
+				while (g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
+					(*j) ++;
+				break;
+			}
 			if (handle_redirection(g_data.ops_array[*j], *j))
 			{
 				return (1);
