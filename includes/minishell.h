@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 03:56:25 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 03:36:52 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <dirent.h>
 
 /**
  * ------------------------------------------------------------------------------
@@ -38,6 +40,7 @@
  * ------------------------------------------------------------------------------
  **/
 
+# define CLEAR_SCREEN "\033[?1049h\033[H"
 # define PURPLE "\033[1;35m"
 # define BLUE "\033[1;34m"
 # define WHITE "\033[1;37m"
@@ -89,15 +92,20 @@ typedef struct s_data
 	char	**environ;
 	pid_t	c_pid;
 	int		pid;
+	int		exit_status;
+	int		c_exit_flag;
+	int		empty_flag;
 	int		pipes;
 	int		pipe_flag;
 	int		output_flag;
 	int		input_flag;
-	int 	x;
-	int 	y;
+	int		under_process_flag;
+	int		x;
+	int		y;
 	int		fdout;
 	int		fdin;
 	char	**test_str; // this is just temp to test ft_strjoin_2d
+	char	pwd_dir_path[1000];
 	int		fd[][2];
 }				t_data;
 
@@ -114,22 +122,33 @@ t_data	g_data;
  * |							Functions Prototypes							|
  * ------------------------------------------------------------------------------
  **/
+
 void	check_cmd(void);
 char	**cmd_split(void);
 void	failed_split(int n);
-void	ft_exit(int n);
+void	failed_sep_cmds(int n);
+void	exit_shell(int n);
 int		ft_chrindex(char *str, char c);
 int		ft_strlen2(char **str);
 void	ft_export(char *v);
 void	ft_unset(char *v);
 void	free_all(void);
-void	initialize(void);
+void	reset(void);
+void	init(void);
 void	env_checker(int *x, int *i, int *j);
-void	ultimate_3d_split(void);
-void	operators_checker(int *x, int *ops_cnt, int flag);
+int		ultimate_3d_split(void);
+int		operators_checker(int *x, int *ops_cnt, int flag);
 void	ft_cd(void);
+void	ft_echo(void);
+void	ft_pwd(void);
+void	ft_env(void);
 void	sig_handler(int signum, siginfo_t *info, void *ucontext);
 void	execute_commands(int i);
 void	cmd_filter(int i);
+void	save_exit_status(void);
+void	ft_exit(void);
+void	env_exit(int *x, int *i, int *j);
+int		empty_cmd_checker(void);
+void	error_printer(void);
 
 #endif

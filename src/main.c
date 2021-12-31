@@ -3,40 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/28 09:45:06 by mal-guna         ###   ########.fr       */
+/*   Updated: 2021/12/30 17:45:17 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/**
+ * TODO: don't forget to clear the history before you exit the program
+ */
 int	main(int ac, char **av, char **ev)
 {
-	struct sigaction	sig_sig;
-
 	(void) ac;
 	(void) av;
 	g_data.environ = ev;
-	sig_sig.sa_flags = 0;
-	sig_sig.sa_mask = 0;
-	sig_sig.sa_sigaction = &sig_handler;
-	sigaction(SIGINT, &sig_sig, NULL);
-	initialize();
-	printf("\033[?1049h\033[H");
+	init();
+	reset();
+	printf(CLEAR_SCREEN);
 	while (1)
 	{
-		g_data.c_pid = 1;
 		g_data.cmdline = readline(MAC_PROMPT);
-		// g_data.cmdline = "echo hi $_ '' wow > beso || grep we wa << woo >> yes      | hi && trick & yeah";
+		// g_data.cmdline = "echo hi | echo wow";
 		if (!g_data.cmdline)
-			ft_exit(0);
+			exit_shell(0);
+		g_data.under_process_flag = 1;
 		if (g_data.cmdline && *g_data.cmdline)
 			add_history(g_data.cmdline);
 		ultimate_3d_split();
 		check_cmd();
 		free_all();
 	}
-	return (0);
 }

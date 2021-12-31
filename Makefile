@@ -25,7 +25,8 @@ DATE = 29 - 11 - 2021
 
 C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
-		operators.c ft_cd.c sig_handler.c cmd_filter.c
+		operators.c builtin_cmds.c sig_handler.c cmd_filter.c ft_exit.c\
+		initialize.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
@@ -74,7 +75,8 @@ EXEC_NAME = minishell
 
 all: header ${LIBFT_LIB} ${GNL_LIB} $(LIBS_DIR)$(NAME)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n$(NO_COLOR)"
-	@gcc $(ALL_LIBS) -lreadline -L/usr/local/Cellar/readline/8.1/lib -o $(EXEC_NAME)
+	#@gcc $(ALL_LIBS) -lreadline -L/usr/local/Cellar/readline/8.1/lib -o $(EXEC_NAME)
+	@gcc $(ALL_LIBS) -lreadline -L/usr/local/Cellar/readline/8.1.1/lib -o $(EXEC_NAME)
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n$(NO_COLOR)"
 	@echo "$(GREEN)*************************************************************************"
 	@echo "$(GREEN)*\t\t\t\t$(BYELLOW)READY\t\t\t\t\t$(GREEN)*"
@@ -94,7 +96,8 @@ ${GNL_LIB}:
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)GNL Is Done\n"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
-	@gcc ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
+	#@gcc ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
+	@gcc ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1.1/include
 
 header:
 	@printf "\n%b" "$(PURPLE)"

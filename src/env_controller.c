@@ -6,18 +6,39 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:29:09 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/17 02:10:05 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/20 03:17:18 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	env_exit(int *x, int *i, int *j)
+{
+	char	*exit_num;
+	int		exit_num_len;
+	int		n;
+
+	n = 0;
+	exit_num = ft_itoa(g_data.exit_status);
+	exit_num_len = ft_strlen(exit_num);
+	if (g_data.split_flag)
+	{
+		if (g_data.split_flag == 1)
+			*j += exit_num_len;
+		else
+			while (n < exit_num_len)
+				g_data.cmd[g_data.n][*i][(*j)++] = exit_num[n++];
+		// (*j)--;
+		(*x) += 2;
+	}
+}
 
 static int	ft_strlen_to_space(char *s)
 {
 	int	i;
 
 	i = 0;
-	while (s[i] != ' ' && s[i] != '"' && s[i] != '\'' && s[i])
+	while (ft_isdigit(s[i]) || ft_isalpha(s[i]) || s[i] == '_')
 		i++;
 	return (i);
 }
@@ -61,6 +82,7 @@ void	env_checker(int *x, int *i, int *j)
 		}
 		(*j)--;
 	}
+	else 
 	no_env_in_no_qoutes(new_s, i, x);
 	*x += old_len;
 	return ;

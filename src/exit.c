@@ -6,31 +6,11 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/17 02:12:44 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:47:29 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	initialize(void)
-{
-	g_data.cmdline = NULL;
-	g_data.cmd = NULL;
-	g_data.sep_cmds = NULL;
-	g_data.ops_array = NULL;
-	g_data.no_env_arg_flag = 0;
-	g_data.double_qoute_flag = 0;
-	g_data.single_qoute_flag = 0;
-	g_data.dbl_op_f = 0;
-	g_data.n = 0;
-	g_data.op_cnt = 0;
-	g_data.pipes = -1;
-	g_data.pipe_flag = 0;
-	g_data.output_flag = 0;
-	g_data.input_flag = 0;
-	g_data.fdout = dup(STDOUT_FILENO);
-	g_data.fdin = dup(STDIN_FILENO);
-}
 
 /*
 	It's used to free the 2d array we have in case of a failed malloc
@@ -55,7 +35,16 @@ void	failed_split(int n)
 		free (g_data.sep_cmds[i++]);
 	free (g_data.sep_cmds);
 	free(g_data.cmdline);
-	exit (1);
+	error_printer();
+}
+
+void	failed_sep_cmds(int n)
+{
+	while (n >= 0)
+		free(g_data.sep_cmds[n--]);
+	free(g_data.sep_cmds);
+	g_data.sep_cmds = NULL;
+	error_printer();
 }
 
 void	free_big_g_data(void)
@@ -89,38 +78,30 @@ void	free_all(void)
 {
 	if (!g_data.cmdline)
 		return ;
-	if (!*g_data.cmdline)
-	{
+	if (*g_data.cmdline)
 		free(g_data.cmdline);
-		return ;
-	}
 	free_big_g_data();
-	free(g_data.cmdline);
 	if (g_data.ops_array)
 		free(g_data.ops_array);
-	initialize();
+	reset();
 }
 
-void	ft_exit(int n)
+void	error_printer(void)
 {
 	free_all();
-	if (n == 1)
-	{
-		perror("Error. (Check your malloc functions)");
-		printf("zsh: %s\n", strerror(errno));
-		printf("exit with code: %d\n", errno);
-	}
-	else if (n == 2)
-	{
-		perror("Error. (Check your read functions)");
-		printf("zsh: %s\n", strerror(errno));
-		printf("exit with code: %d\n", errno);
-	}
-	else if (n == 3)
-	{
-		perror("Error. (Check your write functions)");
-		printf("zsh: %s\n", strerror(errno));
-		printf("exit with code: %d\n", errno);
-	}
+	ft_putstr_fd("BNM bash: ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	g_data.exit_status = 1;
+}
+
+/**
+ * TODO: check the errno for common functions like malloc, read, \
+ * 		TODO: write and return the errno for them and print their \
+ * 		TODO: error messages from here
+ */
+void	exit_shell(int n)
+{
+	free_all();
+	clear_history();
 	exit(n);
 }

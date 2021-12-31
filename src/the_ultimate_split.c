@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/18 00:50:10 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 17:38:57 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	qoutes_checker_3d(int *x)
 /**
  * This function is allocate each command for sep_cmds
  **/
-void	alloc_cmd(int *i, int *old_x, int x)
+int	alloc_cmd(int *i, int *old_x, int x)
 {
 	int	j;
 
@@ -47,9 +47,12 @@ void	alloc_cmd(int *i, int *old_x, int x)
 	if (g_data.dbl_op_f)
 		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x));
 	else
-		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x) + 1);
+		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x + 1));
 	if (!g_data.sep_cmds[*i])
-		ft_exit(1);
+	{
+		failed_sep_cmds(*i);
+		return (1);
+	}
 	j = 0;
 	while (*old_x < x)
 	{
@@ -66,16 +69,22 @@ void	alloc_cmd(int *i, int *old_x, int x)
 	g_data.sep_cmds[*i][j] = 0;
 	(*old_x)++;
 	(*i)++;
+	return (0);
 }
 
 /**
  * This function is allocate last command for sep_cmds
  * **/
-void	alloc_last_cmd(int *i, int *old_x, int *x)
+int	alloc_last_cmd(int *i, int *old_x, int *x)
 {
 	int	j;
 
-	g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (*x - *old_x) + 1);
+	g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (*x - *old_x + 1));
+	if (!g_data.sep_cmds[*i])
+	{
+		failed_sep_cmds(*i);
+		return (1);
+	}
 	j = 0;
 	while (*old_x < *x)
 	{
@@ -86,12 +95,13 @@ void	alloc_last_cmd(int *i, int *old_x, int *x)
 	g_data.sep_cmds[*i][j] = 0;
 	(*i)++;
 	g_data.sep_cmds[*i] = 0;
+	return (0);
 }
 
 /**
  * This function is to get sep_cmds from cmdline
  **/
-void	sep_cmds_creator(void)
+int	sep_cmds_creator(void)
 {
 	int	ops_cnt;
 	int	i;
@@ -108,42 +118,65 @@ void	sep_cmds_creator(void)
 		operators_checker(&x, &ops_cnt, 1);
 		g_data.ops_array[g_data.op_cnt] = '\0';
 		if (ops_cnt != i)
-			alloc_cmd(&i, &old_x, x);
+		{
+			if (alloc_cmd(&i, &old_x, x))
+				return (1);
+		}
 		x++;
 	}
-	alloc_last_cmd(&i, &old_x, &x);
+	if (alloc_last_cmd(&i, &old_x, &x))
+		return (1);
+	return (0);
 }
 
 /**
  * This is the ultimate 3d split
- * Nothing to explain It's the best 
+ * Nothing to explain It's the best
  * PEACE
  **/
-void	ultimate_3d_split(void)
+int	ultimate_3d_split(void)
 {
 	int	x;
 	int	ops_cnt;
 
 	x = 0;
 	ops_cnt = 0;
-	if (!*g_data.cmdline)
-		return ;
+	if (!*g_data.cmdline || empty_cmd_checker())
+		return (1);
 	while (g_data.cmdline[x])
 	{
 		qoutes_checker_3d(&x);
-		operators_checker(&x, &ops_cnt, 0);
+		if (operators_checker(&x, &ops_cnt, 0))
+			return (1);
 		x++;
 	}
+	if (ops_cnt && !g_data.empty_flag)
+	{
+		ft_putstr_fd("BNM bash: syntax error near unexpected token `newline'\n", 2);
+		g_data.exit_status = 1;
+		return (1);
+	}
+	g_data.empty_flag = 0;
 	g_data.cmd = (char ***)malloc(sizeof(char **) * (ops_cnt + 2));
 	g_data.sep_cmds = (char **)malloc(sizeof(char *) * (ops_cnt + 2));
 	g_data.ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));
-	if (!g_data.cmd || !g_data.sep_cmds)
-		ft_exit(1);
+	if (!g_data.cmd || !g_data.sep_cmds || !g_data.ops_array)
+	{
+		error_printer();
+		return (1);
+	}
 	g_data.op_cnt = 0;
-	sep_cmds_creator();
+	if (sep_cmds_creator())
+		return (1);
 	g_data.n = 0;
 	while (g_data.n < ops_cnt + 1)
-		g_data.cmd[g_data.n++] = cmd_split();
+	{
+		g_data.cmd[g_data.n] = cmd_split();
+		if (!g_data.cmd[g_data.n])
+			return (1);
+		g_data.n++;
+	}
 	g_data.cmd[g_data.n] = 0;
 	g_data.n = 0;
+	return (0);
 }

@@ -3,53 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:17:55 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/28 09:44:49 by mal-guna         ###   ########.fr       */
+/*   Updated: 2021/12/30 12:46:41 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/**
- * struct termios saved;
-
-void restore(void) {
-    tcsetattr(STDIN_FILENO, TCSANOW, &saved);
+void	sigquit_handler(void)
+{
+	if (g_data.c_pid)
+	{
+		kill(g_data.c_pid, SIGQUIT);
+		write(0, "\n", 1);
+		g_data.exit_status = 131;
+		g_data.c_exit_flag = 1;
+	}
+	else
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		write(0, "  \r", 3);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
-**/
-/**
- *  struct termios attributes;
-    tcgetattr(STDIN_FILENO, &saved);
-    atexit(restore);
-    tcgetattr(STDIN_FILENO, &attributes);
-    attributes.c_lflag &= ~ ECHO;
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
- **/
 
+void	sigint_handler(void)
+{
+	if (g_data.under_process_flag)
+	{
+		if (g_data.c_pid)
+		{
+			kill(g_data.c_pid, SIGINT);
+			write(1, "\n", 1);
+			g_data.exit_status = 130;
+			g_data.c_exit_flag = 1;
+		}
+		else
+		{
+			write(0, "\n", 1);
+			g_data.exit_status = 130;
+		}
+	}
+	else
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		write(0, "  ", 2);
+		rl_replace_line("", 0);
+		write(0, "\n", 1);
+		rl_on_new_line();
+		rl_redisplay();
+		g_data.exit_status = 1;
+	}
+}
+
+/**
+ * TODO: Fix the error that you get after exiting from child process and then using a child process again
+ */
 void	sig_handler(int signum, siginfo_t *info, void *ucontext)
 {
-	(void) signum;
 	(void) info;
 	(void) ucontext;
-	// kill(g_data.c_pid, SIGKILL);
-	// if (g_data.c_pid == 0)
-	// {
-		// printf("hi from child: %d\n", g_data.c_pid);
-		// printf("Hi child\n"); 
-		// rl_replace_line("", 0);
-		// write(0, "\n", 1);
-		// rl_on_new_line();
-		// rl_redisplay();
-	// 	exit (0);
-	// }
-	// else
-	// {
-		// printf("Hi parent\n");
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	write(0, "\n", 1);
-	rl_redisplay();
-	// }
+	if (signum == SIGQUIT)
+		sigquit_handler();
+	else
+		sigint_handler();
 }

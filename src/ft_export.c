@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2021/12/17 02:37:33 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/30 11:47:44 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_export(char *v)
 			newenv[i] = g_data.environ[i];
 			i++;
 		}
-		newenv[i] = v;
+		newenv[i] = ft_strdup(v);
 		i++;
 		newenv[i] = NULL;
 		g_data.environ = newenv;
@@ -76,7 +76,7 @@ void	ft_export(char *v)
 				j++;
 			if (!var_name[j] && g_data.environ[i][j] == '=')
 			{
-				g_data.environ[i] = v;
+				g_data.environ[i] = ft_strdup(v);
 				break ;
 			}
 			i++;
