@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:15:01 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 19:11:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 09:12:09 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	ft_pwd(void)
 void	ft_env(void)
 {
 	int	x;
+	int	k;
 	char *v;
 	int		i;
 	int		j;
@@ -115,13 +116,14 @@ void	ft_env(void)
 	char	*var_name;
 	char	*var;
 
-	if (g_data.cmd[g_data.y][1])
+	k = 1;
+	while (g_data.cmd[g_data.y][k])
 	{
-		v = g_data.cmd[g_data.y][1];
+		v = g_data.cmd[g_data.y][k];
 		if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
 		{
 			ft_putstr_fd("env: ", 2);
-			ft_putstr_fd(g_data.cmd[g_data.y][1], 2);
+			ft_putstr_fd(g_data.cmd[g_data.y][k], 2);
 			ft_putstr_fd(": No such file or directory", 2);
 			ft_putchar_fd('\n', 2);
 			g_data.exit_status = 1;
@@ -160,6 +162,7 @@ void	ft_env(void)
 				i++;
 			}
 		}
+		k++;
 	}
 	x = 0;
 	while (g_data.environ[x])

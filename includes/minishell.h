@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 17:45:50 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 10:24:24 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ typedef struct s_data
 	int		empty_flag;
 	int		pipes;
 	int		pipe_flag;
+	int		is_pipe;
+	int		is_dbl_pipe;
+	int		is_dbl_and;
 	int		output_flag;
 	int		input_flag;
 	int		under_process_flag;
@@ -149,5 +152,6 @@ void	ft_exit(void);
 void	env_exit(int *x, int *i, int *j);
 int		empty_cmd_checker(void);
 void	error_printer(void);
+void	dbl_ops_handler(void);
 
 #endif

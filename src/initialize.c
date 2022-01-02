@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 17:47:30 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 10:23:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void	reset(void)
 	g_data.c_pid = 0;
 	g_data.pipes = -1;
 	g_data.pipe_flag = 0;
+	g_data.is_pipe = 0;
+	g_data.is_dbl_pipe = 0;
+	g_data.is_dbl_and = 0;
 	g_data.output_flag = 0;
 	g_data.input_flag = 0;
 	g_data.fdout = dup(STDOUT_FILENO);

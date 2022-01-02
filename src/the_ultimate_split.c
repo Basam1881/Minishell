@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 17:38:57 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 09:57:51 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	alloc_cmd(int *i, int *old_x, int x)
 {
 	int	j;
 
-	j = 0;
 	if (g_data.dbl_op_f)
 		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x));
 	else
@@ -59,7 +58,7 @@ int	alloc_cmd(int *i, int *old_x, int x)
 		if (g_data.dbl_op_f && *old_x == x - 1)
 		{
 			g_data.dbl_op_f = 0;
-			(*old_x) += 2;
+			(*old_x)++;
 			break ;
 		}
 		g_data.sep_cmds[*i][j] = g_data.cmdline[*old_x];
@@ -69,6 +68,7 @@ int	alloc_cmd(int *i, int *old_x, int x)
 	g_data.sep_cmds[*i][j] = 0;
 	(*old_x)++;
 	(*i)++;
+	g_data.dbl_op_f = 0;
 	return (0);
 }
 
@@ -95,6 +95,7 @@ int	alloc_last_cmd(int *i, int *old_x, int *x)
 	g_data.sep_cmds[*i][j] = 0;
 	(*i)++;
 	g_data.sep_cmds[*i] = 0;
+	g_data.dbl_op_f = 0;
 	return (0);
 }
 
