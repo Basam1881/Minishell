@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 16:32:11 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 17:14:02 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,7 @@ int	check_op(int *i, int *j)
 		pipe_write("write", i, j);
 	else if (is_redir(*j))
 	{
+		// ft_putendl_fd(">", 2);
 		while (is_redir(*j) && *j < g_data.op_cnt)
 		{
 			n = 1;
@@ -245,12 +246,12 @@ int	check_op(int *i, int *j)
 			g_data.pipe_flag = 1;
 		else if (g_data.ops_array[*j] == 4)
 		{
-			// g_data.pipe_flag = 1;
+			g_data.pipe_flag = 1;
 			g_data.is_dbl_pipe = 1;
 		}
 		else if (g_data.ops_array[*j] == 7)
 		{
-			// g_data.pipe_flag = 1;
+			g_data.pipe_flag = 1;
 			g_data.is_dbl_and = 1;
 		}
 	}
@@ -262,6 +263,7 @@ int	check_op(int *i, int *j)
 	}
 	else if (g_data.ops_array[*j] == 7)
 	{
+		// ft_putendl_fd("&&", 2);
 		g_data.is_dbl_and = 1;
 		(*i)++;
 		(*j)++;
