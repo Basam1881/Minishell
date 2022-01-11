@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/02 03:27:34 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 16:32:11 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,12 +245,12 @@ int	check_op(int *i, int *j)
 			g_data.pipe_flag = 1;
 		else if (g_data.ops_array[*j] == 4)
 		{
-			g_data.pipe_flag = 1;
+			// g_data.pipe_flag = 1;
 			g_data.is_dbl_pipe = 1;
 		}
 		else if (g_data.ops_array[*j] == 7)
 		{
-			g_data.pipe_flag = 1;
+			// g_data.pipe_flag = 1;
 			g_data.is_dbl_and = 1;
 		}
 	}
@@ -332,10 +332,11 @@ void	check_cmd(void)
 			break ;
 		if (g_data.y != 0)
 		{
-			if (g_data.is_dbl_pipe || g_data.is_dbl_and)
+			if ((g_data.is_dbl_pipe || g_data.is_dbl_and) && !g_data.pipe_flag)
 			{
-				printf("more\n");
 				dup2(g_data.fdout, STDOUT_FILENO);
+				// g_data.is_dbl_and = 0;
+				// g_data.is_dbl_pipe = 0;
 			}
 			else
 				pipe_read();
@@ -345,10 +346,11 @@ void	check_cmd(void)
 			// printf("SHIT\n");
 			if (g_data.is_dbl_pipe || g_data.is_dbl_and)
 			{
-				g_data.x = j;
+				// if (g_data.ops_array[j] != 4 && g_data.ops_array[j] != 7)
+				// g_data.x = j;
 				j++;
-				g_data.is_dbl_pipe = 0;
-				g_data.is_dbl_and = 0;
+				// else
+				// 	i++;
 			}
 			else
 				pipe_write("write2", &i, &j);

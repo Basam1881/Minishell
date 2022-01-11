@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:17:55 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 12:46:41 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/10 10:17:18 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ void	sigint_handler(void)
 /**
  * TODO: Fix the error that you get after exiting from child process and then using a child process again
  */
-void	sig_handler(int signum, siginfo_t *info, void *ucontext)
+void	sig_handler(int signum)
 {
-	(void) info;
-	(void) ucontext;
 	if (signum == SIGQUIT)
 		sigquit_handler();
 	else

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/31 10:24:24 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/10 10:16:56 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	ft_cd(void);
 void	ft_echo(void);
 void	ft_pwd(void);
 void	ft_env(void);
-void	sig_handler(int signum, siginfo_t *info, void *ucontext);
+void	sig_handler(int signum);
 void	execute_commands(int i);
 void	cmd_filter(int i);
 void	save_exit_status(void);

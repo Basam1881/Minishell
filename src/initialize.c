@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/31 10:23:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/10 10:15:51 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 void	init(void)
 {
-	struct sigaction	sig_sig;
+	// struct sigaction	sig_sig;
 
-	g_data.exit_status = 0;
-	g_data.c_exit_flag = 0;
-	sig_sig.sa_flags = 0;
-	sig_sig.sa_mask = 0;
-	sig_sig.sa_sigaction = &sig_handler;
-	sigaction(SIGINT, &sig_sig, NULL);
-	sigaction(SIGQUIT, &sig_sig, NULL);
+	// g_data.exit_status = 0;
+	// g_data.c_exit_flag = 0;
+	// sig_sig.sa_flags = 0;
+	// sig_sig.sa_mask = 0;
+	// sig_sig.sa_sigaction = &sig_handler;
+	// sigaction(SIGINT, &sig_sig, NULL);
+	// sigaction(SIGQUIT, &sig_sig, NULL);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 }
 
 void	reset(void)
