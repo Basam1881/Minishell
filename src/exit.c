@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 17:47:29 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 16:46:01 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,11 @@ void	error_printer(void)
 void	exit_shell(int n)
 {
 	free_all();
+	// if (n)
+	// {
+	// 	ft_putstr_fd("BNM bash: ", 2);
+	// 	ft_putendl_fd(strerror(errno), 2);
+	// }
 	clear_history();
 	exit(n);
 }

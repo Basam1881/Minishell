@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 17:45:17 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 16:42:01 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av, char **ev)
 	while (1)
 	{
 		g_data.cmdline = readline(MAC_PROMPT);
-		// g_data.cmdline = "echo hi | echo wow";
+		// g_data.cmdline = "echo hi > 1 || echo wow";
 		if (!g_data.cmdline)
 			exit_shell(0);
 		g_data.under_process_flag = 1;

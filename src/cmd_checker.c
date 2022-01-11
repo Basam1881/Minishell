@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 19:18:03 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 16:45:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	pipe_write(char *type, int *i, int *j)
 		dup2(g_data.fd[g_data.pipes][1], STDOUT_FILENO);
 		(*j)++;
 		(*i)++;
+		g_data.is_pipe = 1;
 	}
 	else if (ft_strcmp(type, "write2") == 0)
 	{
@@ -113,7 +114,6 @@ void	pipe_write(char *type, int *i, int *j)
 			dup2(g_data.fd[g_data.pipes][1], STDOUT_FILENO);
 		g_data.x = *j;
 		(*j)++;
-		g_data.pipe_flag = 0;
 	}
 }
 
@@ -207,6 +207,14 @@ int	handle_redirection(int op, int j)
 	return (0);
 }
 
+int	is_redir(int j)
+{
+	if (g_data.ops_array[j] == 2 || g_data.ops_array[j] == 3
+		|| g_data.ops_array[j] == 5 || g_data.ops_array[j] == 6)
+		return (1);
+	return (0);
+}
+
 /*
 	this function will check for any pipes or redirections and call the crosponding fucntions to handle them.
 */
@@ -216,9 +224,9 @@ int	check_op(int *i, int *j)
 
 	if (g_data.ops_array[*j] == 1)
 		pipe_write("write", i, j);
-	else if (g_data.ops_array[*j] == 2 || g_data.ops_array[*j] == 3 || g_data.ops_array[*j] == 5 || g_data.ops_array[*j] == 6)
+	else if (is_redir(*j))
 	{
-		while (g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
+		while (is_redir(*j) && *j < g_data.op_cnt)
 		{
 			n = 1;
 			if (handle_redirection(g_data.ops_array[*j], *j))
@@ -235,6 +243,28 @@ int	check_op(int *i, int *j)
 		*i = *j + 1;
 		if (g_data.ops_array[*j] == 1)
 			g_data.pipe_flag = 1;
+		else if (g_data.ops_array[*j] == 4)
+		{
+			// g_data.pipe_flag = 1;
+			g_data.is_dbl_pipe = 1;
+		}
+		else if (g_data.ops_array[*j] == 7)
+		{
+			// g_data.pipe_flag = 1;
+			g_data.is_dbl_and = 1;
+		}
+	}
+	else if (g_data.ops_array[*j] == 4)
+	{
+		g_data.is_dbl_pipe = 1;
+		(*i)++;
+		(*j)++;
+	}
+	else if (g_data.ops_array[*j] == 7)
+	{
+		g_data.is_dbl_and = 1;
+		(*i)++;
+		(*j)++;
 	}
 	else
 		(*i)++;
@@ -262,7 +292,7 @@ void	handle_cmd(void)
 	else
 	{
 		g_data.c_pid = fork();
-		wait(NULL);
+		save_exit_status();
 		if (g_data.c_pid == 0)
 		{
 			if (g_data.ops_array[g_data.x] == 1)
@@ -270,6 +300,11 @@ void	handle_cmd(void)
 			execute_commands(g_data.y);// check for commands and execute them
 		}
 	}
+}
+
+void	dbl_ops_handler(void)
+{
+	return ;
 }
 
 void	check_cmd(void)
@@ -296,14 +331,50 @@ void	check_cmd(void)
 		if (check_op(&i, &j))
 			break ;
 		if (g_data.y != 0)
-			pipe_read();
+		{
+			if ((g_data.is_dbl_pipe || g_data.is_dbl_and) && !g_data.pipe_flag)
+			{
+				dup2(g_data.fdout, STDOUT_FILENO);
+				// g_data.is_dbl_and = 0;
+				// g_data.is_dbl_pipe = 0;
+			}
+			else
+				pipe_read();
+		}
 		if (g_data.pipe_flag == 1)
-			pipe_write("write2", &i, &j);
+		{
+			// printf("SHIT\n");
+			if (g_data.is_dbl_pipe || g_data.is_dbl_and)
+			{
+				// if (g_data.ops_array[j] != 4 && g_data.ops_array[j] != 7)
+				// g_data.x = j;
+				j++;
+				// else
+				// 	i++;
+			}
+			else
+				pipe_write("write2", &i, &j);
+			g_data.pipe_flag = 0;
+		}
 		handle_cmd();
-		if (g_data.ops_array[g_data.x] == 1)
+		if (g_data.is_dbl_and)
+		{
+			dup2(g_data.fdout, STDOUT_FILENO);
+			if (g_data.exit_status)
+				break ;
+			g_data.is_dbl_and = 0;
+		}
+		else if (g_data.is_dbl_pipe)
+		{
+			dup2(g_data.fdout, STDOUT_FILENO);
+			if (!g_data.exit_status)
+				break ;
+			g_data.is_dbl_pipe = 0;
+		}
+		// printf("j: %d\tx: %d\t i: %d\ty: %d\n", j, g_data.x, i, g_data.y);
+		if (!is_redir(j))
 			close(g_data.fd[g_data.pipes][1]);
-		save_exit_status();
-		// printf("i: %d\tg_data.y: %d\n", i, g_data.y);
+		wait(NULL);
 	}
 	dup2(g_data.fdin, STDIN_FILENO);
 	dup2(g_data.fdout, STDOUT_FILENO);

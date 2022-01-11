@@ -95,7 +95,7 @@ ${GNL_LIB}:
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)GNL Is Done\n"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
-	@gcc ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
+	@gcc -fcommon ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
 
 header:
 	@printf "\n%b" "$(PURPLE)"
