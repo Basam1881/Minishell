@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 16:46:01 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/12 08:58:23 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@
 */
 void	failed_split(int n)
 {
-	int	i;
-
-	i = 0;
 	while (g_data.n >= 0)
 	{
 		while (n >= 0)
@@ -31,10 +28,7 @@ void	failed_split(int n)
 		g_data.n--;
 	}
 	free (g_data.cmd);
-	while (g_data.sep_cmds[i])
-		free (g_data.sep_cmds[i++]);
-	free (g_data.sep_cmds);
-	free(g_data.cmdline);
+	g_data.cmd = NULL;
 	error_printer();
 }
 
@@ -83,6 +77,8 @@ void	free_all(void)
 	free_big_g_data();
 	if (g_data.ops_array)
 		free(g_data.ops_array);
+	if (g_data.star_array)
+		free(g_data.star_array);
 	reset();
 }
 
