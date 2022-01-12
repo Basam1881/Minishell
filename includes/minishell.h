@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 16:44:36 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 23:23:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ typedef struct s_data
 	int		output_flag;
 	int		input_flag;
 	int		under_process_flag;
+	int		last_op;
+	int		parentheses_cnt;
 	int		x;
 	int		y;
 	int		fdout;

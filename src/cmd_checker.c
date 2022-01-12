@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 17:19:20 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/12 01:38:03 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	execute_commands(int i)
 	{
 		ft_putstr_fd("BNM bash: ", 2);
 		ft_putstr_fd(g_data.cmd[i][0], 2);
-		ft_putstr_fd(": command not found", 2);
-		ft_putchar_fd('\n', 2);
+		ft_putendl_fd(": command not found", 2);
 		exit_shell (127);
 	}
 	exit_shell(0);
@@ -120,7 +119,7 @@ void	pipe_write(char *type, int *i, int *j)
 /*
 	this function will handle the rederctions and link the givein files to the stdout or stdin, also it will use ft_strjoin_2d to append any extry args to g_data.cmd
 */
-int	handle_redirection(int op, int j)
+void	handle_redirection(int op, int j)
 {
 	int		fdrd;
 	int		inputfd[2];
@@ -131,15 +130,19 @@ int	handle_redirection(int op, int j)
 		fdrd = open(g_data.cmd[j + 1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
 		if (fdrd == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		if (dup2(fdrd, STDOUT_FILENO) == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		close(fdrd);
 		g_data.output_flag = 1;
@@ -149,15 +152,19 @@ int	handle_redirection(int op, int j)
 		fdrd = open(g_data.cmd[j + 1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
 		if (fdrd == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		if (dup2(fdrd, STDOUT_FILENO) == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		close(fdrd);
 		g_data.output_flag = 1;
@@ -167,15 +174,19 @@ int	handle_redirection(int op, int j)
 		fdrd = open(g_data.cmd[j + 1][0], O_RDWR, S_IRWXU);
 		if (fdrd == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		if (dup2(fdrd, STDIN_FILENO) == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		close(fdrd);
 		g_data.input_flag = 1;
@@ -196,15 +207,17 @@ int	handle_redirection(int op, int j)
 		//dup2(g_data.fdin, STDIN_FILENO);
 		if (dup2(inputfd[0], STDIN_FILENO) == -1)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
-			return (1);
+			ft_putstr_fd("BNM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[j + 1][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
 		}
 		close(inputfd[0]);
 		close(inputfd[1]);
 		g_data.input_flag = 1;
 	}
-	return (0);
+	return ;
 }
 
 int	is_redir(int j)
@@ -230,10 +243,7 @@ int	check_op(int *i, int *j)
 		while (is_redir(*j) && *j < g_data.op_cnt)
 		{
 			n = 1;
-			if (handle_redirection(g_data.ops_array[*j], *j))
-			{
-				return (1);
-			}
+			handle_redirection(g_data.ops_array[*j], *j);
 			while (g_data.cmd[*j + 1][n])
 			{
 				ft_strjoin_2d(g_data.cmd[*j + 1][n]);
@@ -336,12 +346,13 @@ void	check_cmd(void)
 		{
 			if ((g_data.is_dbl_pipe || g_data.is_dbl_and) && !g_data.pipe_flag)
 			{
+				dup2(g_data.fdin, STDIN_FILENO);
 				dup2(g_data.fdout, STDOUT_FILENO);
 				// g_data.is_dbl_and = 0;
 				// g_data.is_dbl_pipe = 0;
 			}
-			else
-				pipe_read();
+			// else
+			pipe_read();
 		}
 		if (g_data.pipe_flag == 1)
 		{
@@ -361,6 +372,7 @@ void	check_cmd(void)
 		handle_cmd();
 		if (g_data.is_dbl_and)
 		{
+			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 			if (g_data.exit_status)
 				break ;
@@ -368,6 +380,7 @@ void	check_cmd(void)
 		}
 		else if (g_data.is_dbl_pipe)
 		{
+			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 			if (!g_data.exit_status)
 				break ;

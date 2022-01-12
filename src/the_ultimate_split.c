@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 16:47:29 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/12 00:56:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,13 +148,34 @@ int	ultimate_3d_split(void)
 	{
 		qoutes_checker_3d(&x);
 		if (operators_checker(&x, &ops_cnt, 0))
+		{
+			g_data.exit_status = 2;
 			return (1);
+		}
 		x++;
 	}
-	if (ops_cnt && !g_data.empty_flag)
+	if (ops_cnt && !g_data.empty_flag && g_data.last_op != 9)
 	{
-		ft_putstr_fd("BNM bash: syntax error near unexpected token `newline'\n", 2);
-		g_data.exit_status = 1;
+		ft_putendl_fd("BNM bash: syntax error near unexpected token `newline'", 2);
+		g_data.exit_status = 2;
+		return (1);
+	}
+	else if (g_data.parentheses_cnt)
+	{
+		ft_putendl_fd("BNM bash: syntax error near unexpected token `('", 2);
+		g_data.exit_status = 2;
+		return (1);
+	}
+	else if (g_data.single_qoute_flag)
+	{
+		ft_putendl_fd("BNM bash: syntax error (unclosed single qoutes)", 2);
+		g_data.exit_status = 2;
+		return (1);
+	}
+	else if (g_data.double_qoute_flag)
+	{
+		ft_putendl_fd("BNM bash: syntax error (unclosed double qoutes)", 2);
+		g_data.exit_status = 2;
 		return (1);
 	}
 	g_data.empty_flag = 0;

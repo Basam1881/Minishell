@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 16:46:53 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/11 23:24:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	reset(void)
 	g_data.dbl_op_f = 0;
 	g_data.n = 0;
 	g_data.op_cnt = 0;
+	g_data.last_op = 0;
+	g_data.parentheses_cnt = 0;
 	g_data.empty_flag = 0;
 	g_data.under_process_flag = 0;
 	g_data.c_pid = 0;
