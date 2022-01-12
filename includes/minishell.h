@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/11 23:23:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/12 08:11:07 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_data
 	int		dbl_op_f;
 	int		n;
 	int		*ops_array;
+	int		*star_array;
 	int		op_cnt;
 	char	**environ;
 	pid_t	c_pid;
@@ -104,6 +105,7 @@ typedef struct s_data
 	int		under_process_flag;
 	int		last_op;
 	int		parentheses_cnt;
+	int		star_cnt;
 	int		x;
 	int		y;
 	int		fdout;
