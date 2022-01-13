@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/12 01:38:03 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/13 21:11:00 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	pipe_read(void)
 	}
 }
 
-/* 
+/*
 	this function will redirect the output source to the write side of the pipe (Only if needed !)
 */
 void	pipe_write(char *type, int *i, int *j)
@@ -278,8 +278,29 @@ int	check_op(int *i, int *j)
 		(*i)++;
 		(*j)++;
 	}
-	else
+	else if (!g_data.ops_array[*j])
 		(*i)++;
+	return (0);
+}
+
+int	check_parentheses(int *i, int *j)
+{
+	if (g_data.ops_array[*j] == 8)
+	{
+		// ft_putendl_fd("open parentheses", 2);
+		(*i)++;
+		(*j)++;
+		g_data.y = *i;
+		g_data.x = *j;
+		g_data.parentheses_cnt++;
+	}
+	if (g_data.ops_array[*j] == 9)
+	{
+		// ft_putendl_fd("close parentheses", 2);
+		(*i)++;
+		(*j)++;
+		g_data.x = *j;
+	}
 	return (0);
 }
 
@@ -314,11 +335,6 @@ void	handle_cmd(void)
 	}
 }
 
-void	dbl_ops_handler(void)
-{
-	return ;
-}
-
 void	check_cmd(void)
 {
 	int		i;
@@ -340,6 +356,8 @@ void	check_cmd(void)
 		// printf("|%s|\n", g_data.cmd_path);
 		// g_data.cmd[g_data.y][0] = g_data.cmd_path;
 		// printf("~%d~ ~%s~\n", i, g_data.cmd[g_data.y][0]);
+		check_parentheses(&i, &j);
+		// ft_putendl_fd("HERE", 2);
 		if (check_op(&i, &j))
 			break ;
 		if (g_data.y != 0)

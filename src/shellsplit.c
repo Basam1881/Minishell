@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/31 09:59:07 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/13 16:45:34 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static int	split_into_arg(void)
 		}
 	}
 	if (g_data.split_flag == 2)
-		g_data.cmd[g_data.n][i] = 0;
+		g_data.cmd[g_data.n][i] = NULL;
 	return (i);
 }
 
@@ -144,12 +144,16 @@ char	**cmd_split(void)
 {
 	int		words;
 
-	if (!g_data.sep_cmds[g_data.n])
+	if (!*g_data.sep_cmds[g_data.n])
 	{
-		g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) + 1);
+		g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) * 2);
 		if (!(g_data.cmd[g_data.n]))
 			return (NULL);
-		g_data.cmd[g_data.n] = NULL;
+		g_data.cmd[g_data.n][0] = (char *)malloc(sizeof(char));
+		if (!(g_data.cmd[g_data.n]))
+			return (NULL);
+		g_data.cmd[g_data.n][0][0] = '\0';
+		g_data.cmd[g_data.n][1] = NULL;
 		return (g_data.cmd[g_data.n]);
 	}
 	g_data.split_flag = 0;

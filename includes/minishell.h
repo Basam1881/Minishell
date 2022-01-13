@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/12 08:11:07 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/13 13:55:15 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
 # define LINUX_PROMPT " BnM_Minishell--$>"
-
+# define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
+# define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
+# define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
+# define UNCLOSED_DOUBLE "BNM bash: syntax error (unclosed double qoutes)"
 /**
  * ------------------------------------------------------------------------------
  * |							Define Structures								|
@@ -157,5 +160,6 @@ void	env_exit(int *x, int *i, int *j);
 int		empty_cmd_checker(void);
 void	error_printer(void);
 void	dbl_ops_handler(void);
+int		unexpected_msg(int x, int flag, char *s);
 
 #endif

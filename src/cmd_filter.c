@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/31 17:55:38 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/12 14:47:21 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@ void	cmd_filter(int i)
 		free(g_data.cmd_path);
 		g_data.cmd_path = NULL;
 	}
+	if (!g_data.cmd[i][0])
+		return ;
 	if (g_data.cmd[i][0][0] == '/' || g_data.cmd[i][0][0] == '.')
 		g_data.cmd_path = g_data.cmd[i][0];
 	else
 	{
+		// ft_putendl_fd("HERE", 2);
 		path = ft_split(getenv("PATH"), ':');
 		j = 0;
 		while (path[j])

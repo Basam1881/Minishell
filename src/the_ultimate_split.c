@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/12 08:37:28 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/13 21:10:20 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	alloc_last_cmd(int *i, int *old_x, int *x)
 	}
 	g_data.sep_cmds[*i][j] = 0;
 	(*i)++;
-	g_data.sep_cmds[*i] = 0;
+	g_data.sep_cmds[*i] = NULL;
 	g_data.dbl_op_f = 0;
 	return (0);
 }
@@ -171,48 +171,30 @@ int	ultimate_3d_split(void)
 	{
 		qoutes_checker_3d(&x);
 		if (operators_checker(&x, &ops_cnt, 0))
-		{
-			g_data.exit_status = 2;
 			return (1);
-		}
 		star_assigner(x, 0);
 		x++;
 	}
 	if (ops_cnt && !g_data.empty_flag && g_data.last_op != 9)
-	{
-		ft_putendl_fd("BNM bash: syntax error near unexpected token `newline'", 2);
-		g_data.exit_status = 2;
-		return (1);
-	}
+		return (unexpected_msg(x, 4, NEWLINE_MSG));
 	else if (g_data.parentheses_cnt)
-	{
-		ft_putendl_fd("BNM bash: syntax error near unexpected token `('", 2);
-		g_data.exit_status = 2;
-		return (1);
-	}
+		return (unexpected_msg(x, 4, FIRST_PARENTH_MSG));
 	else if (g_data.single_qoute_flag)
-	{
-		ft_putendl_fd("BNM bash: syntax error (unclosed single qoutes)", 2);
-		g_data.exit_status = 2;
-		return (1);
-	}
+		return (unexpected_msg(x, 4, UNCLOSED_SINGLE));
 	else if (g_data.double_qoute_flag)
-	{
-		ft_putendl_fd("BNM bash: syntax error (unclosed double qoutes)", 2);
-		g_data.exit_status = 2;
-		return (1);
-	}
+		return (unexpected_msg(x, 4, UNCLOSED_DOUBLE));
 	g_data.empty_flag = 0;
 	g_data.cmd = (char ***)malloc(sizeof(char **) * (ops_cnt + 2));
 	g_data.sep_cmds = (char **)malloc(sizeof(char *) * (ops_cnt + 2));
 	g_data.ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));
 	g_data.star_array = (int *)malloc(sizeof(int) * (g_data.star_cnt + 1));
-	if (!g_data.cmd || !g_data.sep_cmds || !g_data.ops_array)
+	if (!g_data.cmd || !g_data.sep_cmds
+		|| !g_data.ops_array || !g_data.star_array)
 	{
 		error_printer();
 		return (1);
 	}
-	g_data.star_array[g_data.star_cnt] = '\0';
+	g_data.star_array[g_data.star_cnt] = -0;
 	g_data.star_cnt = 0;
 	g_data.op_cnt = 0;
 	if (sep_cmds_creator())
@@ -225,7 +207,8 @@ int	ultimate_3d_split(void)
 			return (1);
 		g_data.n++;
 	}
-	g_data.cmd[g_data.n] = 0;
+	g_data.cmd[g_data.n] = NULL;
 	g_data.n = 0;
+	g_data.parentheses_cnt = 0;
 	return (0);
 }
