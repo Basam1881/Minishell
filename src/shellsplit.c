@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/28 14:34:16 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 09:59:07 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * It's used to set the qoutes flags either to 1 or 0, so we 
  * can tell if we are inside qoutes at the moment or not
  * TODO: fix the condition for the enviroment variables to check if after the name is not digit nor character nor underscore
+ * TODO: add a flag to ignore the (*) if it's inside qoutes
 **/
 static void	qoutes_checker(int *x, int *i, int *j)
 {

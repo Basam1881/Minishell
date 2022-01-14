@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/31 03:36:52 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/12 08:11:07 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ typedef struct s_data
 	int		dbl_op_f;
 	int		n;
 	int		*ops_array;
+	int		*star_array;
+	int		star_array_index;
+	int		star_index_temp;
 	int		op_cnt;
 	char	**environ;
 	pid_t	c_pid;
@@ -97,9 +100,15 @@ typedef struct s_data
 	int		empty_flag;
 	int		pipes;
 	int		pipe_flag;
+	int		is_pipe;
+	int		is_dbl_pipe;
+	int		is_dbl_and;
 	int		output_flag;
 	int		input_flag;
 	int		under_process_flag;
+	int		last_op;
+	int		parentheses_cnt;
+	int		star_cnt;
 	int		x;
 	int		y;
 	int		fdout;
@@ -142,7 +151,7 @@ void	ft_cd(void);
 void	ft_echo(void);
 void	ft_pwd(void);
 void	ft_env(void);
-void	sig_handler(int signum, siginfo_t *info, void *ucontext);
+void	sig_handler(int signum);
 void	execute_commands(int i);
 void	cmd_filter(int i);
 void	save_exit_status(void);
@@ -150,5 +159,18 @@ void	ft_exit(void);
 void	env_exit(int *x, int *i, int *j);
 int		empty_cmd_checker(void);
 void	error_printer(void);
+void	dbl_ops_handler(void);
+
+/**
+ * ------------------------------------------------------------------------------
+ * |							wild_card.c							|
+ * ------------------------------------------------------------------------------
+ **/
+int		check_name(char *name, char *wild_card);
+int		count_wild_card(char *wild_card);
+char	**expand_wild_card(char *wild_card);
+void	insert_array(char **expandded_array, int i, int *j);
+int		handle_wild_card(int i);
+char	**ft_wild_split(char const *s, char c, int index);
 
 #endif

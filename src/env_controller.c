@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:29:09 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/20 03:17:18 by bnaji            ###   ########.fr       */
+/*   Updated: 2021/12/31 08:52:41 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	env_exit(int *x, int *i, int *j)
 		else
 			while (n < exit_num_len)
 				g_data.cmd[g_data.n][*i][(*j)++] = exit_num[n++];
-		// (*j)--;
 		(*x) += 2;
 	}
 }
@@ -67,6 +66,12 @@ void	env_checker(int *x, int *i, int *j)
 	int		n;
 
 	old_len = ft_strlen_to_space(&g_data.sep_cmds[g_data.n][*x + 1]);
+	if (!old_len)
+	{
+		if (g_data.split_flag == 2)
+			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		return ;
+	}
 	old_s = ft_substr(&g_data.sep_cmds[g_data.n][*x + 1], 0, old_len);
 	new_s = getenv(old_s);
 	if (new_s && g_data.split_flag)
@@ -82,8 +87,8 @@ void	env_checker(int *x, int *i, int *j)
 		}
 		(*j)--;
 	}
-	else 
-	no_env_in_no_qoutes(new_s, i, x);
+	else
+		no_env_in_no_qoutes(new_s, i, x);
 	*x += old_len;
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/30 17:40:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/12 00:17:20 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,33 @@ int	empty_cmd_checker(void)
 	return (0);
 }
 
-static void	ops_assigner(int *x, int flag)
+static void	ops_assigner(int *x, int is_single_op, int *var)
 {
-	if (flag == 1)
+	if (is_single_op == 1)
 	{
 		if (g_data.cmdline[(*x)] == '|')
-			g_data.ops_array[g_data.op_cnt] = 1;
+			*var = 1;
 		else if (g_data.cmdline[(*x)] == '>')
-			g_data.ops_array[g_data.op_cnt] = 2;
+			*var = 2;
 		else if (g_data.cmdline[(*x)] == '<')
-			g_data.ops_array[g_data.op_cnt] = 3;
-		g_data.op_cnt++;
+			*var = 3;
+		else if (g_data.cmdline[(*x)] == '(')
+			*var = 8;
+		else if (g_data.cmdline[(*x)] == ')')
+			*var = 9;
+		// g_data.op_cnt++;
 	}
 	else
 	{
 		if (g_data.cmdline[(*x)] == '|')
-			g_data.ops_array[g_data.op_cnt] = 4;
+			*var = 4;
 		else if (g_data.cmdline[(*x)] == '>')
-			g_data.ops_array[g_data.op_cnt] = 5;
+			*var = 5;
 		else if (g_data.cmdline[(*x)] == '<')
-			g_data.ops_array[g_data.op_cnt] = 6;
+			*var = 6;
 		else if (g_data.cmdline[(*x)] == '&')
-			g_data.ops_array[g_data.op_cnt] = 7;
-		g_data.op_cnt++;
+			*var = 7;
+		// g_data.op_cnt++;
 	}
 }
 
@@ -62,6 +66,8 @@ static void	ops_assigner(int *x, int flag)
  * 		5 = >>
  * 		6 = <<
  * 		7 = &&
+ * 		8 = (
+ * 		9 = )
  * * TODO: throw an error if there is nothing in between operators
  * * TODO: throw an error if there is nothing after operator
  * * TODO: accept nothing before first redirection in a command
@@ -77,22 +83,52 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 	{
 		if ((g_data.cmdline[(*x)] == '|' && g_data.cmdline[(*x) + 1] != '|')
 			|| (g_data.cmdline[(*x)] == '>' && g_data.cmdline[(*x) + 1] != '>')
-			|| (g_data.cmdline[(*x)] == '<' && g_data.cmdline[(*x) + 1] != '<'))
+			|| (g_data.cmdline[(*x)] == '<' && g_data.cmdline[(*x) + 1] != '<')
+			|| g_data.cmdline[(*x)] == '(' || g_data.cmdline[(*x)] == ')')
 		{
 			if (flag)
-				ops_assigner(x, 1);
+				ops_assigner(x, 1, &g_data.ops_array[g_data.op_cnt++]);
 			else
 			{
+				if (g_data.cmdline[(*x)] == '(')
+					g_data.parentheses_cnt++;
+				else if (g_data.cmdline[(*x)] == ')')
+				{
+					if (!g_data.parentheses_cnt)
+					{
+						ft_putendl_fd("BNM bash: syntax error near unexpected token `)'", 2);
+						return (1);
+					}
+					g_data.parentheses_cnt--;
+				}
 				if (g_data.empty_flag)
+				{
+					if (g_data.cmdline[(*x)] == '(')
+					{
+						// ft_putendl_fd("single", 2);
+						ft_putstr_fd("BNM bash: syntax error near unexpected token `", 2);
+						ft_putchar_fd(g_data.cmdline[(*x)], 2);
+						ft_putstr_fd("'\n", 2);
+						g_data.exit_status = 1;
+						return (1);
+					}
 					g_data.empty_flag = 0;
+				}
 				else
 				{
-					ft_putstr_fd("BNM bash: syntax error near unexpected token `", 2);
-					ft_putchar_fd(g_data.cmdline[(*x)], 2);
-					ft_putstr_fd("'\n", 2);
-					g_data.exit_status = 1;
-					return (1);
+						// ft_putendl_fd("single", 2);
+					if (g_data.cmdline[(*x)] == '(' && (!g_data.last_op || g_data.last_op == 1 || g_data.last_op == 4 || g_data.last_op == 7 || g_data.last_op == 8))
+							;
+					else
+					{
+						ft_putstr_fd("BNM bash: syntax error near unexpected token `", 2);
+						ft_putchar_fd(g_data.cmdline[(*x)], 2);
+						ft_putstr_fd("'\n", 2);
+						g_data.exit_status = 1;
+						return (1);
+					}
 				}
+				ops_assigner(x, 1, &g_data.last_op);
 			}
 			(*ops_cnt)++;
 		}
@@ -102,7 +138,7 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 			|| (g_data.cmdline[(*x)] == '&' && g_data.cmdline[(*x) + 1] == '&'))
 		{
 			if (flag)
-				ops_assigner(x, 0);
+				ops_assigner(x, 0,  &g_data.ops_array[g_data.op_cnt++]);
 			else
 			{
 				if (g_data.empty_flag)
@@ -114,18 +150,20 @@ int	operators_checker(int *x, int *ops_cnt, int flag)
 					ft_putstr_fd("'\n", 2);
 					return (1);
 				}
+				ops_assigner(x, 0, &g_data.last_op);
 			}
 			g_data.dbl_op_f = 1;
 			(*ops_cnt)++;
 			(*x)++;
 		}
-		else if ((ft_isalpha(g_data.cmdline[(*x)]) || ft_isdigit(g_data.cmdline[(*x)]) || g_data.cmdline[(*x)] == '_') && !flag)
-			g_data.empty_flag = 1;
-		else if (!flag && !g_data.empty_flag && ((g_data.cmdline[(*x)] == '\'' && g_data.cmdline[(*x - 1)] == '\'') || (g_data.cmdline[(*x)] == '"' && g_data.cmdline[(*x - 1)] == '"')))
-		{
-			ft_putstr_fd("BNM bash: no such file or directory: \n", 2);
-			return (1);
-		}
+		else if (g_data.cmdline[(*x)] != ' ')
+			if (!flag)
+				g_data.empty_flag = 1;
+		// else if (!flag && !g_data.empty_flag && ((g_data.cmdline[(*x)] == '\'' && g_data.cmdline[(*x - 1)] == '\'') || (g_data.cmdline[(*x)] == '"' && g_data.cmdline[(*x - 1)] == '"')))
+		// {
+			// ft_putstr_fd("BNM bash: No such file or directory \n", 2);
+			// return (1);
+		// }
 	}
 	else
 		if (!flag)
