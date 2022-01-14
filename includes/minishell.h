@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/13 13:55:15 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/14 14:44:57 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ typedef struct s_data
 	int		op_cnt;
 	char	**environ;
 	pid_t	c_pid;
+	pid_t	sub_pid;
+	int		sub_status;
 	int		pid;
 	int		exit_status;
 	int		c_exit_flag;

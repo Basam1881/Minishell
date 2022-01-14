@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/12 08:52:37 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/14 09:51:55 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	reset(void)
 	g_data.empty_flag = 0;
 	g_data.under_process_flag = 0;
 	g_data.c_pid = 0;
+	g_data.sub_pid = 0;
 	g_data.pipes = -1;
 	g_data.pipe_flag = 0;
 	g_data.output_flag = 0;

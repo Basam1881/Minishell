@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/13 21:11:00 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/14 14:44:36 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,21 +285,27 @@ int	check_op(int *i, int *j)
 
 int	check_parentheses(int *i, int *j)
 {
-	if (g_data.ops_array[*j] == 8)
+	while (1)
 	{
-		// ft_putendl_fd("open parentheses", 2);
-		(*i)++;
-		(*j)++;
-		g_data.y = *i;
-		g_data.x = *j;
-		g_data.parentheses_cnt++;
-	}
-	if (g_data.ops_array[*j] == 9)
-	{
-		// ft_putendl_fd("close parentheses", 2);
-		(*i)++;
-		(*j)++;
-		g_data.x = *j;
+		if (g_data.ops_array[*j] == 8)
+		{
+			// ft_putendl_fd("open parentheses", 2);
+			(*i)++;
+			(*j)++;
+			g_data.y = *i;
+			g_data.x = *j;
+			g_data.parentheses_cnt++;
+		}
+		else if (g_data.ops_array[*j] == 9)
+		{
+			// ft_putendl_fd("close parentheses", 2);
+			(*i)++;
+			(*j)++;
+			g_data.x = *j;
+			g_data.parentheses_cnt--;
+		}
+		else
+			break ;
 	}
 	return (0);
 }
@@ -352,11 +358,11 @@ void	check_cmd(void)
 		g_data.x = j;
 		g_data.output_flag = 0;
 		g_data.input_flag = 0;
-		cmd_filter(i);
+		check_parentheses(&i, &j);
+		cmd_filter(g_data.y);
 		// printf("|%s|\n", g_data.cmd_path);
 		// g_data.cmd[g_data.y][0] = g_data.cmd_path;
 		// printf("~%d~ ~%s~\n", i, g_data.cmd[g_data.y][0]);
-		check_parentheses(&i, &j);
 		// ft_putendl_fd("HERE", 2);
 		if (check_op(&i, &j))
 			break ;
@@ -376,13 +382,7 @@ void	check_cmd(void)
 		{
 			// printf("SHIT\n");
 			if (g_data.is_dbl_pipe || g_data.is_dbl_and)
-			{
-				// if (g_data.ops_array[j] != 4 && g_data.ops_array[j] != 7)
-				// g_data.x = j;
 				j++;
-				// else
-				// 	i++;
-			}
 			else
 				pipe_write("write2", &i, &j);
 			g_data.pipe_flag = 0;
@@ -393,7 +393,16 @@ void	check_cmd(void)
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 			if (g_data.exit_status)
-				break ;
+			{
+				while (g_data.ops_array[j])
+				{
+					if (g_data.ops_array[j])
+						j++;
+					i++;
+					if (g_data.ops_array[j] == 4 ||  !g_data.ops_array[j])
+						break ;
+				}
+			}
 			g_data.is_dbl_and = 0;
 		}
 		else if (g_data.is_dbl_pipe)
@@ -401,9 +410,19 @@ void	check_cmd(void)
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 			if (!g_data.exit_status)
-				break ;
+			{
+				while (1)
+				{
+					if (g_data.ops_array[j])
+						j++;
+					i++;
+					if (g_data.ops_array[j] == 7 ||  !g_data.ops_array[j])
+						break ;
+				}
+			}
 			g_data.is_dbl_pipe = 0;
 		}
+		// ft_putendl_fd("HERE", 2);
 		// printf("j: %d\tx: %d\t i: %d\ty: %d\n", j, g_data.x, i, g_data.y);
 		if (!is_redir(j))
 			close(g_data.fd[g_data.pipes][1]);
