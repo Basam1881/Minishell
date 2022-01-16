@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/14 14:45:31 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/15 15:21:43 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av, char **ev)
 		g_data.cmdline = readline(MAC_PROMPT);
 		// g_data.cmdline = "echo hi > 1 || echo wow";
 		if (!g_data.cmdline)
-			exit_shell(0);
+			exit_shell(g_data.exit_status);
 		if (g_data.cmdline && *g_data.cmdline)
 			add_history(g_data.cmdline);
 		ultimate_3d_split();

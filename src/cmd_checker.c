@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/14 14:44:36 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/16 18:49:56 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,14 +256,16 @@ int	check_op(int *i, int *j)
 			g_data.pipe_flag = 1;
 		else if (g_data.ops_array[*j] == 4)
 		{
-			g_data.pipe_flag = 1;
+			(*j)++;
 			g_data.is_dbl_pipe = 1;
 		}
 		else if (g_data.ops_array[*j] == 7)
 		{
-			g_data.pipe_flag = 1;
+			(*j)++;
 			g_data.is_dbl_and = 1;
 		}
+		else if (g_data.ops_array[*j] == 9)
+			g_data.sub_exit_flag = 1;
 	}
 	else if (g_data.ops_array[*j] == 4)
 	{
@@ -290,6 +292,15 @@ int	check_parentheses(int *i, int *j)
 		if (g_data.ops_array[*j] == 8)
 		{
 			// ft_putendl_fd("open parentheses", 2);
+			g_data.sub_pid = fork();
+			waitpid(g_data.sub_pid, &g_data.sub_status, 0);
+			if (!g_data.sub_pid)
+			{
+				ft_putendl_fd("child starts", 2);
+				g_data.parentheses_cnt = 0;
+				g_data.was_child = 1;
+				g_data.inside_parentheses_flag = 1;
+			}
 			(*i)++;
 			(*j)++;
 			g_data.y = *i;
@@ -299,13 +310,39 @@ int	check_parentheses(int *i, int *j)
 		else if (g_data.ops_array[*j] == 9)
 		{
 			// ft_putendl_fd("close parentheses", 2);
-			(*i)++;
-			(*j)++;
-			g_data.x = *j;
-			g_data.parentheses_cnt--;
+			if (!g_data.sub_pid)
+			{
+				g_data.sub_exit_flag = 1;
+			}
+			else
+			{
+				(*i)++;
+				(*j)++;
+				g_data.x = *j;
+				g_data.y = *i;
+				g_data.parentheses_cnt--;
+				g_data.closing_parenthese = 1;
+			}
+			break ;
+				// if (g_data.parentheses_cnt == 1)
 		}
 		else
-			break ;
+		{
+			if (!g_data.sub_pid)
+				break ;
+			else
+			{
+				if (g_data.parentheses_cnt)
+				{
+					(*i)++;
+					(*j)++;
+					g_data.y = *i;
+					g_data.x = *j;
+				}
+				else
+					break ;
+			}
+		}
 	}
 	return (0);
 }
@@ -318,6 +355,11 @@ void	handle_cmd(void)
 	int	k;
 
 	k = 1;
+	if (g_data.closing_parenthese)
+	{
+		g_data.closing_parenthese = 0;
+		return ;
+	}
 	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")))
 		while (g_data.cmd[g_data.y][k])
 			ft_export(ft_strdup(g_data.cmd[g_data.y][k++]));
@@ -359,6 +401,9 @@ void	check_cmd(void)
 		g_data.output_flag = 0;
 		g_data.input_flag = 0;
 		check_parentheses(&i, &j);
+		// printf("ops_array[j]: %d\n", g_data.ops_array[j]);
+		if (!g_data.cmd[i])
+			break ;
 		cmd_filter(g_data.y);
 		// printf("|%s|\n", g_data.cmd_path);
 		// g_data.cmd[g_data.y][0] = g_data.cmd_path;
@@ -381,28 +426,44 @@ void	check_cmd(void)
 		if (g_data.pipe_flag == 1)
 		{
 			// printf("SHIT\n");
-			if (g_data.is_dbl_pipe || g_data.is_dbl_and)
-				j++;
-			else
-				pipe_write("write2", &i, &j);
+			pipe_write("write2", &i, &j);
 			g_data.pipe_flag = 0;
 		}
+		// printf("i: %d\n", i);
 		handle_cmd();
+		// ft_putendl_fd("BREAK", 2);
 		if (g_data.is_dbl_and)
 		{
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 			if (g_data.exit_status)
 			{
-				while (g_data.ops_array[j])
+				while (1)
 				{
-					if (g_data.ops_array[j])
-						j++;
-					i++;
-					if (g_data.ops_array[j] == 4 ||  !g_data.ops_array[j])
+					// ft_putendl_fd("AND", 2);
+					if (g_data.ops_array[j] == 8)
+						g_data.parentheses_cnt++;
+					else if (g_data.ops_array[j] == 9)
+						g_data.parentheses_cnt--;
+					else if ((g_data.ops_array[j] == 4 || !g_data.ops_array[j]) && !g_data.parentheses_cnt)
+					{
+						if (g_data.ops_array[j])
+							j++;
+						i++;
+						if (g_data.inside_parentheses_flag)
+							g_data.sub_exit_flag = 1;
 						break ;
+					}
+					j++;
+					i++;
 				}
 			}
+			// else if (g_data.closing_parenthese)
+			// {
+			// 	ft_putendl_fd("AND", 2);
+			// 	i++;
+			// 	j++;
+			// }
 			g_data.is_dbl_and = 0;
 		}
 		else if (g_data.is_dbl_pipe)
@@ -413,20 +474,45 @@ void	check_cmd(void)
 			{
 				while (1)
 				{
-					if (g_data.ops_array[j])
-						j++;
-					i++;
-					if (g_data.ops_array[j] == 7 ||  !g_data.ops_array[j])
+					if (g_data.ops_array[j] == 8)
+						g_data.parentheses_cnt++;
+					else if (g_data.ops_array[j] == 9)
+						g_data.parentheses_cnt--;
+					else if ((g_data.ops_array[j] == 7 || !g_data.ops_array[j]) && !g_data.parentheses_cnt)
+					{
+						// ft_putendl_fd("OR", 2);
+						if (g_data.ops_array[j])
+							j++;
+						i++;
+						if (g_data.inside_parentheses_flag)
+							g_data.sub_exit_flag = 1;
 						break ;
+					}
+					j++;
+					i++;
 				}
 			}
+			// else if (g_data.closing_parenthese)
+			// {
+			// 	i++;
+			// 	j++;
+			// }
 			g_data.is_dbl_pipe = 0;
 		}
-		// ft_putendl_fd("HERE", 2);
 		// printf("j: %d\tx: %d\t i: %d\ty: %d\n", j, g_data.x, i, g_data.y);
 		if (!is_redir(j))
+		{
+			// ft_putendl_fd("HERE", 2);
 			close(g_data.fd[g_data.pipes][1]);
+			dup2(g_data.fdin, STDIN_FILENO);
+			dup2(g_data.fdout, STDOUT_FILENO);
+		}
 		wait(NULL);
+		if (g_data.sub_exit_flag)
+		{
+			ft_putendl_fd("child dies", 2);
+			exit_shell(g_data.exit_status);
+		}
 	}
 	dup2(g_data.fdin, STDIN_FILENO);
 	dup2(g_data.fdout, STDOUT_FILENO);

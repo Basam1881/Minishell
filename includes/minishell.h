@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/14 14:44:57 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/16 19:18:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ typedef struct s_data
 	pid_t	c_pid;
 	pid_t	sub_pid;
 	int		sub_status;
+	int		sub_exit_flag;
+	int		inside_parentheses_flag;
+	int		was_child;
+	int		closing_parenthese;
 	int		pid;
 	int		exit_status;
 	int		c_exit_flag;
@@ -113,6 +117,8 @@ typedef struct s_data
 	int		star_cnt;
 	int		x;
 	int		y;
+	int		x_holder;
+	int		y_holder;
 	int		fdout;
 	int		fdin;
 	char	**test_str; // this is just temp to test ft_strjoin_2d
