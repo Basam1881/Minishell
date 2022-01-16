@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wild_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 09:42:06 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/31 09:46:26 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/15 16:37:21 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static	void	ft_fill_str(char **res, char const *string, char ch, int index)
 			i++;
 		index--;
 		end = i;
-        //printf("start = %d | end = %d\n", start, end);
 
 		res[j] = ft_substr(string, start, end - start);
 		j++;

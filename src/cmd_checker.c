@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/31 07:44:26 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/15 16:37:04 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,34 +215,39 @@ int	handle_redirection(int op, int j)
 int	check_op(int *i, int *j)
 {
 	int	n;
+	int error_flag;
 
+	error_flag = 0;
 	if (g_data.ops_array[*j] == 1)
 		pipe_write("write", i, j);
 	else if (g_data.ops_array[*j] == 2 || g_data.ops_array[*j] == 3 || g_data.ops_array[*j] == 5 || g_data.ops_array[*j] == 6)
 	{
 		while (g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
 		{
-			n = 1;
-			if(g_data.ops_array[*j] != 6 && handle_wild_card(*j + 1) == -1)
+			if(error_flag)
 			{
-				while (g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
-				{
-					if(g_data.ops_array[*j] == 6)
-					{
-						if (handle_redirection(g_data.ops_array[*j], *j))
-						{
-							return (1);
-						}
-					}
+				if(g_data.ops_array[*j] == 6)
+				{	
+					handle_redirection(g_data.ops_array[*j], *j);
+				}
 				(*j)++;
-				}	
-				break;
+				continue;
+			}
+			n = 1;
+			if(g_data.ops_array[*j] != 6)
+			{
+				if (handle_wild_card(*j + 1) == -1)
+				{
+					error_flag = 1;
+				//	(*j)++;
+					continue;
+				}
 			}
 			if (handle_redirection(g_data.ops_array[*j], *j))
 			{
-				return (1);
+				error_flag = 1;
 			}
-			while (g_data.cmd[*j + 1][n])
+			while (g_data.cmd[*j + 1][n] && !error_flag)
 			{
 				ft_strjoin_2d(g_data.cmd[*j + 1][n]);
 				n++;
@@ -255,6 +260,8 @@ int	check_op(int *i, int *j)
 	}
 	else
 		(*i)++;
+	if(error_flag)
+		return (1);
 	return (0);
 }
 
@@ -293,13 +300,14 @@ void	check_cmd(void)
 {
 	int		i;
 	int		j;
+	int	error_flag;
 
 	i = 0;
 	j = 0;
 	if (!g_data.cmd)
 		return ;
 	// | = 1	> = 2	< = 3	>> = 5	<< = 6
-	// while(i < 3)
+	// while(i < 5)
 	// 	printf("|%d|\n", g_data.star_array[i++]);
 	// i = 0;
 	write(1, BYELLOW, 8);
@@ -310,17 +318,19 @@ void	check_cmd(void)
 		g_data.x = j;
 		g_data.output_flag = 0;
 		g_data.input_flag = 0;
+		error_flag = 0;
 		cmd_filter(i);
 		// printf("|%s|\n", g_data.cmd_path);
 		// g_data.cmd[g_data.y][0] = g_data.cmd_path;
 		// printf("~%d~ ~%s~\n", i, g_data.cmd[g_data.y][0]);
 		if (check_op(&i, &j))
-			break ;
+			error_flag = 1;
 		if (g_data.y != 0)
 			pipe_read();
 		if (g_data.pipe_flag == 1)
 			pipe_write("write2", &i, &j);
-		handle_cmd();
+		if(!error_flag)
+			handle_cmd();
 		if (g_data.ops_array[g_data.x] == 1)
 			close(g_data.fd[g_data.pipes][1]);
 		save_exit_status();

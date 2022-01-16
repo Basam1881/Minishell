@@ -27,24 +27,17 @@ int	check_name(char *name, char *wild_card)
 	int temp_index;
 
 	temp_index = g_data.star_array_index;
-	//printf("%s\n", name);
-	res = ft_wild_split(wild_card, '*',0);
-    // while(res[i])
-    //     printf("|%s|\n",res[i++]);
-    // i = 0;
+	res = ft_wild_split(wild_card, '*',g_data.star_array_index);
 	while(wild_card[k])
 	{
 		if(wild_card[k++] == '*' && g_data.star_array[temp_index++] == 1)
 			wc_total++;
 		
 	}
-	//printf("total stars = %d\n",wc_total);
 	if(wc_total == (int) ft_strlen(wild_card))
 		return (1);
-	//printf("111\n");
 	while(wild_card[wc_index])
 	{
-	//printf("222\n");
 		while(wild_card[wc_index] == '*')
 		{
 			if(g_data.star_array[g_data.star_array_index] == -1)
@@ -53,7 +46,6 @@ int	check_name(char *name, char *wild_card)
 			wc_number ++;
 			g_data.star_array_index++;
 		}
-		//printf("star array index = %d\n", g_data.star_array_index);
 		if(!wild_card[wc_index])
 			break;
 		if(wc_number == 0)
@@ -72,7 +64,6 @@ int	check_name(char *name, char *wild_card)
 		}
 		else if(wc_number == wc_total)
 		{
-			//printf("here in total\n");
 			if((int) ft_strlen(name) - (int) ft_strlen(res[i]) < 0 || (int) ft_strlen(name) - (int) ft_strlen(res[i]) < name_index)
 				return 0;
 			temp = ft_strnstr(&name[ft_strlen(name) - ft_strlen(res[i])], res[i], ft_strlen(&name[ft_strlen(name) - ft_strlen(res[i])]));
@@ -81,7 +72,6 @@ int	check_name(char *name, char *wild_card)
 		}
 		else
 		{
-			//printf("here in else\n");
 			temp = ft_strnstr(&name[name_index], res[i], ft_strlen(&name[name_index]));
 			if(!temp)
 				return (0);
@@ -126,6 +116,7 @@ int	count_wild_card(char *wild_card)
 		dir_struct = readdir(d);
 		if(!dir_struct)
 			break;
+		g_data.star_array_index = g_data.star_index_temp;
 		if(check_name(dir_struct->d_name, wild_card))
 			count ++;
 	}
@@ -200,14 +191,34 @@ void	insert_array(char **expandded_array, int i, int *j)
 int	handle_wild_card(int i)
 {
 	int j;
+	int k;
+	int wc_flag;
 	char **expanded_array;
 	
 	j = 0;
 	while(g_data.cmd[i][j])
 	{
+		k = 0;
+		wc_flag = 0;
 		if(ft_strchr(g_data.cmd[i][j], '*'))
 		{
 			expanded_array = expand_wild_card(g_data.cmd[i][j]);
+			while(g_data.cmd[i][j][k])
+			{
+				if(g_data.cmd[i][j][k] == '*')
+				{
+					if(g_data.star_array[g_data.star_index_temp] == 1)
+						wc_flag = 1;
+					g_data.star_index_temp++;
+				}
+				k++;
+			}
+			if(!wc_flag)
+			{
+				if(g_data.cmd[i][j])
+					j++;
+				continue;
+			}
 			if(expanded_array)
 			{
 				if(i > 0)
@@ -216,15 +227,16 @@ int	handle_wild_card(int i)
 					{
 						if(j == 0 && ft_strlen2(expanded_array)  > 1)
 						{
-							perror("Ambigous Redirect\n");
-							return (-1);	
+						write(2, "Ambigous Redirect\n", 18);
+						return (-1);	
 						}
 					}
 				}
 				insert_array(expanded_array, i, &j);
 			}
+
+
 		}
-		g_data.star_index_temp = g_data.star_array_index;
 		if(g_data.cmd[i][j])
 			j++;
 	}
