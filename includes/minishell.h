@@ -6,7 +6,7 @@
 /*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/16 17:22:14 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/17 06:31:11 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,11 +167,38 @@ void	dbl_ops_handler(void);
  * |							wild_card.c							|
  * ------------------------------------------------------------------------------
  **/
+ 
 int		check_name(char *name, char *wild_card);
 int		count_wild_card(char *wild_card);
 char	**expand_wild_card(char *wild_card);
 void	insert_array(char **expandded_array, int i, int *j);
 int		handle_wild_card(int i);
 char	**ft_wild_split(char const *s, char c, int index);
+
+/**
+ * ------------------------------------------------------------------------------
+ * |							pipes.c							|
+ * ------------------------------------------------------------------------------
+ **/
+ 
+void	pipe_read(void);
+void	pipe_write(char *type, int *i, int *j);
+ 
+ /**
+ * ------------------------------------------------------------------------------
+ * |							redirections.c							|
+ * ------------------------------------------------------------------------------
+ **/
+ 
+void	ft_strjoin_2d(char *str2);
+int		handle_redirection(int op, int j);
+
+ /**
+ * ------------------------------------------------------------------------------
+ * |							check_operators.c							|
+ * ------------------------------------------------------------------------------
+ **/
+ 
+int	check_op(int *i, int *j);
 
 #endif
