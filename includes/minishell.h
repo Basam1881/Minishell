@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/16 19:18:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/17 16:39:22 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <termios.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <dirent.h>
 
 /**
  * ------------------------------------------------------------------------------
@@ -91,6 +92,8 @@ typedef struct s_data
 	int		n;
 	int		*ops_array;
 	int		*star_array;
+	int		star_array_index;
+	int		star_index_temp;
 	int		op_cnt;
 	char	**environ;
 	pid_t	c_pid;
@@ -121,6 +124,7 @@ typedef struct s_data
 	int		y_holder;
 	int		fdout;
 	int		fdin;
+	char	*error_str;
 	char	**test_str; // this is just temp to test ft_strjoin_2d
 	char	pwd_dir_path[1000];
 	int		fd[][2];
@@ -169,5 +173,17 @@ int		empty_cmd_checker(void);
 void	error_printer(void);
 void	dbl_ops_handler(void);
 int		unexpected_msg(int x, int flag, char *s);
+int		check_name(char *name, char *wild_card);
+int		count_wild_card(char *wild_card);
+char	**expand_wild_card(char *wild_card);
+void	insert_array(char **expandded_array, int i, int *j);
+int		handle_wild_card(int i);
+char	**ft_wild_split(char const *s, char c, int index);
+void	pipe_read(void);
+void	pipe_write(char *type, int *i, int *j);
+void	ft_strjoin_2d(char *str2);
+int		handle_redirection(int op, int j);
+int		check_op(int *i, int *j);
+
 
 #endif
