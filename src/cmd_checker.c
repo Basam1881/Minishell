@@ -6,7 +6,7 @@
 /*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/15 16:37:04 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/16 17:38:41 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,9 @@ int	handle_redirection(int op, int j)
 	{
 		fdrd = open(g_data.cmd[j + 1][0], O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
 		if (fdrd == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		if (dup2(fdrd, STDOUT_FILENO) == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		close(fdrd);
 		g_data.output_flag = 1;
 	}
@@ -149,17 +141,9 @@ int	handle_redirection(int op, int j)
 	{
 		fdrd = open(g_data.cmd[j + 1][0], O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
 		if (fdrd == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		if (dup2(fdrd, STDOUT_FILENO) == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		close(fdrd);
 		g_data.output_flag = 1;
 	}
@@ -167,17 +151,9 @@ int	handle_redirection(int op, int j)
 	{
 		fdrd = open(g_data.cmd[j + 1][0], O_RDWR, S_IRWXU);
 		if (fdrd == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		if (dup2(fdrd, STDIN_FILENO) == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		close(fdrd);
 		g_data.input_flag = 1;
 	}
@@ -188,19 +164,19 @@ int	handle_redirection(int op, int j)
 		while (1)
 		{
 			temp = get_next_line(g_data.fdin);
-			if ((ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1) || !ft_strcmp(temp, "\n")) == 0 && temp)
+			if (ft_strlen(g_data.cmd[j + 1][0]) == (ft_strlen(temp) - 1) && !(ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1)) )
+			{
+				if(temp)
+					free(temp);
 				break ;
+			}
 			write(inputfd[1], temp, ft_strlen(temp));
 			free(temp);
 			temp = NULL;
 		}
 		//dup2(g_data.fdin, STDIN_FILENO);
 		if (dup2(inputfd[0], STDIN_FILENO) == -1)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
 			return (1);
-		}
 		close(inputfd[0]);
 		close(inputfd[1]);
 		g_data.input_flag = 1;
@@ -253,6 +229,11 @@ int	check_op(int *i, int *j)
 				n++;
 			}
 			(*j)++;
+		}
+		if(error_flag)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
 		}
 		*i = *j + 1;
 		if (g_data.ops_array[*j] == 1)
