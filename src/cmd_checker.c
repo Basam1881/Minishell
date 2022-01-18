@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/17 06:26:46 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/18 04:29:27 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	check_cmd(void)
 	j = 0;
 	if (!g_data.cmd)
 		return ;
+	// 4 = || 7 = &&
 	write(1, BYELLOW, 8);
 	while (g_data.cmd[i])
 	{
@@ -107,6 +108,7 @@ void	check_cmd(void)
 		if (g_data.ops_array[g_data.x] == 1)
 			close(g_data.fd[g_data.pipes][1]);
 		save_exit_status();
+		printf("%d\n", g_data.exit_status);
 	}
 	dup2(g_data.fdin, STDIN_FILENO);
 	dup2(g_data.fdout, STDOUT_FILENO);
