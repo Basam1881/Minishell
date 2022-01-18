@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/17 06:31:11 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/17 16:39:22 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
 # define LINUX_PROMPT " BnM_Minishell--$>"
-
+# define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
+# define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
+# define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
+# define UNCLOSED_DOUBLE "BNM bash: syntax error (unclosed double qoutes)"
 /**
  * ------------------------------------------------------------------------------
  * |							Define Structures								|
@@ -94,6 +97,12 @@ typedef struct s_data
 	int		op_cnt;
 	char	**environ;
 	pid_t	c_pid;
+	pid_t	sub_pid;
+	int		sub_status;
+	int		sub_exit_flag;
+	int		inside_parentheses_flag;
+	int		was_child;
+	int		closing_parenthese;
 	int		pid;
 	int		exit_status;
 	int		c_exit_flag;
@@ -111,6 +120,8 @@ typedef struct s_data
 	int		star_cnt;
 	int		x;
 	int		y;
+	int		x_holder;
+	int		y_holder;
 	int		fdout;
 	int		fdin;
 	char	*error_str;
@@ -161,44 +172,18 @@ void	env_exit(int *x, int *i, int *j);
 int		empty_cmd_checker(void);
 void	error_printer(void);
 void	dbl_ops_handler(void);
-
-/**
- * ------------------------------------------------------------------------------
- * |							wild_card.c							|
- * ------------------------------------------------------------------------------
- **/
- 
+int		unexpected_msg(int x, int flag, char *s);
 int		check_name(char *name, char *wild_card);
 int		count_wild_card(char *wild_card);
 char	**expand_wild_card(char *wild_card);
 void	insert_array(char **expandded_array, int i, int *j);
 int		handle_wild_card(int i);
 char	**ft_wild_split(char const *s, char c, int index);
-
-/**
- * ------------------------------------------------------------------------------
- * |							pipes.c							|
- * ------------------------------------------------------------------------------
- **/
- 
 void	pipe_read(void);
 void	pipe_write(char *type, int *i, int *j);
- 
- /**
- * ------------------------------------------------------------------------------
- * |							redirections.c							|
- * ------------------------------------------------------------------------------
- **/
- 
 void	ft_strjoin_2d(char *str2);
 int		handle_redirection(int op, int j);
+int		check_op(int *i, int *j);
 
- /**
- * ------------------------------------------------------------------------------
- * |							check_operators.c							|
- * ------------------------------------------------------------------------------
- **/
- 
-int	check_op(int *i, int *j);
 
 #endif

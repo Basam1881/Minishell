@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:20:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/17 06:26:24 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/17 16:52:47 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,32 @@ int	check_op(int *i, int *j)
 		*i = *j + 1;
 		if (g_data.ops_array[*j] == 1)
 			g_data.pipe_flag = 1;
+		else if (g_data.ops_array[*j] == 4)
+		{
+			(*j)++;
+			g_data.is_dbl_pipe = 1;
+		}
+		else if (g_data.ops_array[*j] == 7)
+		{
+			(*j)++;
+			g_data.is_dbl_and = 1;
+		}
+		else if (g_data.ops_array[*j] == 9)
+			g_data.sub_exit_flag = 1;
 	}
-	else
+		else if (g_data.ops_array[*j] == 4)
+	{
+		g_data.is_dbl_pipe = 1;
+		(*i)++;
+		(*j)++;
+	}
+	else if (g_data.ops_array[*j] == 7)
+	{
+		g_data.is_dbl_and = 1;
+		(*i)++;
+		(*j)++;
+	}
+	else if (!g_data.ops_array[*j])
 		(*i)++;
 	if(error_flag)
 		return (1);
