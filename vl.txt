@@ -1,0 +1,191 @@
+==61548== Memcheck, a memory error detector
+==61548== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==61548== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==61548== Command: ./minishell
+==61548== Parent PID: 22768
+==61548== 
+==61548== Invalid read of size 1
+==61548==    at 0x10F631: ft_strlen (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10F59F: ft_strdup (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D092: insert_array (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D430: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Address 0x4b19b33 is 67 bytes inside a block of size 32,816 free'd
+==61548==    at 0x483CA3F: free (vg_replace_malloc.c:540)
+==61548==    by 0x49902A0: closedir (closedir.c:50)
+==61548==    by 0x10CF87: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Block was alloc'd at
+==61548==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==61548==    by 0x4990098: __alloc_dir (opendir.c:118)
+==61548==    by 0x4990098: opendir_tail (opendir.c:69)
+==61548==    by 0x4990098: opendir (opendir.c:92)
+==61548==    by 0x10CECA: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Invalid read of size 1
+==61548==    at 0x10F5EE: ft_strdup (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D092: insert_array (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D430: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Address 0x4b19b33 is 67 bytes inside a block of size 32,816 free'd
+==61548==    at 0x483CA3F: free (vg_replace_malloc.c:540)
+==61548==    by 0x49902A0: closedir (closedir.c:50)
+==61548==    by 0x10CF87: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Block was alloc'd at
+==61548==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==61548==    by 0x4990098: __alloc_dir (opendir.c:118)
+==61548==    by 0x4990098: opendir_tail (opendir.c:69)
+==61548==    by 0x4990098: opendir (opendir.c:92)
+==61548==    by 0x10CECA: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Invalid read of size 1
+==61548==    at 0x10F5D8: ft_strdup (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D092: insert_array (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D430: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Address 0x4b19b33 is 67 bytes inside a block of size 32,816 free'd
+==61548==    at 0x483CA3F: free (vg_replace_malloc.c:540)
+==61548==    by 0x49902A0: closedir (closedir.c:50)
+==61548==    by 0x10CF87: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Block was alloc'd at
+==61548==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==61548==    by 0x4990098: __alloc_dir (opendir.c:118)
+==61548==    by 0x4990098: opendir_tail (opendir.c:69)
+==61548==    by 0x4990098: opendir (opendir.c:92)
+==61548==    by 0x10CECA: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Invalid free() / delete / delete[] / realloc()
+==61548==    at 0x483CA3F: free (vg_replace_malloc.c:540)
+==61548==    by 0x10C86D: free_2d (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D43C: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Address 0x4b19b33 is 67 bytes inside a block of size 32,816 free'd
+==61548==    at 0x483CA3F: free (vg_replace_malloc.c:540)
+==61548==    by 0x49902A0: closedir (closedir.c:50)
+==61548==    by 0x10CF87: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Block was alloc'd at
+==61548==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==61548==    by 0x4990098: __alloc_dir (opendir.c:118)
+==61548==    by 0x4990098: opendir_tail (opendir.c:69)
+==61548==    by 0x4990098: opendir (opendir.c:92)
+==61548==    by 0x10CECA: expand_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10D269: handle_wild_card (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x109FBA: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Invalid write of size 8
+==61548==    at 0x10FAA2: fill_strings (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10FD40: ft_split (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10C46E: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548==  Address 0x4b22390 is 80 bytes inside a block of size 81 alloc'd
+==61548==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==61548==    by 0x10FD00: ft_split (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10C46E: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Conditional jump or move depends on uninitialised value(s)
+==61548==    at 0x10C888: free_2d (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10C55F: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Conditional jump or move depends on uninitialised value(s)
+==61548==    at 0x483C9F5: free (vg_replace_malloc.c:540)
+==61548==    by 0x10C8A8: free_2d (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10C55F: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61569== 
+==61569== HEAP SUMMARY:
+==61569==     in use at exit: 204,871 bytes in 219 blocks
+==61569==   total heap usage: 503 allocs, 295 frees, 292,004 bytes allocated
+==61569== 
+==61569== LEAK SUMMARY:
+==61569==    definitely lost: 0 bytes in 0 blocks
+==61569==    indirectly lost: 0 bytes in 0 blocks
+==61569==      possibly lost: 0 bytes in 0 blocks
+==61569==    still reachable: 204,871 bytes in 219 blocks
+==61569==         suppressed: 0 bytes in 0 blocks
+==61569== Reachable blocks (those to which a pointer was found) are not shown.
+==61569== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==61569== 
+==61569== For lists of detected and suppressed errors, rerun with: -s
+==61569== ERROR SUMMARY: 264 errors from 7 contexts (suppressed: 0 from 0)
+==61570== 
+==61570== HEAP SUMMARY:
+==61570==     in use at exit: 204,871 bytes in 219 blocks
+==61570==   total heap usage: 575 allocs, 368 frees, 358,492 bytes allocated
+==61570== 
+==61570== LEAK SUMMARY:
+==61570==    definitely lost: 0 bytes in 0 blocks
+==61570==    indirectly lost: 0 bytes in 0 blocks
+==61570==      possibly lost: 0 bytes in 0 blocks
+==61570==    still reachable: 204,871 bytes in 219 blocks
+==61570==         suppressed: 0 bytes in 0 blocks
+==61570== Reachable blocks (those to which a pointer was found) are not shown.
+==61570== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==61570== 
+==61570== For lists of detected and suppressed errors, rerun with: -s
+==61570== ERROR SUMMARY: 300 errors from 7 contexts (suppressed: 0 from 0)
+==61548== Conditional jump or move depends on uninitialised value(s)
+==61548==    at 0x10C57D: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Conditional jump or move depends on uninitialised value(s)
+==61548==    at 0x10C888: free_2d (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10C599: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== Conditional jump or move depends on uninitialised value(s)
+==61548==    at 0x483C9F5: free (vg_replace_malloc.c:540)
+==61548==    by 0x10C8A8: free_2d (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10C599: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==61548==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==61548== 
+==61548== 
+==61548== HEAP SUMMARY:
+==61548==     in use at exit: 204,898 bytes in 221 blocks
+==61548==   total heap usage: 621 allocs, 412 frees, 359,392 bytes allocated
+==61548== 
+==61548== LEAK SUMMARY:
+==61548==    definitely lost: 0 bytes in 0 blocks
+==61548==    indirectly lost: 0 bytes in 0 blocks
+==61548==      possibly lost: 0 bytes in 0 blocks
+==61548==    still reachable: 204,898 bytes in 221 blocks
+==61548==         suppressed: 0 bytes in 0 blocks
+==61548== Reachable blocks (those to which a pointer was found) are not shown.
+==61548== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==61548== 
+==61548== For lists of detected and suppressed errors, rerun with: -s
+==61548== ERROR SUMMARY: 304 errors from 10 contexts (suppressed: 0 from 0)

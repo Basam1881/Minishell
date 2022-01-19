@@ -70,13 +70,12 @@ void	cmd_filter(int i)
 			{
 				g_data.cmd_path = ft_strdup(path[j]);
 				j = 0;
-				while (path[j])
-					free(path[j++]);
-				free(path);
+				free_2d(&path);
 				return ;
 			}
 			j++;
 		}
 		g_data.cmd_path = NULL;
+		free_2d(&path);
 	}
 }

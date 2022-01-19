@@ -184,6 +184,7 @@ void	pipe_write(char *type, int *i, int *j);
 void	ft_strjoin_2d(char *str2);
 int		handle_redirection(int op, int j);
 int		check_op(int *i, int *j);
+void	free_2d(char ***str);
 
 
 #endif

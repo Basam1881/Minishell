@@ -12,6 +12,17 @@
 
 #include "../includes/minishell.h"
 
+void	free_2d(char ***str)
+{
+	int i = 0;
+	while((*str)[i])
+	{
+		free((*str)[i++]);
+	}
+	free((*str)[i]);
+	free(*str);
+}
+
 int	check_name(char *name, char *wild_card)
 {
 	int i = 0;
@@ -35,7 +46,10 @@ int	check_name(char *name, char *wild_card)
 		
 	}
 	if(wc_total == (int) ft_strlen(wild_card))
+	{
+		free_2d(&res);
 		return (1);
+	}
 	while(wild_card[wc_index])
 	{
 		while(wild_card[wc_index] == '*')
@@ -50,13 +64,19 @@ int	check_name(char *name, char *wild_card)
 			break;
 		if(wc_number == 0)
 		{
-			temp = ft_strchr(ft_strdup(name), res[0][0]);
+			temp = ft_strchr(name, res[0][0]);
 			if(!temp)
+			{
+				free_2d(&res);
 				return 0;
+			}
 			while(res[i][j])
 			{
 				if(temp[j] != res[i][j])
+				{
+					free_2d(&res);
 					return 0;
+				}
 				j++;
 			}
 			i++;
@@ -68,18 +88,27 @@ int	check_name(char *name, char *wild_card)
 				return 0;
 			temp = ft_strnstr(&name[ft_strlen(name) - ft_strlen(res[i])], res[i], ft_strlen(&name[ft_strlen(name) - ft_strlen(res[i])]));
 			if(!temp)
-				return 0;
+				{
+					free_2d(&res);
+					return 0;
+				}
 		}
 		else
 		{
 			temp = ft_strnstr(&name[name_index], res[i], ft_strlen(&name[name_index]));
 			if(!temp)
-				return (0);
+				{
+					free_2d(&res);
+					return 0;
+				}
 			j = 0;
 			while(res[i][j])
 			{
 				if (res[i][j] != temp[j])
+				{
+					free_2d(&res);
 					return 0;
+				}
 				j++;
 			}
 			i++;
@@ -98,6 +127,7 @@ int	check_name(char *name, char *wild_card)
 			wc_index++;
 		}
 	}
+	free_2d(&res);
 	return 1;
 }
 
@@ -117,6 +147,8 @@ int	count_wild_card(char *wild_card)
 		if(!dir_struct)
 			break;
 		g_data.star_array_index = g_data.star_index_temp;
+		if(dir_struct->d_name[0] == '.')
+			continue;
 		if(check_name(dir_struct->d_name, wild_card))
 			count ++;
 	}
@@ -147,6 +179,8 @@ char	**expand_wild_card(char *wild_card)
 		if(!dir_struct)
 			break;
 		g_data.star_array_index = g_data.star_index_temp;
+		if(dir_struct->d_name[0] == '.')
+			continue;
 		if(check_name(dir_struct->d_name, wild_card))
 			res[i++] = dir_struct->d_name;
 	}
@@ -181,10 +215,7 @@ void	insert_array(char **expandded_array, int i, int *j)
 	res[k] = NULL;
 	k = 0;
 	*j = temp;
-	while (g_data.cmd[i][k])
-		free(g_data.cmd[i][k++]);
-	free(g_data.cmd[i][k]);
-	free(g_data.cmd[i]);
+	free_2d(&g_data.cmd[i]);
 	g_data.cmd[i] = res;
 }
 
@@ -217,6 +248,7 @@ int	handle_wild_card(int i)
 			{
 				if(g_data.cmd[i][j])
 					j++;
+				free_2d(&expanded_array);
 				continue;
 			}
 			if(expanded_array)
@@ -228,14 +260,14 @@ int	handle_wild_card(int i)
 						if(j == 0 && ft_strlen2(expanded_array)  > 1)
 						{
 						write(2, "Ambigous Redirect\n", 18);
+						free_2d(&expanded_array);
 						return (-1);	
 						}
 					}
 				}
 				insert_array(expanded_array, i, &j);
 			}
-
-
+		free_2d(&expanded_array);
 		}
 		if(g_data.cmd[i][j])
 			j++;

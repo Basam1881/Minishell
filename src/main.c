@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/15 15:21:43 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/18 18:42:37 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av, char **ev)
 	init();
 	reset();
 	printf(CLEAR_SCREEN);
+	//rl_outstream = stderr;
 	while (1)
 	{
 		g_data.cmdline = readline(MAC_PROMPT);
