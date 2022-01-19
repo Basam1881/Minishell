@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/17 17:06:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/19 20:39:38 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	reset(void)
 	g_data.sep_cmds = NULL;
 	g_data.ops_array = NULL;
 	g_data.star_array = NULL;
+	g_data.cmd_path = NULL;
 	g_data.no_env_arg_flag = 0;
 	g_data.double_qoute_flag = 0;
 	g_data.single_qoute_flag = 0;

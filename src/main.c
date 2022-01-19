@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/18 18:42:37 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/20 01:45:34 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	main(int ac, char **av, char **ev)
 	//rl_outstream = stderr;
 	while (1)
 	{
-		g_data.cmdline = readline(MAC_PROMPT);
+		g_data.cmdline = readline(LINUX_PROMPT);
 		// g_data.cmdline = "echo hi > 1 || echo wow";
 		if (!g_data.cmdline)
 			exit_shell(g_data.exit_status);
 		if (g_data.cmdline && *g_data.cmdline)
 			add_history(g_data.cmdline);
-		ultimate_3d_split();
-		check_cmd();
+		if (!ultimate_3d_split())
+			check_cmd();
 		free_all();
 	}
 }

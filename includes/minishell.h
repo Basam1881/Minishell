@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/17 16:39:22 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/20 01:44:56 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@
 # define MAC_PROMPT "\033[1;34m⚡⚡ BnM_Minishell\
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
-# define LINUX_PROMPT " BnM_Minishell--$>"
+# define LINUX_PROMPT "BnM_Minishell--$>"
 # define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
 # define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
 # define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
@@ -184,7 +184,9 @@ void	pipe_write(char *type, int *i, int *j);
 void	ft_strjoin_2d(char *str2);
 int		handle_redirection(int op, int j);
 int		check_op(int *i, int *j);
-void	free_2d(char ***str);
-
+int		is_redir(int j);
+int		check_parentheses(int *i, int *j);
+void	check_or_op(int *i, int *j);
+void	check_and_op(int *i, int *j);
 
 #endif

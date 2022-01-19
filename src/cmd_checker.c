@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/18 04:17:57 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/20 01:45:41 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,88 +40,6 @@ void	execute_commands(int i)
 		exit_shell (127);
 	}
 	exit_shell(0);
-}
-
-int	is_redir(int j)
-{
-	if (g_data.ops_array[j] == 2 || g_data.ops_array[j] == 3
-		|| g_data.ops_array[j] == 5 || g_data.ops_array[j] == 6)
-		return (1);
-	return (0);
-}
-
-int	check_parentheses(int *i, int *j)
-{
-	while (1)
-	{
-		if (g_data.ops_array[*j] == 8)
-		{
-			// ft_putendl_fd("open parentheses", 2);
-			if (!g_data.sub_pid)
-			{
-				g_data.sub_pid = fork();
-				waitpid(g_data.sub_pid, &g_data.sub_status, 0);	
-			}
-			if (!g_data.sub_pid)
-			{
-				g_data.parentheses_cnt = 0;
-				g_data.was_child = 1;
-				g_data.inside_parentheses_flag = 1;
-			}
-			else
-				g_data.exit_status = WEXITSTATUS(g_data.sub_status);
-			(*i)++;
-			(*j)++;
-			g_data.y = *i;
-			g_data.x = *j;
-			g_data.parentheses_cnt++;
-		}
-		else if (g_data.ops_array[*j] == 9)
-		{
-			// ft_putendl_fd("close parentheses", 2);
-			if (!g_data.sub_pid)
-			{
-				g_data.sub_exit_flag = 1;
-				if (g_data.parentheses_cnt == 1)
-					break ;
-			}
-			else
-			{
-				(*i)++;
-				(*j)++;
-				g_data.x = *j;
-				g_data.y = *i;
-				g_data.parentheses_cnt--;
-				g_data.closing_parenthese = 1;
-				if (g_data.parentheses_cnt == 0)
-				{
-					if (g_data.was_child)
-						g_data.sub_exit_flag = 1;
-					break ;
-				}
-			}
-		}
-		else
-		{
-			if (!g_data.sub_pid)
-				break ;
-			else
-			{
-				if (g_data.parentheses_cnt)
-				{
-					(*i)++;
-					(*j)++;
-					g_data.y = *i;
-					g_data.x = *j;
-				}
-				else
-					break ;
-			}
-		}
-	}
-	if (g_data.sub_pid && g_data.was_child)
-		g_data.sub_pid = 0;
-	return (0);
 }
 
 /*
@@ -173,13 +91,13 @@ void	check_cmd(void)
 	write(1, BYELLOW, 8);
 	while (g_data.cmd[i])
 	{
-		handle_wild_card(i);
 		g_data.y = i;
 		g_data.x = j;
 		g_data.output_flag = 0;
 		g_data.input_flag = 0;
-		error_flag = 0;
 		check_parentheses(&i, &j);
+		handle_wild_card(i);
+		error_flag = 0;
 		if (!g_data.cmd[i])
 			break ;
 		cmd_filter(g_data.y);
@@ -199,78 +117,21 @@ void	check_cmd(void)
 		if (!error_flag)
 			handle_cmd();
 		if (g_data.is_dbl_and)
-		{
-			dup2(g_data.fdin, STDIN_FILENO);
-			dup2(g_data.fdout, STDOUT_FILENO);
-			if (g_data.exit_status)
-			{
-				while (1)
-				{
-					if (g_data.ops_array[j] == 8)
-						g_data.parentheses_cnt++;
-					else if (g_data.ops_array[j] == 9)
-						g_data.parentheses_cnt--;
-					else if ((g_data.ops_array[j] == 4 || !g_data.ops_array[j]) && !g_data.parentheses_cnt)
-					{
-						if (g_data.ops_array[j])
-							j++;
-						i++;
-						if (g_data.inside_parentheses_flag)
-							g_data.sub_exit_flag = 1;
-						break ;
-					}
-					j++;
-					i++;
-				}
-			}
-			g_data.is_dbl_and = 0;
-		}
+			check_and_op(&i, &j);
 		else if (g_data.is_dbl_pipe)
-		{
-			dup2(g_data.fdin, STDIN_FILENO);
-			dup2(g_data.fdout, STDOUT_FILENO);
-			if (!g_data.exit_status)
-			{
-				while (1)
-				{
-					if (g_data.ops_array[j] == 8)
-						g_data.parentheses_cnt++;
-					else if (g_data.ops_array[j] == 9)
-						g_data.parentheses_cnt--;
-					else if (!g_data.parentheses_cnt || (g_data.inside_parentheses_flag && g_data.parentheses_cnt == 1))
-					{
-						ft_putendl_fd("or", 2);
-						if (g_data.ops_array[j])
-							j++;
-						i++;
-						break ;
-					}
-					else if (g_data.ops_array[j] == 7 || !g_data.ops_array[j])
-					{
-						ft_putendl_fd("OR", 2);
-						if (g_data.ops_array[j])
-							j++;
-						i++;
-						if (g_data.inside_parentheses_flag)
-							g_data.sub_exit_flag = 1;
-						break ;
-					}
-					j++;
-					i++;
-				}
-			}
-			g_data.is_dbl_pipe = 0;
-		}
+			check_or_op(&i, &j);
 		if (!is_redir(j))
 		{
-			close(g_data.fd[g_data.pipes][1]);
+			if (g_data.ops_array[j] == 1)
+				close(g_data.fd[g_data.pipes][1]);
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 		}
 		wait(NULL);
 		if (g_data.sub_exit_flag)
-				exit_shell(g_data.exit_status);
+			exit_shell(g_data.exit_status);
 	}
 	dup2(g_data.fdin, STDIN_FILENO);
 	dup2(g_data.fdout, STDOUT_FILENO);
+	write(1, NO_COLOR, 4);
 }

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:20:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/17 16:52:47 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/19 16:32:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,16 @@ int	check_op(int *i, int *j)
 	error_flag = 0;
 	if (g_data.ops_array[*j] == 1)
 		pipe_write("write", i, j);
-	else if (g_data.ops_array[*j] == 2 || g_data.ops_array[*j] == 3 || g_data.ops_array[*j] == 5 || g_data.ops_array[*j] == 6)
+	else if (is_redir(*j))
 	{
-		while (g_data.ops_array[*j] != 1 && *j < g_data.op_cnt)
+		while (is_redir(*j) && *j < g_data.op_cnt)
 		{
 			if(error_flag)
 			{
 				if(g_data.ops_array[*j] == 6)
-				{	
 					handle_redirection(g_data.ops_array[*j], *j);
-				}
 				(*j)++;
-				continue;
+				continue ;
 			}
 			n = 1;
 			if(g_data.ops_array[*j] != 6)
@@ -43,18 +41,13 @@ int	check_op(int *i, int *j)
 				if (handle_wild_card(*j + 1) == -1)
 				{
 					error_flag = 1;
-					continue;
+					continue ;
 				}
 			}
 			if (handle_redirection(g_data.ops_array[*j], *j))
-			{
 				error_flag = 1;
-			}
 			while (g_data.cmd[*j + 1][n] && !error_flag)
-			{
-				ft_strjoin_2d(g_data.cmd[*j + 1][n]);
-				n++;
-			}
+				ft_strjoin_2d(g_data.cmd[*j + 1][n++]);
 			(*j)++;
 		}
 		if(error_flag)

@@ -6,14 +6,27 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:21:42 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/17 17:11:22 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/19 16:56:35 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/**
+ * The is_resdir() function checks if the current operator in g_data.ops_array
+ * is redirection or not. It returns 1 if it is and 0 if it's not.
+**/
+int	is_redir(int j)
+{
+	if (g_data.ops_array[j] == 2 || g_data.ops_array[j] == 3
+		|| g_data.ops_array[j] == 5 || g_data.ops_array[j] == 6)
+		return (1);
+	return (0);
+}
+
 /* 
-	This function will be called if there are more arguments other than file name ( only with redirections )
+	This function will be called if there are more arguments
+	other than file name ( only with redirections )
 */
 void	ft_strjoin_2d(char *str2)
 {
@@ -38,7 +51,9 @@ void	ft_strjoin_2d(char *str2)
 }
 
 /*
-	this function will handle the rederctions and link the givein files to the stdout or stdin, also it will use ft_strjoin_2d to append any extry args to g_data.cmd
+	this function will handle the rederctions and link the givein files
+	to the stdout or stdin, also it will use ft_strjoin_2d to append any
+	extry args to g_data.cmd
 */
 int	handle_redirection(int op, int j)
 {
