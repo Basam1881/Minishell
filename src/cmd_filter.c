@@ -69,7 +69,9 @@ void	cmd_filter(int i)
 			{
 				g_data.cmd_path = ft_strdup(path[j]);
 				j = 0;
-				free_2d(&path);
+				while (path[j])
+					free(path[j++]);
+				free(path);
 				return ;
 			}
 			j++;
@@ -79,6 +81,5 @@ void	cmd_filter(int i)
 			free(path[j++]);
 		free(path);
 		g_data.cmd_path = NULL;
-		free_2d(&path);
 	}
 }
