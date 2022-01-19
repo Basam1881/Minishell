@@ -5,114 +5,71 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/30 22:02:55 by bnaji             #+#    #+#             */
-/*   Updated: 2021/12/21 05:24:31 by bnaji            ###   ########.fr       */
+/*   Created: 2021/10/03 16:15:23 by mal-guna          #+#    #+#             */
+/*   Updated: 2022/01/19 21:34:31 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	fill_strings(char **str, char *s, char c)
+static	int	ft_res_size(const char *str, char c)
 {
+	int	i;
+	int	size;
+
+	size = 0;
+	i = 1;
+	if (ft_strlen(str) == 0)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == c && str[i - 1] != c)
+			size++;
+		i++;
+	}
+	if (str[i - 1] == c)
+		size--;
+	return (size + 1);
+}
+
+static	void	ft_fill_str(char **res, char const *string, char ch)
+{
+	int		start;
+	int		end;
 	int		i;
 	int		j;
-	int		x;
 
 	i = 0;
-	x = 0;
-	while (s[x])
+	j = 0;
+	while (string[i])
 	{
-		if (s[x] == c)
-			x++;
-		else
-		{
-			j = 0;
-			while (s[x] && s[x] != c)
-			{
-				str[i][j] = s[x];
-				j++;
-				x++;
-			}
-			str[i][j] = 0;
+		while (string[i] == ch)
 			i++;
-		}
-	}
-	str[i] = 0;
-}
-
-static void	ft_free(char **str, int n)
-{
-	while (n >= 0)
-	{
-		if (str[n] != NULL)
-			free(str[n]);
-		n--;
-	}
-	free(str);
-}
-
-static int	allocte_strings(char **str, char *s, char c)
-{
-	int		i;
-	int		size;
-	int		x;
-
-	i = 0;
-	x = 0;
-	while (s[x])
-	{
-		if (s[x] == c)
-			x++;
-		else
-		{
-			size = 0;
-			while (s[x] && s[x++] != c)
-				size++;
-			str[i] = (char *)malloc(sizeof(char) * size + 1);
-			if (!str[i])
-			{
-				ft_free(str, i);
-				return (0);
-			}
+		if (string[i] == '\0')
+			break ;
+		start = i;
+		while (string[i] != ch && string[i] != '\0')
 			i++;
-		}
+		end = i;
+		res[j] = ft_substr(string, start, end - start);
+		j++;
 	}
-	return (1);
-}
-
-static int	word_counter(char *s, char c)
-{
-	int		i;
-	int		words;
-
-	i = 0;
-	words = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			i++;
-		else
-		{
-			words++;
-			while (s[i] && s[i] != c)
-				i++;
-		}
-	}
-	return (words);
+	res[j] = 0;
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**str;
-	int		words;
+	char	**res;
 
-	if (!s)
-		return (ft_calloc(1, 1));
-	words = word_counter((char *)s, c);
-	str = (char **)malloc(sizeof(char *) * words + 1);
-	if (!(str))
-		return (0);
-	allocte_strings(str, (char *)s, c);
-	fill_strings(str, (char *)s, c);
-	return (str);
+	if (s == NULL)
+	{
+		res = (char **)malloc(sizeof(char *) * 1);
+		res[0] = 0;
+		return (res);
+	}
+	res = (char **)malloc(sizeof(char *) * (ft_res_size(s, c) + 1));
+	if (!res)
+		return (NULL);
+	ft_fill_str(res, s, c);
+	return (res);
 }

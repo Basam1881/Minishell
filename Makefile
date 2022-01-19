@@ -27,7 +27,7 @@ C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
 		operators.c builtin_cmds.c sig_handler.c cmd_filter.c ft_exit.c\
 		initialize.c wild_card.c ft_wild_split.c check_operators.c \
-		pipes.c redirections.c
+		pipes.c redirections.c parenthesis.c and_or_ops.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))

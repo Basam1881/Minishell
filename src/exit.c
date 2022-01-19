@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/17 18:03:44 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/19 21:32:06 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	free_all(void)
 	if (*g_data.cmdline)
 		free(g_data.cmdline);
 	free_big_g_data();
+	if (g_data.cmd_path)
+		free(g_data.cmd_path);
 	if (g_data.ops_array)
 		free(g_data.ops_array);
 	if (g_data.star_array)
