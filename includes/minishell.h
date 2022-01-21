@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 21:26:49 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 01:23:21 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
@@ -188,5 +189,6 @@ int		is_redir(int j);
 int		check_parentheses(int *i, int *j);
 void	check_or_op(int *i, int *j);
 void	check_and_op(int *i, int *j);
+void	free_2d(char ***str);
 
 #endif

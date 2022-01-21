@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 21:30:00 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 01:06:09 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,7 @@ void	check_cmd(void)
 		if (check_op(&i, &j))
 			error_flag = 1;
 		if (g_data.y != 0)
-		{
-			if ((g_data.is_dbl_pipe || g_data.is_dbl_and) && !g_data.pipe_flag)
-			{
-				dup2(g_data.fdin, STDIN_FILENO);
-				dup2(g_data.fdout, STDOUT_FILENO);
-			}
 			pipe_read();
-		}
 		if (g_data.pipe_flag == 1)
 			pipe_write("write2", &i, &j);
 		if (!error_flag)
@@ -122,7 +115,7 @@ void	check_cmd(void)
 			check_or_op(&i, &j);
 		if (!is_redir(j))
 		{
-			if (g_data.ops_array[j] == 1)
+			if (g_data.ops_array[g_data.x] == 1)
 				close(g_data.fd[g_data.pipes][1]);
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);

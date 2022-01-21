@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:21:42 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/19 16:56:35 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/20 22:20:07 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	ft_strjoin_2d(char *str2)
 	i = 0;
 	while (g_data.cmd[g_data.y][i])
 		free(g_data.cmd[g_data.y][i++]);
-	free(g_data.cmd[g_data.y][i]);
 	free(g_data.cmd[g_data.y]);
 	g_data.cmd[g_data.y] = res;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 17:12:02 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 01:33:55 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@
  */
 int	main(int ac, char **av, char **ev)
 {
+	int i;
+
+	i = -1;
 	(void) ac;
 	(void) av;
-	g_data.environ = ev;
+	g_data.environ = (char **)malloc(sizeof(char **) * (ft_strlen2(ev) + 1));
+	while (ev[++i])
+		g_data.environ[i] = ft_strdup(ev[i]);
+	g_data.environ[i] = NULL;
 	init();
 	reset();
 	printf(CLEAR_SCREEN);

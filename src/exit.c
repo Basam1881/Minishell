@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 21:32:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 04:12:56 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ void	exit_shell(int n)
 	// 	ft_putendl_fd(strerror(errno), 2);
 	// }
 	// clear_history();
+	if (g_data.environ)
+		free_2d(&g_data.environ);
 	exit(n);
 }
