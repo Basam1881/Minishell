@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:15:01 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/13 16:28:25 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 03:01:34 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	ft_cd(void)
 	}
 	else if (i == -1)
 	{
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd(": ", 2);
+		ft_putstr_fd("BnM bash: cd: ", 2);
 		ft_putstr_fd(g_data.cmd[g_data.y][1], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
 		g_data.exit_status = 1;
 		return ;
@@ -59,6 +59,7 @@ void	ft_echo(void)
 {
 	int	n_flag;
 	int	j;
+	int	i;
 
 	n_flag = 0;
 	if (!g_data.cmd[g_data.y][1])
@@ -67,15 +68,24 @@ void	ft_echo(void)
 		return ;
 	}
 	j = 1;
-	if (!(ft_strcmp(g_data.cmd[g_data.y][1], "-n")))
+	while (g_data.cmd[g_data.y][j][0] == '-')
 	{
-		n_flag = 1;
-		j++;
+		i = 1;
+		while (g_data.cmd[g_data.y][j][i] == 'n')
+			i++;
+		if (i > 1 && !g_data.cmd[g_data.y][j][i])
+		{
+			n_flag = 1;
+			j++;
+		}
+		else
+			break ;
 	}
 	while (g_data.cmd[g_data.y][j])
 	{
 		ft_putstr_fd(g_data.cmd[g_data.y][j], 1);
-		ft_putchar_fd(' ', 1);
+		if (g_data.cmd[g_data.y][j + 1])
+			ft_putchar_fd(' ', 1);
 		j++;
 	}
 	if (!n_flag)

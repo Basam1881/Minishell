@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 20:39:38 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 01:43:44 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	reset(void)
 	g_data.double_qoute_flag = 0;
 	g_data.single_qoute_flag = 0;
 	g_data.dbl_op_f = 0;
+	g_data.digit_env = 0;
 	g_data.n = 0;
 	g_data.op_cnt = 0;
 	g_data.last_op = 0;

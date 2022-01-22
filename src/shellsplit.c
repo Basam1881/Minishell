@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:19:25 by dfurneau          #+#    #+#             */
-/*   Updated: 2022/01/13 16:45:34 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 02:58:14 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ static void	qoutes_checker(int *x, int *i, int *j)
 			env_checker(x, i, j);
 		else if (g_data.split_flag == 2)
 			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		// if (g_data.digit_env)
+		// {
+		// 	ft_putendl_fd("FUCK", 2);
+		// 	g_data.digit_env = 0;
+		// 	return ;
+		// }
 		if (g_data.split_flag)
 			(*j)++;
 	}

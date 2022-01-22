@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 18:29:09 by dfurneau          #+#    #+#             */
-/*   Updated: 2021/12/31 08:52:41 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 03:04:29 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static int	ft_strlen_to_space(char *s)
 	int	i;
 
 	i = 0;
+	if (ft_isdigit(s[i]))
+		return (-1);
 	while (ft_isdigit(s[i]) || ft_isalpha(s[i]) || s[i] == '_')
 		i++;
 	return (i);
@@ -57,6 +59,11 @@ static void	no_env_in_no_qoutes(char *new_s, int *i, int *x)
 	}
 }
 
+/**
+ * TODO: Replace getenv to keep things updated
+ * TODO: fix it so wwherever you find non non characters you 
+ * 		will print from there insted of sikpping
+**/
 void	env_checker(int *x, int *i, int *j)
 {
 	int		new_len;
@@ -72,6 +79,13 @@ void	env_checker(int *x, int *i, int *j)
 			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
 		return ;
 	}
+	// else if (old_len == -1)
+	// {
+	// 	ft_putendl_fd("HERE", 2);
+	// 	(*x) += 2;
+	// 	g_data.digit_env = 1;
+	// 	return ;
+	// }
 	old_s = ft_substr(&g_data.sep_cmds[g_data.n][*x + 1], 0, old_len);
 	new_s = getenv(old_s);
 	if (new_s && g_data.split_flag)

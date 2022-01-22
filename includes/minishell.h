@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 21:26:49 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/21 01:43:15 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_data
 	int		double_qoute_flag;
 	int		no_env_arg_flag;
 	int		dbl_op_f;
+	int		digit_env;
 	int		n;
 	int		*ops_array;
 	int		*star_array;
