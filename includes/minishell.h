@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/21 01:43:15 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/22 21:08:41 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,5 +189,6 @@ int		is_redir(int j);
 int		check_parentheses(int *i, int *j);
 void	check_or_op(int *i, int *j);
 void	check_and_op(int *i, int *j);
+void	free_2d(char ***str);
 
 #endif

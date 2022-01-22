@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 21:36:41 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/22 21:35:58 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,11 @@ void	cmd_filter(int i)
 			if (!access(path[j], F_OK))
 			{
 				g_data.cmd_path = ft_strdup(path[j]);
-				j = 0;
-				while (path[j])
-					free(path[j++]);
-				free(path);
+				free_2d(&path);
 				return ;
 			}
 			j++;
 		}
-		j = 0;
-		while (path[j])
-			free(path[j++]);
-		free(path);
-		g_data.cmd_path = NULL;
+		free_2d(&path);
 	}
 }

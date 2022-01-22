@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/19 21:32:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/22 21:28:38 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	free_big_g_data(void)
 void	free_all(void)
 {
 	if (!g_data.cmdline)
-		return ;
+	return ;
 	if (*g_data.cmdline)
 		free(g_data.cmdline);
 	free_big_g_data();
@@ -107,6 +107,8 @@ void	exit_shell(int n)
 	// 	ft_putstr_fd("BNM bash: ", 2);
 	// 	ft_putendl_fd(strerror(errno), 2);
 	// }
-	// clear_history();
+	clear_history();
+	if (g_data.environ)
+		free_2d(&g_data.environ);
 	exit(n);
 }

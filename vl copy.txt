@@ -1,0 +1,70 @@
+==55099== Memcheck, a memory error detector
+==55099== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==55099== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==55099== Command: ./minishell
+==55099== Parent PID: 22768
+==55099== 
+==55099== Invalid write of size 8
+==55099==    at 0x10FA43: fill_strings (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10FCE1: ft_split (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10C45F: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==55099==  Address 0x4b11370 is 80 bytes inside a block of size 81 alloc'd
+==55099==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==55099==    by 0x10FCA1: ft_split (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10C45F: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==55099== 
+==55099== Conditional jump or move depends on uninitialised value(s)
+==55099==    at 0x10C59A: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==55099== 
+==55121== 
+==55121== HEAP SUMMARY:
+==55121==     in use at exit: 204,861 bytes in 219 blocks
+==55121==   total heap usage: 456 allocs, 237 frees, 225,702 bytes allocated
+==55121== 
+==55121== LEAK SUMMARY:
+==55121==    definitely lost: 0 bytes in 0 blocks
+==55121==    indirectly lost: 0 bytes in 0 blocks
+==55121==      possibly lost: 0 bytes in 0 blocks
+==55121==    still reachable: 204,861 bytes in 219 blocks
+==55121==         suppressed: 0 bytes in 0 blocks
+==55121== Reachable blocks (those to which a pointer was found) are not shown.
+==55121== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==55121== 616 allocs, 316 frees, 359,292
+616 allocs, 316 frees, 359,292
+616 allocs, 316 frees, 359,292
+==55121== For lists of detected and suppressed errors, rerun with: -s
+==55121== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==55099== Conditional jump or move depends on uninitialised value(s)
+==55099==    at 0x10C5C8: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==55099== 
+==55099== 
+==55099== HEAP SUMMARY:
+==55099==     in use at exit: 205,142 bytes in 232 blocks
+==55099==   total heap usage: 502 allocs, 270 frees, 226,602 bytes allocated
+==55099== 
+==55099== 254 (81 direct, 173 indirect) bytes in 1 blocks are definitely lost in loss record 23 of 63
+==55099==    at 0x483B7F3: malloc (vg_replace_malloc.c:309)
+==55099==    by 0x10FCA1: ft_split (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10C45F: cmd_filter (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x10A027: check_cmd (in /home/kaydoo/Documents/minishell/minishell)
+==55099==    by 0x1095E4: main (in /home/kaydoo/Documents/minishell/minishell)
+==55099== 
+==55099== LEAK SUMMARY:
+==55099==    definitely lost: 81 bytes in 1 blocks
+==55099==    indirectly lost: 173 bytes in 10 blocks
+==55099==      possibly lost: 0 bytes in 0 blocks
+==55099==    still reachable: 204,888 bytes in 221 blocks
+==55099==         suppressed: 0 bytes in 0 blocks
+==55099== Reachable blocks (those to which a pointer was found) are not shown.
+==55099== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==55099== 
+==55099== For lists of detected and suppressed errors, rerun with: -s
+==55099== ERROR SUMMARY: 5 errors from 4 contexts (suppressed: 0 from 0)

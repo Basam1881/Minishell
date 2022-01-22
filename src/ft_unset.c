@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:54 by mal-guna          #+#    #+#             */
-/*   Updated: 2021/12/28 16:10:00 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/22 21:14:45 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_unset(char *v)
 	int		envsize;
 
 	envsize = ft_strlen2(g_data.environ);
-	newenv = (char **)malloc(sizeof(char **) * (envsize));
 	i = 0;
 	j = 0;
 	while (g_data.environ[i])
@@ -37,16 +36,19 @@ void	ft_unset(char *v)
 	}
 	if (!(i >= envsize))
 	{
+		newenv = (char **)malloc(sizeof(char **) * (envsize));
 		j = -1;
 		k = 0;
 		while (g_data.environ[++j])
 		{
-			newenv[k] = g_data.environ[j];
+			newenv[k] = ft_strdup(g_data.environ[j]);
 			if (j == i)
 				continue ;
 			k++;
 		}
 		newenv[k] = NULL;
+		free_2d(&g_data.environ);
 		g_data.environ = newenv;
 	}
+	free(v);
 }
