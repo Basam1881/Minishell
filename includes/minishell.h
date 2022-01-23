@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/21 01:23:21 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:08:41 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include <sys/stat.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
@@ -90,6 +89,7 @@ typedef struct s_data
 	int		double_qoute_flag;
 	int		no_env_arg_flag;
 	int		dbl_op_f;
+	int		digit_env;
 	int		n;
 	int		*ops_array;
 	int		*star_array;

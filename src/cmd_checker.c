@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/21 01:06:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/23 05:05:01 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,31 @@ void	handle_cmd(void)
 	}
 }
 
+int	ignore_wild_card(void)
+{
+	int j;	
+	int k;
+
+	j = 1;
+	k = 0;
+	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")) || !(ft_strcmp(g_data.cmd[g_data.y][0], "unset")) || !(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
+	{
+		while(g_data.cmd[g_data.y][j])
+		{
+			while(g_data.cmd[g_data.y][j][k])
+			{
+				if(g_data.cmd[g_data.y][j][k] == '*')
+					g_data.star_index_temp++;
+				k++;
+			}
+			k = 0;
+			j++;
+		}
+		return (1);
+	}
+	return (0);
+}
+
 void	check_cmd(void)
 {
 	int		i;
@@ -96,10 +121,11 @@ void	check_cmd(void)
 		g_data.output_flag = 0;
 		g_data.input_flag = 0;
 		check_parentheses(&i, &j);
-		handle_wild_card(i);
 		error_flag = 0;
 		if (!g_data.cmd[i])
 			break ;
+		if(!(ignore_wild_card()))
+			handle_wild_card(i);
 		cmd_filter(g_data.y);
 		if (check_op(&i, &j))
 			error_flag = 1;

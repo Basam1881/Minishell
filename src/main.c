@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/21 01:33:55 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:15:58 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,16 @@ int	main(int ac, char **av, char **ev)
 	init();
 	reset();
 	printf(CLEAR_SCREEN);
+	//rl_outstream = stderr;
 	while (1)
 	{
 		g_data.cmdline = readline(LINUX_PROMPT);
 		// g_data.cmdline = "echo hi > 1 || echo wow";
 		if (!g_data.cmdline)
+		{
+			ft_putendl_fd("exit", 1);
 			exit_shell(g_data.exit_status);
+		}
 		if (g_data.cmdline && *g_data.cmdline)
 			add_history(g_data.cmdline);
 		if (!ultimate_3d_split())
