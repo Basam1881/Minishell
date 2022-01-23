@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 21:08:41 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/23 13:47:36 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <dirent.h>
+# include <limits.h>
 
 /**
  * ------------------------------------------------------------------------------
@@ -107,6 +108,7 @@ typedef struct s_data
 	int		pid;
 	int		exit_status;
 	int		c_exit_flag;
+	int		accepted_exit_flag;
 	int		empty_flag;
 	int		pipes;
 	int		pipe_flag;

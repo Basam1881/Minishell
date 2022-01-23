@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:17:55 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 21:18:40 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/23 16:45:04 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	sigint_handler(void)
 	}
 	else
 	{
-		rl_on_new_line();
-		rl_redisplay();
-		write(0, "  ", 2);
+		// rl_on_new_line();
+		// rl_redisplay();
+		// write(0, "  ", 2);
 		rl_replace_line("", 0);
 		write(0, "\n", 1);
 		rl_on_new_line();

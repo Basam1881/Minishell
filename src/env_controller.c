@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 20:31:54 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 20:42:46 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/23 16:37:54 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	env_exit(int *x, int *i, int *j)
 			while (n < exit_num_len)
 				g_data.cmd[g_data.n][*i][(*j)++] = exit_num[n++];
 		(*x) += 2;
+		g_data.digit_env = 1;
 	}
 }
 
@@ -100,8 +101,16 @@ void	env_checker(int *x, int *i, int *j)
 	old_len = ft_strlen_to_space(&g_data.sep_cmds[g_data.n][*x + 1]);
 	if (!old_len)
 	{
-		if (g_data.split_flag == 2)
-			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		if (g_data.double_qoute_flag)
+		{
+			if (g_data.split_flag == 2)
+				g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		}
+		else
+		{
+			(*x)++;
+			g_data.digit_env = 1;
+		}
 		return ;
 	}
 	else if (old_len == -1)
@@ -130,7 +139,6 @@ void	env_checker(int *x, int *i, int *j)
 	}
 	else
 		no_env_in_no_qoutes(new_s, i, j, x);
-	// printf("start: |%c|\t\tend: |%c|\n", g_data.sep_cmds[g_data.n][*x], g_data.sep_cmds[g_data.n][*x + old_len]);
 	(*x) += old_len;
 	return ;
 }

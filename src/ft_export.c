@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/22 21:14:09 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/23 16:41:21 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ int		search_env(char *var_name)
 	}
 	return (0);
 }
+int	allowed_name(char *name)
+{
+	int i;
+
+	i = 0;
+	if(ft_isdigit(name[i]))
+		return (0);
+	while(name[i])
+	{
+		if(!(ft_isalnum(name[i]) || name[i] == '_'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 void	ft_export(char *v)
 {
 	int		i;
@@ -65,9 +80,18 @@ void	ft_export(char *v)
 	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
 	{
 		free(v);
+		g_data.exit_status = 1;
 		return;
 	}
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
+	if (!allowed_name(var_name))
+	{
+		g_data.exit_status = 1;
+		write(2, "BNM_bash: not a valid identifier\n", ft_strlen("BNM_bash: not a valid identifier") + 1);
+		free(v);
+		free(var_name);
+		return;
+	}
 	envsize = ft_strlen2(g_data.environ);
 
 	if (!search_env(var_name))
@@ -106,4 +130,6 @@ void	ft_export(char *v)
 	}
 	free(var_name);
 	free(v);
+	g_data.exit_status = 0;
+
 }

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/13 14:47:05 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/23 15:47:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,35 @@ int	unexpected_msg(int x, int flag, char *s)
 		ft_putstr_fd("BNM bash: syntax error near unexpected token `", 2);
 		if (flag == 1 || flag == 2)
 			ft_putchar_fd(g_data.cmdline[(x)], 2);
-		else if (flag == 2)
-			ft_putchar_fd(g_data.cmdline[(x) + 1], 2);
 		else if (flag == 3)
 			print_error_string(x);
+		if (flag == 2)
+			ft_putchar_fd(g_data.cmdline[(x) + 1], 2);
 		ft_putstr_fd("'\n", 2);
 	}
 	else
 		ft_putendl_fd(s, 2);
 	g_data.exit_status = 2;
 	return (1);
+}
+
+/**
+ * * This function is not used anywhere yet but 
+ * * it could help antime to shorten the code
+**/
+int	is_op_redir(int op, char op_c, int flag)
+{
+	if (!flag)
+	{
+		if (op == 2 || op == 3 || op == 5 || op == 6)
+			return (1);
+	}
+	else
+	{
+		if (op_c == '>' || op_c == '<')
+			return (1);
+	}
+	return (0);
 }
 
 int	single_w_zero_flag(int *x)
@@ -124,7 +143,18 @@ int	single_w_zero_flag(int *x)
 						|| g_data.last_op == 1 || g_data.last_op == 4
 						|| g_data.last_op == 7 || g_data.last_op == 8))
 				|| (g_data.cmdline[(*x)] != '(' && g_data.last_op == 9)))
-			return (unexpected_msg(*x, 1, NULL));
+		{
+			// ft_putchar_fd(g_data.cmdline[(*x)], 2);
+			// ft_putchar_fd('\n', 2);
+			// if (is_op_redir(0, g_data.cmdline[(*x)], 1))
+			// {
+				// ft_putendl_fd("HERE", 2);
+			// 	if (is_op_redir(g_data.last_op, 0, 0))
+			// 		return (unexpected_msg(*x, 1, NULL));
+			// }
+			// else
+				return (unexpected_msg(*x, 1, NULL));
+		}
 	}
 	ops_assigner(x, 1, &g_data.last_op);
 	return (0);
