@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 15:59:49 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/24 14:44:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ int	alloc_cmd(int *i, int *old_x, int x)
 {
 	int	j;
 
+	// ft_putendl_fd("ENTER", 2);
+	// if (x - *old_x)
+	// 	return (0);
 	if (g_data.dbl_op_f)
 		g_data.sep_cmds[*i] = (char *)malloc(sizeof(char) * (x - *old_x));
 	else
@@ -52,6 +55,7 @@ int	alloc_cmd(int *i, int *old_x, int x)
 		failed_sep_cmds(*i);
 		return (1);
 	}
+	// ft_putendl_fd("PASS", 2);
 	j = 0;
 	while (*old_x < x)
 	{
@@ -135,6 +139,7 @@ int	sep_cmds_creator(void)
 	i = 0;
 	ops_cnt = 0;
 	x = 0;
+	g_data.dbl_op_f = 0;
 	while (g_data.cmdline[x])
 	{
 		qoutes_checker_3d(&x);
@@ -194,7 +199,7 @@ int	ultimate_3d_split(void)
 		error_printer();
 		return (1);
 	}
-	g_data.star_array[g_data.star_cnt] = -0;
+	g_data.star_array[g_data.star_cnt] = 0;
 	g_data.star_cnt = 0;
 	g_data.op_cnt = 0;
 	if (sep_cmds_creator())

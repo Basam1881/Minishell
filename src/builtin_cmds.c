@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:15:01 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 21:12:17 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/24 19:31:34 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	ft_cd(void)
 	if (!i)
 	{
 		tmp = ft_strjoin_moa("OLDPWD=", g_data.pwd_dir_path);
-		ft_export(tmp);
+		ft_export(ft_strdup(tmp));
 		free(tmp);
 		if (!getcwd(g_data.pwd_dir_path, sizeof(g_data.pwd_dir_path)))
 			ft_putstr_fd("failure in updating the environment variable: PWD", 2);
 		tmp = ft_strjoin_moa("PWD=", g_data.pwd_dir_path);
-		ft_export(tmp);
+		ft_export(ft_strdup(tmp));
 		free(tmp);
 	}
 	else if (i == -1)

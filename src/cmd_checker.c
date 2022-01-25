@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 16:35:28 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/25 17:52:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@ void	handle_cmd(void)
 
 int	ignore_wild_card(void)
 {
-	int j;	
+	int j;
 	int k;
 
 	j = 1;
 	k = 0;
+	if (!g_data.cmd[g_data.y][0])
+		return (0);
 	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")) || !(ft_strcmp(g_data.cmd[g_data.y][0], "unset")) || !(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
 	{
 		while(g_data.cmd[g_data.y][j])
@@ -127,11 +129,11 @@ void	check_cmd(void)
 		error_flag = 0;
 		if (!g_data.cmd[i])
 			break ;
-		if(!(ignore_wild_card()))
+		if (!(ignore_wild_card()))
 			handle_wild_card(i);
-		cmd_filter(g_data.y);
 		if (check_op(&i, &j))
 			error_flag = 1;
+		cmd_filter(g_data.y);
 		if (g_data.y != 0)
 			pipe_read();
 		if (g_data.pipe_flag == 1)

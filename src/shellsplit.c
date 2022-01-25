@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 21:16:22 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 14:42:20 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/25 17:50:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,22 @@ static int	split_into_arg(void)
 	return (i);
 }
 
+int	is_sep_empty(void)
+{
+	int	i;
+
+	if (!*g_data.sep_cmds[g_data.n])
+		return (0);
+	i = 0;
+	while (g_data.sep_cmds[g_data.n][i])
+	{
+		if (g_data.sep_cmds[g_data.n][i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 /**
 *	It's used to seperate the string (command) into arguments,
 *	store them into 2d array and return it back
@@ -149,16 +165,12 @@ char	**cmd_split(void)
 {
 	int		words;
 
-	if (!*g_data.sep_cmds[g_data.n])
+	if (!*g_data.sep_cmds[g_data.n] || is_sep_empty())
 	{
 		g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) * 2);
 		if (!(g_data.cmd[g_data.n]))
 			return (NULL);
-		g_data.cmd[g_data.n][0] = (char *)malloc(sizeof(char));
-		if (!(g_data.cmd[g_data.n]))
-			return (NULL);
-		g_data.cmd[g_data.n][0][0] = '\0';
-		g_data.cmd[g_data.n][1] = NULL;
+		g_data.cmd[g_data.n][0] = NULL;
 		return (g_data.cmd[g_data.n]);
 	}
 	g_data.split_flag = 0;

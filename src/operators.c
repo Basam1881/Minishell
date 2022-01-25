@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:02:19 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 15:47:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/25 18:50:23 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	unexpected_msg(int x, int flag, char *s)
 	}
 	else
 		ft_putendl_fd(s, 2);
-	g_data.exit_status = 2;
+	g_data.exit_status = 258;
 	return (1);
 }
 
@@ -144,17 +144,17 @@ int	single_w_zero_flag(int *x)
 						|| g_data.last_op == 7 || g_data.last_op == 8))
 				|| (g_data.cmdline[(*x)] != '(' && g_data.last_op == 9)))
 		{
-			// ft_putchar_fd(g_data.cmdline[(*x)], 2);
-			// ft_putchar_fd('\n', 2);
-			// if (is_op_redir(0, g_data.cmdline[(*x)], 1))
-			// {
-				// ft_putendl_fd("HERE", 2);
-			// 	if (is_op_redir(g_data.last_op, 0, 0))
-			// 		return (unexpected_msg(*x, 1, NULL));
-			// }
-			// else
+			if (is_op_redir(0, g_data.cmdline[(*x)], 1))
+			{
+				if (is_op_redir(g_data.last_op, 0, 0))
+					return (unexpected_msg(*x, 1, NULL));
+			}
+			else
 				return (unexpected_msg(*x, 1, NULL));
 		}
+		else if ((is_op_redir(0, g_data.cmdline[(*x)], 1)
+				|| g_data.cmdline[(*x)] == '|') && g_data.last_op == 9)
+			return (unexpected_msg(*x, 1, NULL));
 	}
 	ops_assigner(x, 1, &g_data.last_op);
 	return (0);
@@ -165,8 +165,21 @@ int	double_w_zero_flag(int *x)
 	if (g_data.empty_flag)
 		g_data.empty_flag = 0;
 	else
+	{
 		if (!(g_data.last_op == 9))
-			return (unexpected_msg(*x, 2, NULL));
+		{
+			if (is_op_redir(0, g_data.cmdline[(*x)], 1))
+			{
+				if (is_op_redir(g_data.last_op, 0, 0))
+					return (unexpected_msg(*x, 1, NULL));
+			}
+			else
+				return (unexpected_msg(*x, 2, NULL));
+		}
+		else
+			if (is_op_redir(0, g_data.cmdline[(*x)], 1))
+				return (unexpected_msg(*x, 1, NULL));
+	}
 	ops_assigner(x, 0, &g_data.last_op);
 	return (0);
 }
