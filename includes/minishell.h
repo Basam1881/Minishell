@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/27 08:43:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:34:34 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ typedef struct s_data
 	int		empty_flag;
 	int		pipes;
 	int		pipe_flag;
-	int		pipe_child_flag;
 	int		is_pipe;
 	int		is_dbl_pipe;
 	int		is_dbl_and;
 	int		output_flag;
 	int		input_flag;
+	int 	pipe_child_flag;
 	int		under_process_flag;
 	int		last_op;
 	int		parentheses_cnt;
@@ -193,7 +193,7 @@ int		check_parentheses(int *i, int *j);
 void	check_or_op(int *i, int *j);
 void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
-int		allowed_name(char *name);
 char	*get_expnd_val(char *var_name);
+int		allowed_name(char *name);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/25 17:52:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:40:32 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,14 @@ void	handle_cmd(void)
 		g_data.closing_parenthese = 0;
 		return ;
 	}
+	if(g_data.pipe_child_flag)
+	{
+		g_data.pipe_child_flag = 0;
+		int pipe_pid = fork();
+		if(pipe_pid != 0)
+			return;
+		g_data.pipe_child_flag = 1;
+	}
 	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")))
 		while (g_data.cmd[g_data.y][k])
 			ft_export(ft_strdup(g_data.cmd[g_data.y][k++]));
@@ -79,6 +87,8 @@ void	handle_cmd(void)
 			execute_commands(g_data.y);// check for commands and execute them
 		}
 	}
+	if(g_data.pipe_child_flag == 1)
+		exit(0);
 }
 
 int	ignore_wild_card(void)
@@ -151,7 +161,6 @@ void	check_cmd(void)
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 		}
-		wait(NULL);
 		if (g_data.sub_exit_flag)
 			exit_shell(g_data.exit_status);
 	}
