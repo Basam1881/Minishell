@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wild_card.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 09:42:06 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/22 21:17:33 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/25 22:00:02 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	check_name(char *name, char *wild_card)
 		if(wc_number == 0)
 		{
 			temp = ft_strchr(name, res[0][0]);
-			if(!temp)
+			if(!temp || ft_strlen(temp) != ft_strlen(name))
 			{
 				free_2d(&res);
 				return (0);

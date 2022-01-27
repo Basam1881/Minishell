@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 20:31:54 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 20:42:46 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/24 10:41:29 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	env_exit(int *x, int *i, int *j)
 			while (n < exit_num_len)
 				g_data.cmd[g_data.n][*i][(*j)++] = exit_num[n++];
 		(*x) += 2;
+		g_data.digit_env = 1;
 	}
+	free(exit_num);
 }
 
 static int	ft_strlen_to_space(char *s)
@@ -100,8 +102,16 @@ void	env_checker(int *x, int *i, int *j)
 	old_len = ft_strlen_to_space(&g_data.sep_cmds[g_data.n][*x + 1]);
 	if (!old_len)
 	{
-		if (g_data.split_flag == 2)
-			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		if (g_data.double_qoute_flag)
+		{
+			if (g_data.split_flag == 2)
+				g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+		}
+		else
+		{
+			(*x)++;
+			g_data.digit_env = 1;
+		}
 		return ;
 	}
 	else if (old_len == -1)
@@ -112,9 +122,10 @@ void	env_checker(int *x, int *i, int *j)
 	}
 	old_s = ft_substr(&g_data.sep_cmds[g_data.n][*x + 1], 0, old_len);
 	new_s = get_expnd_val(old_s);
+	free (old_s);
 	if (new_s)
 	{
-		if ( g_data.split_flag)
+		if (g_data.split_flag)
 		{
 			new_len = ft_strlen(new_s);
 			if (g_data.split_flag == 1)
@@ -123,14 +134,17 @@ void	env_checker(int *x, int *i, int *j)
 			{
 				n = 0;
 				while (n < new_len)
-					g_data.cmd[g_data.n][*i][(*j)++] = new_s[n++];
+				{
+					g_data.cmd[g_data.n][*i][(*j)++] = new_s[n];
+					n++;
+				}
 			}
 			(*j)--;
 		}
 	}
 	else
 		no_env_in_no_qoutes(new_s, i, j, x);
-	// printf("start: |%c|\t\tend: |%c|\n", g_data.sep_cmds[g_data.n][*x], g_data.sep_cmds[g_data.n][*x + old_len]);
+	free(new_s);
 	(*x) += old_len;
 	return ;
 }

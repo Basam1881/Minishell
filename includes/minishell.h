@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 21:08:41 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/27 08:43:09 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <dirent.h>
+# include <limits.h>
 
 /**
  * ------------------------------------------------------------------------------
@@ -107,9 +108,11 @@ typedef struct s_data
 	int		pid;
 	int		exit_status;
 	int		c_exit_flag;
+	int		accepted_exit_flag;
 	int		empty_flag;
 	int		pipes;
 	int		pipe_flag;
+	int		pipe_child_flag;
 	int		is_pipe;
 	int		is_dbl_pipe;
 	int		is_dbl_and;
@@ -190,5 +193,7 @@ int		check_parentheses(int *i, int *j);
 void	check_or_op(int *i, int *j);
 void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
+int		allowed_name(char *name);
+char	*get_expnd_val(char *var_name);
 
 #endif

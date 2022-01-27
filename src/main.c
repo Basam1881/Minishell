@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 21:15:58 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/23 16:42:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(int ac, char **av, char **ev)
 	init();
 	reset();
 	printf(CLEAR_SCREEN);
-	//rl_outstream = stderr;
 	while (1)
 	{
 		g_data.cmdline = readline(LINUX_PROMPT);
