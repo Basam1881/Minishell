@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 15:43:52 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 17:00:18 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,32 @@ void	handle_cmd(int j)
 		if(g_data.c_pid != 0)
 		{	
 			g_data.cmd_flag = 0;
-			if(g_data.y == g_data.op_cnt)
-			{
+			//if(g_data.y == g_data.op_cnt)
+			//{
 				if(g_data.x == g_data.op_cnt)
 					g_data.pipe_child_flag = 0;
+				else if( g_data.ops_array[g_data.x] == 1)
+					{}
 				else
 				{
 					int n = g_data.x + 1;
 					while(n < g_data.op_cnt)
 					{
+						if(g_data.ops_array[n] == 7)
+						{
+							g_data.pipe_child_flag = 0;
+							break;			
+						}
 						if(g_data.ops_array[n] == 1)
 						{
 							break;			
 						}
 						n++;
 					}
-					g_data.pipe_child_flag = 0;
+					if(g_data.ops_array[n] != 1)
+						g_data.pipe_child_flag = 0;
 				}
-			}
+		//	}
 		}
 	}
 	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")) && g_data.cmd_flag)
@@ -165,6 +173,13 @@ void	check_cmd(void)
 
 	i = 0;
 	j = 0;
+	// g_data.fd = (int **)malloc(sizeof(int *) * (10));
+	// while(i <= g_data.op_cnt)
+	// {
+	// 	g_data.fd[i] = malloc(sizeof(int) * 2);
+	// 	i++;
+	// }
+	// i = 0;
 	if (!g_data.cmd)
 		return ;
 	write(1, BYELLOW, 8);

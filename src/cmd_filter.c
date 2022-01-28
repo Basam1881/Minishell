@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 15:39:18 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:06:41 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	save_exit_status(void)
 	}
 	else
 	{
+		//wait_n--;
 		while(i < g_data.wait_n)
 		{
 			//write(2, "test\n", 5);
