@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 07:09:08 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 15:43:52 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	handle_cmd(int j)
 		g_data.closing_parenthese = 0;
 		return ;
 	}
-	if(j)
-		{}
 	// ft_putstr_fd("op index g_x = ", 2);
 	// ft_putnbr_fd(g_data.x, 2);
 	// ft_putstr_fd("\n", 2);
@@ -73,17 +71,34 @@ void	handle_cmd(int j)
 	// ft_putstr_fd("ops_array[j] = ", 2);
 	// ft_putnbr_fd(g_data.ops_array[j], 2);
 	// ft_putstr_fd("\n------\n", 2);
-	// if(g_data.ops_array[j] == 1 && j < g_data.op_cnt)
-	// {
-	// 	g_data.pipe_child_flag = 1;
-	// 	g_data.c_pid = fork();
-	// 	if(g_data.c_pid != 0)
-	// 		g_data.cmd_flag = 0;
-	// }
-	// else
-	// {
-	// g_data.pipe_child_flag = 0;
-	// }
+	if(g_data.ops_array[j-1] == 1 || g_data.pipe_child_flag)
+	{
+		g_data.pipe_child_flag = 1;
+		g_data.wait_n++;
+		g_data.c_pid = fork();
+		if(g_data.c_pid != 0)
+		{	
+			g_data.cmd_flag = 0;
+			if(g_data.y == g_data.op_cnt)
+			{
+				if(g_data.x == g_data.op_cnt)
+					g_data.pipe_child_flag = 0;
+				else
+				{
+					int n = g_data.x + 1;
+					while(n < g_data.op_cnt)
+					{
+						if(g_data.ops_array[n] == 1)
+						{
+							break;			
+						}
+						n++;
+					}
+					g_data.pipe_child_flag = 0;
+				}
+			}
+		}
+	}
 	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")) && g_data.cmd_flag)
 		while (g_data.cmd[g_data.y][k])
 			ft_export(ft_strdup(g_data.cmd[g_data.y][k++]));
@@ -96,9 +111,14 @@ void	handle_cmd(int j)
 		ft_exit();
 	else
 	{
-		if(!g_data.pipe_child_flag)
+		if(g_data.cmd_flag && !g_data.pipe_child_flag)
+		{
 			g_data.c_pid = fork();
+		}
+		if(g_data.c_pid != 0 && !g_data.pipe_child_flag)
+		{
 		save_exit_status();
+		}
 		if (g_data.c_pid == 0)
 		{
 			if (g_data.ops_array[g_data.x] == 1)
@@ -106,8 +126,8 @@ void	handle_cmd(int j)
 			execute_commands(g_data.y);// check for commands and execute them
 		}
 	}
-	if(g_data.c_pid == 0)
-		exit_shell(0);
+	if(g_data.c_pid == 0 && g_data.pipe_child_flag) // tttttttttttttttttt
+		exit_shell(g_data.exit_status);
 }
 
 int	ignore_wild_card(void)
@@ -180,7 +200,7 @@ void	check_cmd(void)
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 		}
-		wait(NULL);
+		//wait(NULL);
 		if (g_data.sub_exit_flag)
 			exit_shell(g_data.exit_status);
 	}

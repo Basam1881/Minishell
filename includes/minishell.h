@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 06:42:39 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 08:22:50 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_data
 	int		output_flag;
 	int		input_flag;
 	int 	pipe_child_flag;
+	int		wait_n;
 	int		under_process_flag;
 	int		last_op;
 	int		parentheses_cnt;
