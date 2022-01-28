@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:23:38 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/27 20:35:59 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 06:35:31 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	pipe_write(char *type, int *i, int *j)
 		dup2(g_data.fd[g_data.pipes][1], STDOUT_FILENO);
 		(*j)++;
 		(*i)++;
-		g_data.pipe_child_flag = 1;
 	}
 	else if (ft_strcmp(type, "write2") == 0)
 	{
@@ -59,6 +58,5 @@ void	pipe_write(char *type, int *i, int *j)
 		g_data.x = *j;
 		(*j)++;
 		g_data.pipe_flag = 0;
-		g_data.pipe_child_flag = 1;
 	}
 }

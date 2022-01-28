@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_filter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/27 20:05:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 06:49:20 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,15 @@ void	save_exit_status(void)
 {
 	int		status;
 
-	wait(&status);
-	if (g_data.c_pid != 0)
+	if(!g_data.pipe_child_flag)
 	{
-		if (!g_data.c_exit_flag)
-			g_data.exit_status = WEXITSTATUS(status);
-		g_data.c_exit_flag = 0;
+		wait(&status);
+		if (g_data.c_pid != 0)
+		{
+			if (!g_data.c_exit_flag)
+				g_data.exit_status = WEXITSTATUS(status);
+			g_data.c_exit_flag = 0;
+		}
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/27 20:34:47 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 06:42:54 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	reset(void)
 	g_data.star_array_index = 0;
 	g_data.star_index_temp = 0;
 	g_data.pipe_child_flag = 0;
+	g_data.cmd_flag = 1;
 	g_data.fdout = dup(STDOUT_FILENO);
 	g_data.fdin = dup(STDIN_FILENO);
 }
