@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 17:00:18 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/28 22:55:06 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,10 @@ void	handle_cmd(int j)
 					int n = g_data.x + 1;
 					while(n < g_data.op_cnt)
 					{
-						if(g_data.ops_array[n] == 7)
-						{
-							g_data.pipe_child_flag = 0;
+						if(g_data.ops_array[n] == 7 || g_data.ops_array[n] == 4)
 							break;			
-						}
 						if(g_data.ops_array[n] == 1)
-						{
 							break;			
-						}
 						n++;
 					}
 					if(g_data.ops_array[n] != 1)
