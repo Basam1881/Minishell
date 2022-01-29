@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 13:47:36 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/29 09:58:05 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_data
 	int		c_exit_flag;
 	int		accepted_exit_flag;
 	int		empty_flag;
+	int		cmd_flag;
 	int		pipes;
 	int		pipe_flag;
 	int		is_pipe;
@@ -117,6 +118,8 @@ typedef struct s_data
 	int		is_dbl_and;
 	int		output_flag;
 	int		input_flag;
+	int 	pipe_child_flag;
+	int		wait_n;
 	int		under_process_flag;
 	int		last_op;
 	int		parentheses_cnt;
@@ -130,7 +133,8 @@ typedef struct s_data
 	char	*error_str;
 	char	**test_str; // this is just temp to test ft_strjoin_2d
 	char	pwd_dir_path[1000];
-	int		fd[][2];
+	//int		fd[][2];
+	int		(*fd)[2];
 }				t_data;
 
 /**
@@ -192,5 +196,7 @@ int		check_parentheses(int *i, int *j);
 void	check_or_op(int *i, int *j);
 void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
+char	*get_expnd_val(char *var_name);
+int		allowed_name(char *name);
 
 #endif

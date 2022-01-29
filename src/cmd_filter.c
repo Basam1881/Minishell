@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_filter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/22 21:35:58 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/28 16:06:41 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,36 @@
 void	save_exit_status(void)
 {
 	int		status;
+	int		i;
 
-	wait(&status);
-	if (g_data.c_pid != 0)
+	i = 0;
+	if (g_data.wait_n == 1)
 	{
-		if (!g_data.c_exit_flag)
-			g_data.exit_status = WEXITSTATUS(status);
-		g_data.c_exit_flag = 0;
+		wait(&status);
+		if (g_data.c_pid != 0)
+		{
+			if (!g_data.c_exit_flag)
+				g_data.exit_status = WEXITSTATUS(status);
+			g_data.c_exit_flag = 0;
+		}
 	}
+	else
+	{
+		//wait_n--;
+		while(i < g_data.wait_n)
+		{
+			//write(2, "test\n", 5);
+			int res = wait(&status);
+			if (g_data.c_pid != 0)
+			{
+				if (!g_data.c_exit_flag && (g_data.c_pid == res))
+					g_data.exit_status = WEXITSTATUS(status);
+				g_data.c_exit_flag = 0;
+			}
+			i++;
+		}
+	}
+	g_data.wait_n = 1;
 }
 
 /**
@@ -59,7 +81,7 @@ void	cmd_filter(int i)
 		g_data.cmd_path = ft_strdup(g_data.cmd[i][0]);
 	else
 	{
-		path = ft_split(getenv("PATH"), ':');
+		path = ft_split(get_expnd_val("PATH"), ':');
 		j = 0;
 		while (path[j])
 		{

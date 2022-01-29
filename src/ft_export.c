@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/23 16:41:21 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/28 15:45:50 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,17 @@ void	ft_export(char *v)
 
 	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
 	{
-		free(v);
-		g_data.exit_status = 1;
-		return;
+		return ;
+	}
+	else if (v[0] == '=')
+	{
+			ft_putstr_fd("export : ", 2);
+			ft_putstr_fd(v, 2);
+			ft_putstr_fd(": Invalid", 2);
+			ft_putchar_fd('\n', 2);
+			free(v);
+			g_data.exit_status = 1;
+			return ;
 	}
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
 	if (!allowed_name(var_name))
