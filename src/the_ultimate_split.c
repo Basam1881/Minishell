@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/24 14:44:05 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/29 20:05:28 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void	star_assigner(int x, int flag)
 	{
 		if (g_data.cmdline[x] == '*')
 			g_data.star_cnt++;
+		else if (g_data.cmdline[x] == '$' && g_data.cmdline[x + 1] == '?')
+			g_data.question_cnt++;
 	}
 	else
 	{
@@ -121,6 +123,13 @@ void	star_assigner(int x, int flag)
 				g_data.star_array[g_data.star_cnt++] = -1;
 			else
 				g_data.star_array[g_data.star_cnt++] = 1;
+		}
+		else if (g_data.cmdline[x] == '$')
+		{
+			if ((g_data.single_qoute_flag && (g_data.cmdline[x + 1] == '?'|| (g_data.cmdline[x + 1] == '\'' && g_data.cmdline[x + 2] == '?'))) || (g_data.double_qoute_flag && g_data.cmdline[x + 1] == '"' && g_data.cmdline[x + 2] == '?'))
+				g_data.question_array[g_data.question_cnt++] = -1;
+			else if ((!g_data.single_qoute_flag && !g_data.double_qoute_flag && g_data.cmdline[x + 1] == '?') || (g_data.double_qoute_flag && g_data.cmdline[x + 1] == '?'))
+				g_data.question_array[g_data.question_cnt++] = 1;
 		}
 	}
 }
@@ -193,6 +202,7 @@ int	ultimate_3d_split(void)
 	g_data.sep_cmds = (char **)malloc(sizeof(char *) * (ops_cnt + 2));
 	g_data.ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));
 	g_data.star_array = (int *)malloc(sizeof(int) * (g_data.star_cnt + 1));
+	g_data.question_array = (int *)malloc(sizeof(int) * (g_data.question_cnt + 1));
 	if (!g_data.cmd || !g_data.sep_cmds
 		|| !g_data.ops_array || !g_data.star_array)
 	{
@@ -201,6 +211,7 @@ int	ultimate_3d_split(void)
 	}
 	g_data.star_array[g_data.star_cnt] = 0;
 	g_data.star_cnt = 0;
+	g_data.question_cnt = 0;
 	g_data.op_cnt = 0;
 	if (sep_cmds_creator())
 		return (1);
@@ -212,8 +223,10 @@ int	ultimate_3d_split(void)
 			return (1);
 		g_data.n++;
 	}
+	// printf("q_cnt: %d\n", g_data.question_cnt);
 	g_data.cmd[g_data.n] = NULL;
 	g_data.n = 0;
 	g_data.parentheses_cnt = 0;
+	g_data.question_cnt = 0;
 	return (0);
 }
