@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 13:24:55 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/29 16:43:52 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	reset(void)
 	g_data.star_index_temp = 0;
 	g_data.pipe_child_flag = 0;
 	g_data.cmd_flag = 1;
-	g_data.wait_n = 1;
+	g_data.wait_n = 0;
 	g_data.fdout = dup(STDOUT_FILENO);
 	g_data.fdin = dup(STDIN_FILENO);
 }

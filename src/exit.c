@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 13:28:30 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/29 18:02:32 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,11 @@ void	free_all(void)
 		free(g_data.ops_array);
 	if (g_data.star_array)
 		free(g_data.star_array);
-	if (g_data.question_array)
-		free(g_data.question_array);
+	if (g_data.fd)
+	{
+		free(g_data.fd);
+		g_data.fd = NULL;
+	}
 	reset();
 }
 

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 13:47:24 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/29 17:16:35 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,27 @@ void	execute_commands(int i)
 	exit_shell(0);
 }
 
+int	is_pipe()
+{
+	int n;
+
+	n = g_data.x;
+	if(g_data.x >= g_data.op_cnt)
+		return 0;
+	if(g_data.x == 1)
+		return 1;
+	
+	while(n < g_data.op_cnt)
+	{
+		if(g_data.ops_array[n] == 4 || g_data.ops_array[n] == 7)
+			return 0;
+		if(g_data.ops_array[n] == 1)
+			return 1;
+		n++;
+	}
+	return 1;
+} 
+
 /*
 	this is the last step in the while loop, this function will check the command and execute it after all the redirections, piping are done privously
 */
@@ -59,6 +80,10 @@ void	handle_cmd(int j)
 		g_data.closing_parenthese = 0;
 		return ;
 	}
+	if(j)
+		{}
+	// ft_putstr_fd(g_data.cmd[g_data.y][0], 2);
+	// ft_putstr_fd("\n", 2);
 	// ft_putstr_fd("op index g_x = ", 2);
 	// ft_putnbr_fd(g_data.x, 2);
 	// ft_putstr_fd("\n", 2);
@@ -70,9 +95,12 @@ void	handle_cmd(int j)
 	// ft_putstr_fd("\n", 2);
 	// ft_putstr_fd("ops_array[j] = ", 2);
 	// ft_putnbr_fd(g_data.ops_array[j], 2);
-	// ft_putstr_fd("\n------\n", 2);
-	if(g_data.ops_array[j-1] == 1 || g_data.pipe_child_flag)
+	// ft_putstr_fd("\n------\n", 2); 
+	if( is_pipe() || g_data.pipe_child_flag)
 	{
+		// ft_putstr_fd("if Statmetn : ", 2);
+		// ft_putstr_fd(g_data.cmd[g_data.y][0], 2);
+		// ft_putstr_fd("\n", 2);
 		g_data.pipe_child_flag = 1;
 		g_data.wait_n++;
 		g_data.c_pid = fork();
@@ -81,10 +109,14 @@ void	handle_cmd(int j)
 			g_data.cmd_flag = 0;
 			//if(g_data.y == g_data.op_cnt)
 			//{
-				if(g_data.x == g_data.op_cnt)
+				if(g_data.x >= g_data.op_cnt)
 					g_data.pipe_child_flag = 0;
-				else if( g_data.ops_array[g_data.x] == 1)
+				else if( g_data.ops_array[g_data.x] == 1 )
 					{}
+				else if(g_data.ops_array[g_data.x] == 7 || g_data.ops_array[g_data.x] == 4)
+				{
+				g_data.pipe_child_flag = 0;	
+				}
 				else
 				{
 					int n = g_data.x + 1;
@@ -96,7 +128,9 @@ void	handle_cmd(int j)
 							break;			
 						n++;
 					}
-					if(g_data.ops_array[n] != 1)
+					if(n >= g_data.op_cnt)
+						g_data.pipe_child_flag = 0;
+					else if(g_data.ops_array[n] != 1)
 						g_data.pipe_child_flag = 0;
 				}
 		//	}
@@ -168,7 +202,7 @@ void	check_cmd(void)
 
 	i = 0;
 	j = 0;
-	g_data.fd = malloc(sizeof(int *) * (g_data.op_cnt + 2));
+	g_data.fd = malloc(sizeof(int *) * (g_data.op_cnt + 5));
 	if (!g_data.cmd)
 		return ;
 	write(1, BYELLOW, 8);
