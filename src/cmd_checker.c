@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 22:55:06 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/29 10:03:18 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,13 +168,7 @@ void	check_cmd(void)
 
 	i = 0;
 	j = 0;
-	// g_data.fd = (int **)malloc(sizeof(int *) * (10));
-	// while(i <= g_data.op_cnt)
-	// {
-	// 	g_data.fd[i] = malloc(sizeof(int) * 2);
-	// 	i++;
-	// }
-	// i = 0;
+	g_data.fd = malloc(sizeof(int *) * (g_data.op_cnt + 2));
 	if (!g_data.cmd)
 		return ;
 	write(1, BYELLOW, 8);
