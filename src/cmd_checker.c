@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 17:16:35 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/25 17:52:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,117 +45,33 @@ void	execute_commands(int i)
 	exit_shell(0);
 }
 
-int	is_pipe()
-{
-	int n;
-
-	n = g_data.x;
-	if(g_data.x >= g_data.op_cnt)
-		return 0;
-	if(g_data.x == 1)
-		return 1;
-	
-	while(n < g_data.op_cnt)
-	{
-		if(g_data.ops_array[n] == 4 || g_data.ops_array[n] == 7)
-			return 0;
-		if(g_data.ops_array[n] == 1)
-			return 1;
-		n++;
-	}
-	return 1;
-} 
-
 /*
 	this is the last step in the while loop, this function will check the command and execute it after all the redirections, piping are done privously
 */
-void	handle_cmd(int j)
+void	handle_cmd(void)
 {
 	int	k;
 
 	k = 1;
-	g_data.cmd_flag = 1;
 	if (g_data.closing_parenthese)
 	{
 		g_data.closing_parenthese = 0;
 		return ;
 	}
-	if(j)
-		{}
-	// ft_putstr_fd(g_data.cmd[g_data.y][0], 2);
-	// ft_putstr_fd("\n", 2);
-	// ft_putstr_fd("op index g_x = ", 2);
-	// ft_putnbr_fd(g_data.x, 2);
-	// ft_putstr_fd("\n", 2);
-	// ft_putstr_fd("ops_array[x] = ", 2);
-	// ft_putnbr_fd(g_data.ops_array[g_data.x], 2);
-	// ft_putstr_fd("\n", 2);
-	// ft_putstr_fd("op index j = ", 2);
-	// ft_putnbr_fd(j, 2);
-	// ft_putstr_fd("\n", 2);
-	// ft_putstr_fd("ops_array[j] = ", 2);
-	// ft_putnbr_fd(g_data.ops_array[j], 2);
-	// ft_putstr_fd("\n------\n", 2); 
-	if( is_pipe() || g_data.pipe_child_flag)
-	{
-		// ft_putstr_fd("if Statmetn : ", 2);
-		// ft_putstr_fd(g_data.cmd[g_data.y][0], 2);
-		// ft_putstr_fd("\n", 2);
-		g_data.pipe_child_flag = 1;
-		g_data.wait_n++;
-		g_data.c_pid = fork();
-		if(g_data.c_pid != 0)
-		{	
-			g_data.cmd_flag = 0;
-			//if(g_data.y == g_data.op_cnt)
-			//{
-				if(g_data.x >= g_data.op_cnt)
-					g_data.pipe_child_flag = 0;
-				else if( g_data.ops_array[g_data.x] == 1 )
-					{}
-				else if(g_data.ops_array[g_data.x] == 7 || g_data.ops_array[g_data.x] == 4)
-				{
-				g_data.pipe_child_flag = 0;	
-				}
-				else
-				{
-					int n = g_data.x + 1;
-					while(n < g_data.op_cnt)
-					{
-						if(g_data.ops_array[n] == 7 || g_data.ops_array[n] == 4)
-							break;			
-						if(g_data.ops_array[n] == 1)
-							break;			
-						n++;
-					}
-					if(n >= g_data.op_cnt)
-						g_data.pipe_child_flag = 0;
-					else if(g_data.ops_array[n] != 1)
-						g_data.pipe_child_flag = 0;
-				}
-		//	}
-		}
-	}
-	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")) && g_data.cmd_flag)
+	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")))
 		while (g_data.cmd[g_data.y][k])
 			ft_export(ft_strdup(g_data.cmd[g_data.y][k++]));
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "unset")) && g_data.cmd_flag)
+	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "unset")))
 		while (g_data.cmd[g_data.y][k])
 			ft_unset(ft_strdup(g_data.cmd[g_data.y][k++]));
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "cd")) && g_data.cmd_flag)
+	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "cd")))
 		ft_cd();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "exit")) && g_data.cmd_flag)
+	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "exit")))
 		ft_exit();
 	else
 	{
-		if(g_data.cmd_flag && !g_data.pipe_child_flag)
-		{
-			g_data.c_pid = fork();
-		}
-		if(g_data.c_pid != 0 && !g_data.pipe_child_flag)
-		{
+		g_data.c_pid = fork();
 		save_exit_status();
-		}
 		if (g_data.c_pid == 0)
 		{
 			if (g_data.ops_array[g_data.x] == 1)
@@ -163,8 +79,6 @@ void	handle_cmd(int j)
 			execute_commands(g_data.y);// check for commands and execute them
 		}
 	}
-	if(g_data.c_pid == 0 && g_data.pipe_child_flag) // tttttttttttttttttt
-		exit_shell(g_data.exit_status);
 }
 
 int	ignore_wild_card(void)
@@ -202,7 +116,6 @@ void	check_cmd(void)
 
 	i = 0;
 	j = 0;
-	g_data.fd = malloc(sizeof(int *) * (g_data.op_cnt + 5));
 	if (!g_data.cmd)
 		return ;
 	write(1, BYELLOW, 8);
@@ -226,7 +139,7 @@ void	check_cmd(void)
 		if (g_data.pipe_flag == 1)
 			pipe_write("write2", &i, &j);
 		if (!error_flag)
-			handle_cmd(j);
+			handle_cmd();
 		if (g_data.is_dbl_and)
 			check_and_op(&i, &j);
 		else if (g_data.is_dbl_pipe)
@@ -238,7 +151,7 @@ void	check_cmd(void)
 			dup2(g_data.fdin, STDIN_FILENO);
 			dup2(g_data.fdout, STDOUT_FILENO);
 		}
-		//wait(NULL);
+		wait(NULL);
 		if (g_data.sub_exit_flag)
 			exit_shell(g_data.exit_status);
 	}

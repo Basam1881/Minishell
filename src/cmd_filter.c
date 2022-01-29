@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_filter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 17:16:32 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:35:58 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,37 +23,14 @@
 void	save_exit_status(void)
 {
 	int		status;
-	int		i;
 
-	i = 0;
-	if (!g_data.wait_n)
+	wait(&status);
+	if (g_data.c_pid != 0)
 	{
-		wait(&status);
-		if (g_data.c_pid != 0)
-		{
-			if (!g_data.c_exit_flag)
-				g_data.exit_status = WEXITSTATUS(status);
-			g_data.c_exit_flag = 0;
-		}
+		if (!g_data.c_exit_flag)
+			g_data.exit_status = WEXITSTATUS(status);
+		g_data.c_exit_flag = 0;
 	}
-	else
-	{
-		while(i < g_data.wait_n)
-		{
-			//write(2, "test\n", 5);
-			int res = wait(&status);
-			if (g_data.c_pid != 0)
-			{
-				// ft_putstr_fd(g_data.cmd[g_data.y][0], 2);
-				// ft_putstr_fd("\n", 2);
-				if ((g_data.c_pid == res))
-					g_data.exit_status = WEXITSTATUS(status);
-				g_data.c_exit_flag = 0;
-			}
-			i++;
-		}
-	}
-	g_data.wait_n = 0;
 }
 
 /**
@@ -69,7 +46,6 @@ void	cmd_filter(int i)
 {
 	char	**path;
 	int		j;
-	char	*temp;
 
 	path = NULL;
 	if (g_data.cmd_path)
@@ -83,9 +59,7 @@ void	cmd_filter(int i)
 		g_data.cmd_path = ft_strdup(g_data.cmd[i][0]);
 	else
 	{
-		temp = get_expnd_val("PATH");
-		path = ft_split(temp, ':');
-		free(temp);
+		path = ft_split(getenv("PATH"), ':');
 		j = 0;
 		while (path[j])
 		{
