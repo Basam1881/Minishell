@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/28 16:06:41 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:19:22 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	cmd_filter(int i)
 {
 	char	**path;
 	int		j;
+	char	*temp;
 
 	path = NULL;
 	if (g_data.cmd_path)
@@ -81,7 +82,9 @@ void	cmd_filter(int i)
 		g_data.cmd_path = ft_strdup(g_data.cmd[i][0]);
 	else
 	{
-		path = ft_split(get_expnd_val("PATH"), ':');
+		temp = get_expnd_val("PATH");
+		path = ft_split(temp, ':');
+		free(temp);
 		j = 0;
 		while (path[j])
 		{

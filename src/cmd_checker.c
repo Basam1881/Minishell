@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 10:03:18 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:22:11 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_cmd(int j)
 	// ft_putstr_fd("ops_array[j] = ", 2);
 	// ft_putnbr_fd(g_data.ops_array[j], 2);
 	// ft_putstr_fd("\n------\n", 2);
-	if(g_data.ops_array[j-1] == 1 || g_data.pipe_child_flag)
+	if((j > 0 && g_data.ops_array[j-1] == 1)|| g_data.pipe_child_flag)
 	{
 		g_data.pipe_child_flag = 1;
 		g_data.wait_n++;
@@ -81,7 +81,7 @@ void	handle_cmd(int j)
 			g_data.cmd_flag = 0;
 			//if(g_data.y == g_data.op_cnt)
 			//{
-				if(g_data.x == g_data.op_cnt)
+				if(g_data.x >= g_data.op_cnt)
 					g_data.pipe_child_flag = 0;
 				else if( g_data.ops_array[g_data.x] == 1)
 					{}
@@ -96,7 +96,9 @@ void	handle_cmd(int j)
 							break;			
 						n++;
 					}
-					if(g_data.ops_array[n] != 1)
+					if(n >= g_data.op_cnt)
+						g_data.pipe_child_flag = 0;
+					else if(g_data.ops_array[n] != 1)
 						g_data.pipe_child_flag = 0;
 				}
 		//	}
@@ -168,7 +170,7 @@ void	check_cmd(void)
 
 	i = 0;
 	j = 0;
-	g_data.fd = malloc(sizeof(int *) * (g_data.op_cnt + 2));
+	g_data.fd = malloc(sizeof(int *) * (g_data.op_cnt + 5));
 	if (!g_data.cmd)
 		return ;
 	write(1, BYELLOW, 8);
