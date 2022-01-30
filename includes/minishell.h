@@ -200,5 +200,6 @@ void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
 char	*get_expnd_val(char *var_name);
 int		allowed_name(char *name);
+int		is_pipe();
 
 #endif

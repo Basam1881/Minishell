@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 17:16:35 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/30 08:05:14 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	handle_cmd(int j)
 		g_data.c_pid = fork();
 		if(g_data.c_pid != 0)
 		{	
+			close(g_data.fd[g_data.pipes][1]);
 			g_data.cmd_flag = 0;
 			//if(g_data.y == g_data.op_cnt)
 			//{
