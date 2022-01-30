@@ -6,7 +6,7 @@
 /*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 09:58:05 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/30 07:46:40 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,5 +198,6 @@ void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
 char	*get_expnd_val(char *var_name);
 int		allowed_name(char *name);
+int		is_pipe();
 
 #endif
