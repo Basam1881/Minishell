@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_ultimate_split.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 13:03:55 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/30 11:52:51 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,6 @@ int	ultimate_3d_split(void)
 			return (1);
 		g_data.n++;
 	}
-	// printf("q_cnt: %d\n", g_data.question_cnt);
 	g_data.cmd[g_data.n] = NULL;
 	g_data.n = 0;
 	g_data.parentheses_cnt = 0;

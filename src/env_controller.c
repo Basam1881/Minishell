@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 20:31:54 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 20:18:55 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/29 20:31:00 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ void	env_exit(int i)
 		{
 			if (g_data.cmd[i][x][z] == '$' && g_data.cmd[i][x][z + 1] == '?')
 			{
-				printf("q: %d\tcnt: %d\n", g_data.question_array[g_data.question_cnt], g_data.question_cnt);
 				if (g_data.question_array[g_data.question_cnt] == 1)
 				{
-					// ft_putendl_fd("HERE", 2);
 					tmp = ft_strdup(g_data.cmd[i][x]);
 					free(g_data.cmd[i][x]);
 					g_data.cmd[i][x] = (char *)malloc(sizeof(char) * ((ft_strlen(tmp) + exit_num_len - 2) + 1));
@@ -66,15 +64,6 @@ void	env_exit(int i)
 		}
 		x++;
 	}
-	// if (g_data.split_flag)
-	// {
-	// 	if (g_data.split_flag == 1)
-	// 		*j += exit_num_len;
-	// 	else
-	// 		while (n < exit_num_len)
-	// 			g_data.cmd[g_data.n][*i][(*j)++] = exit_num[n++];
-	// 	g_data.digit_env = 1;
-	// }
 	free(exit_num);
 }
 
@@ -148,7 +137,6 @@ void	env_checker(int *x, int *i, int *j)
 	{
 		if ((!g_data.double_qoute_flag && !g_data.single_qoute_flag) && (g_data.sep_cmds[g_data.n][*x + 1] == '\'' || g_data.sep_cmds[g_data.n][*x + 1] == '"'))
 		{
-			ft_putendl_fd("HERE", 2);
 			(*x)++;
 			g_data.digit_env = 1;
 		}

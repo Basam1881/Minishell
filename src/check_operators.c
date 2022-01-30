@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:20:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/29 17:01:28 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/30 11:50:26 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,19 @@ int	check_op(int *i, int *j)
 {
 	int	n;
 	int	error_flag;
+	int	k;
 
 	error_flag = 0;
-	if (!is_redir(*j))
-		env_exit(*i);
+	k = 0;
+	env_exit(*i);
 	if (g_data.ops_array[*j] == 1)
 		pipe_write("write", i, j);
 	else if (is_redir(*j))
 	{
 		while (is_redir(*j) && *j < g_data.op_cnt)
 		{
+			k++;
+			env_exit(*i + k);
 			if (error_flag)
 			{
 				if (g_data.ops_array[*j] == 6)
