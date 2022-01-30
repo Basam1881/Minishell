@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:54 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/22 21:14:45 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:27:40 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ void	ft_unset(char *v)
 	char	**newenv;
 	int		envsize;
 
+	if (!allowed_name(v))
+	{
+		ft_putstr_fd("unset : ", 2);
+		ft_putstr_fd(v, 2);
+		ft_putstr_fd(": Invalid", 2);
+		ft_putchar_fd('\n', 2);
+		free(v);
+		g_data.exit_status = 1;
+		return ;
+	}
 	envsize = ft_strlen2(g_data.environ);
 	i = 0;
 	j = 0;
