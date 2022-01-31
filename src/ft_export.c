@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/28 15:45:50 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/31 09:56:58 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,25 +77,26 @@ void	ft_export(char *v)
 	int		envsize;
 	char	*var_name;
 
-	if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
+	if (v[0] == '=' || ft_isdigit(v[0]))
 	{
+		ft_putstr_fd("BNM_bash: export : `", 2);
+		ft_putstr_fd(v, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+		free(v);
+		g_data.exit_status = 1;
 		return ;
 	}
-	else if (v[0] == '=')
+	else if ((size_t)ft_chrindex(v, '=') >= ft_strlen(v))
 	{
-			ft_putstr_fd("export : ", 2);
-			ft_putstr_fd(v, 2);
-			ft_putstr_fd(": Invalid", 2);
-			ft_putchar_fd('\n', 2);
-			free(v);
-			g_data.exit_status = 1;
-			return ;
+		return ;
 	}
 	var_name = ft_substr(v, 0, ft_chrindex(v, '='));
 	if (!allowed_name(var_name))
 	{
 		g_data.exit_status = 1;
-		write(2, "BNM_bash: not a valid identifier\n", ft_strlen("BNM_bash: not a valid identifier") + 1);
+		ft_putstr_fd("BNM_bash: export : `", 2);
+		ft_putstr_fd(v, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		free(v);
 		free(var_name);
 		return;

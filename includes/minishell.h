@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 14:18:23 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 12:59:10 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # define MAC_PROMPT "\033[1;34m⚡⚡ BnM_Minishell\
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
-# define LINUX_PROMPT "BnM_Minishell--$>"
+# define LINUX_PROMPT "BnM_Minishell--$> "
 # define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
 # define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
 # define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
@@ -115,6 +115,7 @@ typedef struct s_data
 	int		pipes;
 	int		pipe_flag;
 	int		is_pipe;
+	int		is_path_flag;
 	int		is_dbl_pipe;
 	int		is_dbl_and;
 	int		output_flag;
@@ -200,6 +201,6 @@ void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
 char	*get_expnd_val(char *var_name);
 int		allowed_name(char *name);
-int		is_pipe();
+int		is_pipe(void);
 
 #endif
