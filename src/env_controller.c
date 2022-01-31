@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 20:31:54 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/29 20:31:00 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 11:00:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	env_exit(int i)
 					free(tmp);
 				}
 				g_data.question_cnt++;
-				z++;
 			}
 			z++;
 		}
@@ -132,6 +131,15 @@ void	env_checker(int *x, int *i, int *j)
 	char	*new_s;
 	int		n;
 
+	if (g_data.n)
+	{
+		if (g_data.ops_array[g_data.n - 1] == 6)
+		{
+			if (g_data.split_flag == 2)
+				g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
+			return ;
+		}	
+	}
 	old_len = ft_strlen_to_space(&g_data.sep_cmds[g_data.n][*x + 1]);
 	if (!old_len)
 	{

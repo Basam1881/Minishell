@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:21:42 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/22 21:21:53 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 12:54:07 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,15 @@ void	ft_strjoin_2d(char *str2)
 	g_data.cmd[g_data.y] = res;
 }
 
-/*
-	this function will handle the rederctions and link the givein files
-	to the stdout or stdin, also it will use ft_strjoin_2d to append any
-	extry args to g_data.cmd
-*/
+/**
+ * this function will handle the rederctions and link the givein files
+ * to the stdout or stdin, also it will use ft_strjoin_2d to append any
+ * extry args to g_data.cmd
+ * TODO: check if file (g_data.cmd[j + 1][0]) is NULL before opening it and return "BNM bash: (name_of_file): ambiguous redirect" messege instead of "bad address". you can test with this command [ echo > $ASDF]
+ * TODO: set (g_data.exit_status = 1) for all redirection errors
+ * TODO: handle conditions where there is no command like [ > tmp1]
+ * TODO: better to mention which command is included in the error of no such file or directory. you can use this command [ echo < asdfae]
+ */
 int	handle_redirection(int op, int j)
 {
 	int		fdrd;
@@ -97,9 +101,11 @@ int	handle_redirection(int op, int j)
 		while (1)
 		{
 			temp = get_next_line(g_data.fdin);
-			if (ft_strlen(g_data.cmd[j + 1][0]) == (ft_strlen(temp) - 1) && !(ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1)) )
+			if (!temp)
+				break ;
+			if (ft_strlen(g_data.cmd[j + 1][0]) == (ft_strlen(temp) - 1) && !(ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1)))
 			{
-				if(temp)
+				if (temp)
 					free(temp);
 				break ;
 			}
