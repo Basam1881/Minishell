@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 21:16:22 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/25 17:50:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 10:55:51 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ static void	qoutes_checker(int *x, int *i, int *j)
 	}
 	else
 	{
-		if (g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
-				.n][*x + 1] == '?' && !g_data.single_qoute_flag)
-			env_exit(x, i, j);
-		else if ((g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
+		if ((g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
 				.n][*x + 1] && g_data.sep_cmds[g_data.n][*x + 1] != ' '
 				&& !g_data.single_qoute_flag && !g_data.double_qoute_flag)
 			|| (g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data

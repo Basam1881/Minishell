@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:20:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/22 21:19:42 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 11:49:34 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,30 @@
 int	check_op(int *i, int *j)
 {
 	int	n;
-	int error_flag;
+	int	error_flag;
+	int	k;
 
 	error_flag = 0;
+	k = 0;
+	env_exit(*i);
 	if (g_data.ops_array[*j] == 1)
 		pipe_write("write", i, j);
 	else if (is_redir(*j))
 	{
+		k++;
 		while (is_redir(*j) && *j < g_data.op_cnt)
 		{
-			if(error_flag)
+			if (error_flag)
 			{
-				if(g_data.ops_array[*j] == 6)
+				if (g_data.ops_array[*j] == 6)
 					handle_redirection(g_data.ops_array[*j], *j);
 				(*j)++;
 				continue ;
 			}
 			n = 1;
-			if(g_data.ops_array[*j] != 6)
+			if (g_data.ops_array[*j] != 6)
 			{
+				env_exit(*i + k);
 				if (handle_wild_card(*j + 1) == -1)
 				{
 					error_flag = 1;
@@ -50,10 +55,10 @@ int	check_op(int *i, int *j)
 				ft_strjoin_2d(g_data.cmd[*j + 1][n++]);
 			(*j)++;
 		}
-		if(error_flag)
+		if (error_flag)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			write(2, "\n", 1);
+			
+			ft_putendl_fd(strerror(errno), 2);
 		}
 		*i = *j + 1;
 		if (g_data.ops_array[*j] == 1)
@@ -71,7 +76,7 @@ int	check_op(int *i, int *j)
 		else if (g_data.ops_array[*j] == 9)
 			g_data.sub_exit_flag = 1;
 	}
-		else if (g_data.ops_array[*j] == 4)
+	else if (g_data.ops_array[*j] == 4)
 	{
 		g_data.is_dbl_pipe = 1;
 		(*i)++;
@@ -85,7 +90,7 @@ int	check_op(int *i, int *j)
 	}
 	else if (!g_data.ops_array[*j])
 		(*i)++;
-	if(error_flag)
+	if (error_flag)
 		return (1);
 	return (0);
 }

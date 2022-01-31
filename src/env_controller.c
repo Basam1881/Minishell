@@ -6,30 +6,62 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 20:31:54 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/24 10:41:29 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 11:00:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	env_exit(int *x, int *i, int *j)
+void	env_exit(int i)
 {
 	char	*exit_num;
+	char	*tmp;
 	int		exit_num_len;
 	int		n;
+	int		k;
+	int		m;
+	int		x;
+	int		z;
 
 	n = 0;
+	x = 0;
 	exit_num = ft_itoa(g_data.exit_status);
 	exit_num_len = ft_strlen(exit_num);
-	if (g_data.split_flag)
+	while (g_data.cmd[i][x])
 	{
-		if (g_data.split_flag == 1)
-			*j += exit_num_len;
-		else
-			while (n < exit_num_len)
-				g_data.cmd[g_data.n][*i][(*j)++] = exit_num[n++];
-		(*x) += 2;
-		g_data.digit_env = 1;
+		z = 0;
+		while (g_data.cmd[i][x][z])
+		{
+			if (g_data.cmd[i][x][z] == '$' && g_data.cmd[i][x][z + 1] == '?')
+			{
+				if (g_data.question_array[g_data.question_cnt] == 1)
+				{
+					tmp = ft_strdup(g_data.cmd[i][x]);
+					free(g_data.cmd[i][x]);
+					g_data.cmd[i][x] = (char *)malloc(sizeof(char) * ((ft_strlen(tmp) + exit_num_len - 2) + 1));
+					n = 0;
+					while (n < z)
+					{
+						g_data.cmd[i][x][n] = tmp[n];
+						n++;
+					}
+					k = n + 2;
+					m = 0;
+					while (exit_num[m])
+						g_data.cmd[i][x][n++] = exit_num[m++];
+					while (tmp[k])
+					{
+						g_data.cmd[i][x][n] = tmp[k++];
+						n++;
+					}
+					g_data.cmd[i][x][n] = '\0';
+					free(tmp);
+				}
+				g_data.question_cnt++;
+			}
+			z++;
+		}
+		x++;
 	}
 	free(exit_num);
 }
@@ -99,19 +131,25 @@ void	env_checker(int *x, int *i, int *j)
 	char	*new_s;
 	int		n;
 
-	old_len = ft_strlen_to_space(&g_data.sep_cmds[g_data.n][*x + 1]);
-	if (!old_len)
+	if (g_data.n)
 	{
-		if (g_data.double_qoute_flag)
+		if (g_data.ops_array[g_data.n - 1] == 6)
 		{
 			if (g_data.split_flag == 2)
 				g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
-		}
-		else
+			return ;
+		}	
+	}
+	old_len = ft_strlen_to_space(&g_data.sep_cmds[g_data.n][*x + 1]);
+	if (!old_len)
+	{
+		if ((!g_data.double_qoute_flag && !g_data.single_qoute_flag) && (g_data.sep_cmds[g_data.n][*x + 1] == '\'' || g_data.sep_cmds[g_data.n][*x + 1] == '"'))
 		{
 			(*x)++;
 			g_data.digit_env = 1;
 		}
+		else if (g_data.split_flag == 2)
+			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
 		return ;
 	}
 	else if (old_len == -1)

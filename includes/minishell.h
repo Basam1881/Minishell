@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/30 07:46:40 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/31 12:59:10 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # define MAC_PROMPT "\033[1;34m⚡⚡ BnM_Minishell\
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
-# define LINUX_PROMPT "BnM_Minishell--$>"
+# define LINUX_PROMPT "BnM_Minishell--$> "
 # define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
 # define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
 # define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
@@ -94,6 +94,7 @@ typedef struct s_data
 	int		n;
 	int		*ops_array;
 	int		*star_array;
+	int		*question_array;
 	int		star_array_index;
 	int		star_index_temp;
 	int		op_cnt;
@@ -114,6 +115,7 @@ typedef struct s_data
 	int		pipes;
 	int		pipe_flag;
 	int		is_pipe;
+	int		is_path_flag;
 	int		is_dbl_pipe;
 	int		is_dbl_and;
 	int		output_flag;
@@ -124,6 +126,7 @@ typedef struct s_data
 	int		last_op;
 	int		parentheses_cnt;
 	int		star_cnt;
+	int		question_cnt;
 	int		x;
 	int		y;
 	int		x_holder;
@@ -175,7 +178,7 @@ void	execute_commands(int i);
 void	cmd_filter(int i);
 void	save_exit_status(void);
 void	ft_exit(void);
-void	env_exit(int *x, int *i, int *j);
+void	env_exit(int i);
 int		empty_cmd_checker(void);
 void	error_printer(void);
 void	dbl_ops_handler(void);
@@ -198,6 +201,6 @@ void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
 char	*get_expnd_val(char *var_name);
 int		allowed_name(char *name);
-int		is_pipe();
+int		is_pipe(void);
 
 #endif
