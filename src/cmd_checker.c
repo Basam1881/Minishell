@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/30 08:05:14 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/31 17:21:59 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,16 @@ void	check_cmd(void)
 		if (!(ignore_wild_card()))
 			handle_wild_card(i);
 		if (check_op(&i, &j))
+		{
 			error_flag = 1;
+			g_data.exit_status = 1;	
+		}
+		else
+		{
+			g_data.exit_status = 0;
+		}
+		if(!g_data.cmd[g_data.x][0])
+			break;
 		cmd_filter(g_data.y);
 		if (g_data.y != 0)
 			pipe_read();

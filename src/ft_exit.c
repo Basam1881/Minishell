@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/19 08:48:02 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 13:55:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 14:40:26 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	shell_atoi(char *str)
 		ft_putstr_fd(str, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		g_data.accepted_exit_flag = 1;
-		return (2);
+		return (255);
 	}
 	nb *= mult;
 	return (nb);

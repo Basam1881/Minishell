@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:21:42 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/22 21:21:53 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/01/31 17:16:47 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,11 @@ int	handle_redirection(int op, int j)
 		while (1)
 		{
 			temp = get_next_line(g_data.fdin);
+			if (!temp)
+			{
+				free(temp);
+				break;
+			}
 			if (ft_strlen(g_data.cmd[j + 1][0]) == (ft_strlen(temp) - 1) && !(ft_strncmp(temp, g_data.cmd[j + 1][0], ft_strlen(temp) - 1)) )
 			{
 				if(temp)
