@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:54:16 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/23 16:42:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 01:38:25 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **ev)
 	while (1)
 	{
 		g_data.cmdline = readline(LINUX_PROMPT);
-		// g_data.cmdline = "echo hi > 1 || echo wow";
+		// g_data.cmdline = "(cd .. && pwd)";
 		if (!g_data.cmdline)
 		{
 			ft_putendl_fd("exit", 1);

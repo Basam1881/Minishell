@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/31 22:11:55 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 03:06:28 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	execute_commands(int i)
 {
 	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "echo")))
 		ft_echo();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
-		ft_env();
 	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "pwd")))
 		ft_pwd();
+	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
+		ft_env();
 	else
 	{
 		if (execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
@@ -66,7 +66,6 @@ int	is_pipe()
 		return 0;
 	if(g_data.x == 1)
 		return 1;
-	
 	while(n < g_data.op_cnt)
 	{
 		if(g_data.ops_array[n] == 4 || g_data.ops_array[n] == 7)
@@ -221,7 +220,15 @@ void	check_cmd(void)
 			g_data.exit_status = 0;
 		}
 		if (!g_data.cmd[g_data.x][0])
-			break ;
+		{
+			if (!g_data.x)
+				break ;
+			else
+			{
+				if (g_data.ops_array[g_data.x - 1] != 9)
+					break ;
+			}
+		}
 		cmd_filter(g_data.y);
 		if (g_data.y != 0)
 			pipe_read();

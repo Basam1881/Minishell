@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:15:01 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/30 20:54:04 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 02:46:17 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@ void	ft_cd(void)
 	int		i;
 	char	*tmp;
 
-	if (g_data.cmd[g_data.y][2])
-	{
-		ft_putstr_fd("cd: string not in pwd: ", 2);
-		ft_putstr_fd(g_data.cmd[g_data.y][1], 2);
-		ft_putchar_fd('\n', 2);
-		g_data.exit_status = 1;
-		return ;
-	}
 	if (!getcwd(g_data.pwd_dir_path, sizeof(g_data.pwd_dir_path)))
 		ft_putendl_fd("failure in updating the environment variable: OLDPWD", 2);
 	i = chdir(g_data.cmd[g_data.y][1]);
@@ -40,6 +32,7 @@ void	ft_cd(void)
 			ft_putendl_fd("failure in updating the environment variable: PWD", 2);
 		tmp = ft_strjoin_moa("PWD=", g_data.pwd_dir_path);
 		ft_export(ft_strdup(tmp));
+		printf("cd: %s\n", g_data.pwd_dir_path);
 		free(tmp);
 	}
 	else if (i == -1)

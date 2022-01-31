@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/31 12:58:38 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 00:38:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	save_exit_status(void)
 	i = 0;
 	if (!g_data.wait_n)
 	{
-		wait(&status);
+		waitpid(g_data.c_pid, &status, 0);
 		if (g_data.c_pid != 0)
 		{
 			if (!g_data.c_exit_flag)
