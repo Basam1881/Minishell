@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wild_card.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 09:42:06 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/25 22:00:02 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/01/31 21:01:01 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	check_name(char *name, char *wild_card)
 				j++;
 			}
 			i++;
-			name_index += j;
+			name_index = -(name - temp) + j;
 		}
 		while(wild_card[wc_index])
 		{
