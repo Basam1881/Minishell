@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/31 12:59:10 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 19:26:52 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@
 # define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
 # define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
 # define UNCLOSED_DOUBLE "BNM bash: syntax error (unclosed double qoutes)"
+# define FAILURE_UPDATE_PWD "failure in updating : PWD"
+# define FAILURE_UPDATE_OLDPWD "failure in updating : OLDPWD"
+
 /**
  * ------------------------------------------------------------------------------
  * |							Define Structures								|
@@ -94,7 +97,7 @@ typedef struct s_data
 	int		n;
 	int		*ops_array;
 	int		*star_array;
-	int		*question_array;
+	int		*q_array;
 	int		star_array_index;
 	int		star_index_temp;
 	int		op_cnt;
@@ -202,5 +205,18 @@ void	free_2d(char ***str);
 char	*get_expnd_val(char *var_name);
 int		allowed_name(char *name);
 int		is_pipe(void);
+int		is_single_op(int x);
+int		is_double_op(int x);
+int		is_op(int *x, int *ops_cnt, int flag);
+int		is_op_redir(int op, char op_c, int flag);
+int		single_w_zero_flag(int *x);
+int		double_w_zero_flag(int *x);
+void	ops_assigner(int *x, int is_single, int *var);
+int		is_in_qoutes(int x, int flag);
+void	qoutes_checker(int *x, int *i, int *j);
+int		is_sep_empty(void);
+int		sep_cmds_creator(void);
+void	q_and_star_assigner(int x, int flag);
+void	qoutes_checker_3d(int *x);
 
 #endif

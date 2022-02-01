@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/19 16:33:31 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 01:26:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 17:59:37 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	is_open_paren(int *i, int *j)
 	if (!g_data.sub_pid)
 	{
 		g_data.sub_pid = fork();
-		waitpid(g_data.sub_pid, &g_data.sub_status, 0);	
+		waitpid(g_data.sub_pid, &g_data.sub_status, 0);
 	}
 	if (!g_data.sub_pid)
 	{

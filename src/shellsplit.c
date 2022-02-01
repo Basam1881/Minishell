@@ -6,50 +6,11 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 21:16:22 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/31 10:55:51 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 18:13:06 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-/**
- * It's used to set the qoutes flags either to 1 or 0, so we 
- * can tell if we are inside qoutes at the moment or not
- * TODO: fix the condition for the enviroment variables to check if after the name is not digit nor character nor underscore
- * TODO: add a flag to ignore the (*) if it's inside qoutes
-**/
-static void	qoutes_checker(int *x, int *i, int *j)
-{
-	if ((g_data.sep_cmds[g_data.n][*x] == '\'' && g_data.single_qoute_flag)
-		|| (g_data.sep_cmds[g_data.n][*x] == '"' && g_data.double_qoute_flag))
-	{
-		if (g_data.sep_cmds[g_data.n][*x] == '\'')
-			g_data.single_qoute_flag = 0;
-		else
-			g_data.double_qoute_flag = 0;
-	}
-	else
-	{
-		if ((g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
-				.n][*x + 1] && g_data.sep_cmds[g_data.n][*x + 1] != ' '
-				&& !g_data.single_qoute_flag && !g_data.double_qoute_flag)
-			|| (g_data.sep_cmds[g_data.n][*x] == '$' && g_data.sep_cmds[g_data
-			.n][*x + 1] && g_data.sep_cmds[g_data.n][*x + 1] != ' ' && g_data
-			.sep_cmds[g_data.n][*x + 1] != '"' && !g_data.single_qoute_flag
-				&& g_data.double_qoute_flag))
-			env_checker(x, i, j);
-		else if (g_data.split_flag == 2)
-			g_data.cmd[g_data.n][*i][*j] = g_data.sep_cmds[g_data.n][*x];
-		if (g_data.digit_env)
-		{
-			g_data.digit_env = 0;
-			return ;
-		}
-		if (g_data.split_flag)
-			(*j)++;
-	}
-	(*x)++;
-}
 
 /**
 *	It's used to either malloc the size for the argument or
@@ -75,6 +36,20 @@ static int	check_arg_helper(int *i, int *j)
 	return (0);
 }
 
+static void	set_qoute_flag(int *x)
+{
+	if ((g_data.sep_cmds[g_data.n][*x] == '\''
+		|| g_data.sep_cmds[g_data.n][*x] == '"') && !g_data
+		.single_qoute_flag && !g_data.double_qoute_flag)
+	{
+		if (g_data.sep_cmds[g_data.n][*x] == '\'')
+			g_data.single_qoute_flag = 1;
+		else
+			g_data.double_qoute_flag = 1;
+		(*x)++;
+	}
+}
+
 /**
 *	It's used to loop through each argument of any command
 *	and check the qoutes...etc
@@ -88,19 +63,11 @@ static int	check_arg(int *x, int *i)
 	j = 0;
 	if (!g_data.split_flag)
 		(*i)++;
-	while (g_data.sep_cmds[g_data.n][*x] && (g_data.sep_cmds[g_data.n][*x] != ' '
-			|| (g_data.sep_cmds[g_data.n][*x] == ' '
+	while (g_data.sep_cmds[g_data.n][*x] && (g_data.sep_cmds[g_data
+		.n][*x] != ' ' || (g_data.sep_cmds[g_data.n][*x] == ' '
 				&& (g_data.single_qoute_flag || g_data.double_qoute_flag))))
 	{
-		if ((g_data.sep_cmds[g_data.n][*x] == '\'' || g_data.sep_cmds[g_data.n][*x]
-			== '"') && !g_data.single_qoute_flag && !g_data.double_qoute_flag)
-		{
-			if (g_data.sep_cmds[g_data.n][*x] == '\'')
-				g_data.single_qoute_flag = 1;
-			else
-				g_data.double_qoute_flag = 1;
-			(*x)++;
-		}
+		set_qoute_flag(x);
 		qoutes_checker(x, i, &j);
 	}
 	if (check_arg_helper(i, &j))
@@ -136,22 +103,6 @@ static int	split_into_arg(void)
 	if (g_data.split_flag == 2)
 		g_data.cmd[g_data.n][i] = NULL;
 	return (i);
-}
-
-int	is_sep_empty(void)
-{
-	int	i;
-
-	if (!*g_data.sep_cmds[g_data.n])
-		return (0);
-	i = 0;
-	while (g_data.sep_cmds[g_data.n][i])
-	{
-		if (g_data.sep_cmds[g_data.n][i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 /**

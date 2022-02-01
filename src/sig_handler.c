@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 11:17:55 by bnaji             #+#    #+#             */
-/*   Updated: 2022/01/24 12:07:04 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 18:14:00 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	sigquit_handler(void)
 	}
 	else
 	{
-		// ft_putstr_fd("\b\b  \b\b", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		ft_putstr_fd("  \r", 2);
@@ -43,7 +42,6 @@ void	sigint_handler(void)
 	}
 	else
 	{
-		// ft_putstr_fd("\b\b  \b\b", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		write(0, "  ", 2);
@@ -56,7 +54,6 @@ void	sigint_handler(void)
 }
 
 /**
- * TODO: Fix the error that you get after exiting from child process and then using a child process again
  */
 void	sig_handler(int signum)
 {

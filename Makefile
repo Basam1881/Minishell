@@ -25,9 +25,12 @@ DATE = 29 - 11 - 2021
 
 C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		ft_export.c ft_unset.c shellsplit.c the_ultimate_split.c\
-		operators.c builtin_cmds.c sig_handler.c cmd_filter.c ft_exit.c\
+		operators.c sig_handler.c cmd_filter.c ft_exit.c\
 		initialize.c wild_card.c ft_wild_split.c check_operators.c \
-		pipes.c redirections.c parenthesis.c and_or_ops.c
+		pipes.c redirections.c parenthesis.c and_or_ops.c ft_env.c \
+		ft_cd.c ft_echo.c ft_pwd.c ft_env.c expand_exit_status.c \
+		get_expand_value.c failed_malloc.c w_zero_flag.c is_op.c \
+		shell_split_helper.c create_sep_cmd.c assign_q_and_star_arrays.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))

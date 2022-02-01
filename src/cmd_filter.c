@@ -6,11 +6,24 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 00:38:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 15:23:22 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	wait_for_cmd_in_child(void)
+{
+	int	status;
+
+	waitpid(g_data.c_pid, &status, 0);
+	if (g_data.c_pid != 0)
+	{
+		if (!g_data.c_exit_flag)
+			g_data.exit_status = WEXITSTATUS(status);
+		g_data.c_exit_flag = 0;
+	}
+}
 
 /**
  * save_exit_status() function is used to let the parent process wait 
@@ -18,34 +31,23 @@
  * 		the parent process check the exit status for the child process only.
  * 		(the exit status for the other commands that doesn't need child process
  * 		will be checked insided the functions' themselves)
- * TODO: check the exit status for export, unset and cd for all conditions and save their exit status in g_data.exit_status
  */
 void	save_exit_status(void)
 {
 	int		status;
 	int		i;
+	int		res;
 
 	i = 0;
 	if (!g_data.wait_n)
-	{
-		waitpid(g_data.c_pid, &status, 0);
-		if (g_data.c_pid != 0)
-		{
-			if (!g_data.c_exit_flag)
-				g_data.exit_status = WEXITSTATUS(status);
-			g_data.c_exit_flag = 0;
-		}
-	}
+		wait_for_cmd_in_child();
 	else
 	{
-		while(i < g_data.wait_n)
+		while (i < g_data.wait_n)
 		{
-			//write(2, "test\n", 5);
-			int res = wait(&status);
+			res = wait(&status);
 			if (g_data.c_pid != 0)
 			{
-				// ft_putstr_fd(g_data.cmd[g_data.y][0], 2);
-				// ft_putstr_fd("\n", 2);
 				if (g_data.c_pid == res)
 					g_data.exit_status = WEXITSTATUS(status);
 				g_data.c_exit_flag = 0;
@@ -56,6 +58,32 @@ void	save_exit_status(void)
 	g_data.wait_n = 0;
 }
 
+static void	is_not_path(int i)
+{
+	char	**path;
+	int		j;
+	char	*temp;
+
+	path = NULL;
+	temp = get_expnd_val("PATH");
+	path = ft_split(temp, ':');
+	free(temp);
+	j = 0;
+	while (path[j])
+	{
+		path[j] = ft_strjoin(path[j], "/");
+		path[j] = ft_strjoin(path[j], g_data.cmd[i][0]);
+		if (!access(path[j], F_OK))
+		{
+			g_data.cmd_path = ft_strdup(path[j]);
+			free_2d(&path);
+			return ;
+		}
+		j++;
+	}
+	free_2d(&path);
+}
+
 /**
  * This function should be called from cmd_checker function
  * It should be called for each command
@@ -63,15 +91,9 @@ void	save_exit_status(void)
  * g_data.cmd_path is a variable that contain the path joined with the command.
  * 		if there the first arg in the cmd is not a path and it's not included
  * 		in $PATH g_data.cmd_path will be NULL
- * * ft_strjoin has been modified to not free the second string (g_data.cmd[i][0])
  **/
 void	cmd_filter(int i)
 {
-	char	**path;
-	int		j;
-	char	*temp;
-
-	path = NULL;
 	if (g_data.cmd_path)
 	{
 		free(g_data.cmd_path);
@@ -85,23 +107,5 @@ void	cmd_filter(int i)
 		g_data.is_path_flag = 1;
 	}
 	else
-	{
-		temp = get_expnd_val("PATH");
-		path = ft_split(temp, ':');
-		free(temp);
-		j = 0;
-		while (path[j])
-		{
-			path[j] = ft_strjoin(path[j], "/");
-			path[j] = ft_strjoin(path[j], g_data.cmd[i][0]);
-			if (!access(path[j], F_OK))
-			{
-				g_data.cmd_path = ft_strdup(path[j]);
-				free_2d(&path);
-				return ;
-			}
-			j++;
-		}
-		free_2d(&path);
-	}
+		is_not_path(i);
 }
