@@ -3,15 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/31 09:56:58 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 20:37:18 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+void	empty_export()
+{
+	int	x;
+	int i;
+
+	x = 0;
+	while (g_data.environ[x])
+	{
+		i = 0;
+		ft_putstr_fd("declare -x ", 1);
+		while(g_data.environ[x][i] && g_data.environ[x][i] != '=')
+		{
+			write(1, &g_data.environ[x][i], 1);
+			i++;
+		}
+		if(	g_data.environ[x][i] == '=')
+			write(1, "=", 1);
+		write(1, "\"", 1);
+		while(g_data.environ[x][i])
+		{
+			write(1, &g_data.environ[x][i], 1);
+			i++;
+		}
+		write(1, "\"", 1);
+		write(1, "\n", 1);
+		x++;
+	}
+}
 int	ft_chrindex(char *str, char c)
 {
 	int	i;

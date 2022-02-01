@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 19:26:52 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/01 20:24:50 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,5 +218,6 @@ int		is_sep_empty(void);
 int		sep_cmds_creator(void);
 void	q_and_star_assigner(int x, int flag);
 void	qoutes_checker_3d(int *x);
+void	empty_export();
 
 #endif
