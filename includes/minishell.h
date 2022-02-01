@@ -6,7 +6,7 @@
 /*   By: mal-guna <m3t9mm@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 20:24:50 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/01 20:52:33 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef struct s_data
 	int		fdout;
 	int		fdin;
 	char	*error_str;
+	int  	error_flag;
 	char	**test_str; // this is just temp to test ft_strjoin_2d
 	char	pwd_dir_path[1000];
 	//int		fd[][2];
