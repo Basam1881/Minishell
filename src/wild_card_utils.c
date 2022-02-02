@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 11:38:41 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 15:56:48 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 17:45:01 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	setup_wild_card(char *wild_card)
 	if (g_data.wv->wc_total == (int) ft_strlen(wild_card))
 	{
 		free_2d(&(g_data.wv->res));
+		free(g_data.wv);
 		return (1);
 	}
 	return (0);

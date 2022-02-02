@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_wild_card.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 14:39:02 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 14:39:58 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:46:40 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	wild_on_start(char *name)
 	if (!(g_data.wv->temp) || ft_strlen(g_data.wv->temp) != ft_strlen(name))
 	{
 		free_2d(&(g_data.wv->res));
+		free(g_data.wv);
 		return (1);
 	}
 	while (g_data.wv->res[g_data.wv->i][g_data.wv->j])
@@ -26,6 +27,7 @@ int	wild_on_start(char *name)
 		g_data.wv->res[g_data.wv->i][g_data.wv->j])
 		{
 			free_2d(&(g_data.wv->res));
+			free(g_data.wv);
 			return (1);
 		}
 		g_data.wv->j++;
@@ -43,6 +45,7 @@ int	wild_on_mid(char *name)
 	if (!(g_data.wv->temp))
 	{
 		free_2d(&(g_data.wv->res));
+		free(g_data.wv);
 		return (1);
 	}
 	g_data.wv->j = 0;
@@ -52,6 +55,7 @@ int	wild_on_mid(char *name)
 		!= g_data.wv->temp[g_data.wv->j])
 		{
 			free_2d(&(g_data.wv->res));
+			free(g_data.wv);
 			return (1);
 		}
 		g_data.wv->j++;
@@ -69,6 +73,7 @@ int	wild_on_end(char *name)
 	 < g_data.wv->name_index))
 	{
 		free_2d(&(g_data.wv->res));
+		free(g_data.wv);
 		return (1);
 	}
 	g_data.wv->temp = ft_strnstr(&name[ft_strlen(name) - \
@@ -78,6 +83,7 @@ int	wild_on_end(char *name)
 	if (!g_data.wv->temp)
 	{
 		free_2d(&(g_data.wv->res));
+		free(g_data.wv);
 		return (1);
 	}
 	return (0);

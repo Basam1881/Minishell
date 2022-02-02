@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 06:47:51 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 10:17:11 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:06:55 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	check_export_args(char *v)
 			ft_putstr_fd("BNM_bash: export : `", 2);
 			ft_putstr_fd(v, 2);
 			ft_putendl_fd("': not a valid identifier", 2);
-			free(v);
 		}
+		free(v);
 		return (1);
 	}
 	return (0);
