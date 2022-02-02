@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 17:59:18 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 18:31:55 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,4 @@ void	check_cmd(void)
 		}
 		setup_operators(&i, &j, error_flag);
 	}
-	write(1, NO_COLOR, 4);
 }

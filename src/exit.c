@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 13:01:56 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 18:32:16 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	free_big_g_data(void)
 
 void	free_all(void)
 {
+	dup2(g_data.fdin, STDIN_FILENO);
+	dup2(g_data.fdout, STDOUT_FILENO);
+	write(1, NO_COLOR, 4);
 	if (!g_data.cmdline)
 		return ;
 	if (*g_data.cmdline)
