@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:20:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/01/31 11:49:34 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 09:23:54 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	check_op(int *i, int *j)
 		}
 		if (error_flag)
 		{
-			
+			ft_putstr_fd("BnM bash: ", 2);
 			ft_putendl_fd(strerror(errno), 2);
 		}
 		*i = *j + 1;

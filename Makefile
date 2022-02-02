@@ -30,7 +30,8 @@ C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		pipes.c redirections.c parenthesis.c and_or_ops.c ft_env.c \
 		ft_cd.c ft_echo.c ft_pwd.c ft_env.c expand_exit_status.c \
 		get_expand_value.c failed_malloc.c w_zero_flag.c is_op.c \
-		shell_split_helper.c create_sep_cmd.c assign_q_and_star_arrays.c
+		shell_split_helper.c create_sep_cmd.c assign_q_and_star_arrays.c\
+		ft_cmdcmp.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
@@ -102,6 +103,7 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@gcc -fcommon ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
 
 header:
+#	@say compile minihell
 	@printf "\n%b" "$(PURPLE)"
 	@echo
 	@echo "\t\t██████╗     ███╗   ██╗    ███╗   ███╗"

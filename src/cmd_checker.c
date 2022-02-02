@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 19:08:21 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 09:19:55 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,23 @@
 */
 void	execute_commands(int i)
 {
-	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "echo")))
+	if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "echo")))
 		ft_echo();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "pwd")))
+	else if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "pwd")))
 		ft_pwd();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "env")))
+	else if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "env")))
 		ft_env();
 	else
 	{
+		if (access(g_data.cmd_path, R_OK))
+		{
+			ft_putstr_fd("BnM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[i][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(13), 2);
+			exit_shell(126);
+			return ;
+		}
 		if (execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
 		{
 			if (g_data.is_path_flag)
@@ -127,15 +136,15 @@ void	handle_cmd(void)
 			}
 		}
 	}
-	if (!(ft_strcmp(g_data.cmd[g_data.y][0], "export")) && g_data.cmd_flag)
+	if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "export")) && g_data.cmd_flag)
 		while (g_data.cmd[g_data.y][k])
 			ft_export(ft_strdup(g_data.cmd[g_data.y][k++]));
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "unset")) && g_data.cmd_flag)
+	else if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "unset")) && g_data.cmd_flag)
 		while (g_data.cmd[g_data.y][k])
 			ft_unset(ft_strdup(g_data.cmd[g_data.y][k++]));
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "cd")) && g_data.cmd_flag)
+	else if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "cd")) && g_data.cmd_flag)
 		ft_cd();
-	else if (!(ft_strcmp(g_data.cmd[g_data.y][0], "exit")) && g_data.cmd_flag)
+	else if (!(ft_cmdcmp(g_data.cmd[g_data.y][0], "exit")) && g_data.cmd_flag)
 		ft_exit();
 	else
 	{
