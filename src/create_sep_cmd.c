@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_sep_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 19:20:13 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 19:24:47 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 10:05:14 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int alloc_cmd_helper(int *i, int j, int *old_x)
+static int	alloc_cmd_helper(int *i, int j, int *old_x)
 {
 	g_data.sep_cmds[*i][j] = 0;
 	(*old_x)++;

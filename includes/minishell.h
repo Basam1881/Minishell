@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 12:41:47 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 14:57:40 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
@@ -81,6 +82,36 @@
  * op_cnt: counter used for the operators array.
  * 		It's good cuz it's in the structure so no need to keep passing it
  **/
+typedef struct s_wild
+{
+	int		i;
+	int		j;
+	int		k;
+	int		name_index;
+	int		wc_index;
+	int		wc_number;
+	int		wc_total;
+	char	**res;
+	char	*temp;
+	int		temp_index;
+}	t_wild;
+
+typedef struct s_wild2
+{
+	int		j;
+	int		k;
+	int		wc_flag;
+	char	**expanded_array;
+}	t_wild2;
+
+typedef struct s_dir
+{
+	DIR				*d;
+	struct dirent	*dir_struct;
+	int				size;
+	int				i;
+	char			**res;
+}	t_dir;
 typedef struct s_data
 {
 	char	***cmd;
@@ -123,7 +154,7 @@ typedef struct s_data
 	int		is_dbl_and;
 	int		output_flag;
 	int		input_flag;
-	int 	pipe_child_flag;
+	int		pipe_child_flag;
 	int		wait_n;
 	int		under_process_flag;
 	int		last_op;
@@ -137,9 +168,10 @@ typedef struct s_data
 	int		fdout;
 	int		fdin;
 	char	*error_str;
-	char	**test_str; // this is just temp to test ft_strjoin_2d
+	int		error_flag;
 	char	pwd_dir_path[1000];
-	//int		fd[][2];
+	t_wild	*wv;
+	t_dir	dv;
 	int		(*fd)[2];
 }				t_data;
 
@@ -204,7 +236,6 @@ void	check_and_op(int *i, int *j);
 void	free_2d(char ***str);
 char	*get_expnd_val(char *var_name);
 int		allowed_name(char *name);
-int		is_pipe(void);
 int		is_single_op(int x);
 int		is_double_op(int x);
 int		is_op(int *x, int *ops_cnt, int flag);
@@ -218,6 +249,25 @@ int		is_sep_empty(void);
 int		sep_cmds_creator(void);
 void	q_and_star_assigner(int x, int flag);
 void	qoutes_checker_3d(int *x);
+void	empty_export(void);
+int		is_pipe(void);
+void	setup_for_pipe(int *n);
+void	print_error(int code, int i);
+int		ignore_wild_card(void);
+int		setup_for_command(int *i, int *j, int *error_flag);
+void	setup_operators(int *i, int *j, int error_flag);
+void	handle_cmd(void);
+void	compare_command(int	*k);
+int		search_env(char *var_name);
+int		setup_dv(t_dir *dv, char *wild_card);
+int		setup_wild_card(char *wild_card);
+void	set_wild_variables(char *wild_card);
+int		check_for_error(t_wild2 *wv, int *i);
+int		count_stars(char *wild_card);
+int		wild_on_start(char *name);
+int		wild_on_mid(char *name);
+int		wild_on_end(char *name);
+void	next_wild_part(char *wild_card);
 int		ft_cmdcmp(char *s1, char *s2);
 
 #endif

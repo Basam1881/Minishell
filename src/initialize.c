@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 18:43:22 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 10:03:21 by mal-guna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	reset_other_ints(void)
 	g_data.star_array_index = 0;
 	g_data.star_index_temp = 0;
 	g_data.wait_n = 0;
+	g_data.error_flag = 0;
 }
 
 static void	reset_strs(void)
@@ -75,4 +76,6 @@ void	reset(void)
 	reset_other_ints();
 	g_data.fdout = dup(STDOUT_FILENO);
 	g_data.fdin = dup(STDIN_FILENO);
+	dup2(g_data.fdin, STDIN_FILENO);
+	dup2(g_data.fdout, STDOUT_FILENO);
 }
