@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:20:16 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 07:59:56 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:26:34 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ void	check_red_dbl(int *i, int *j)
 {
 	check_redirections(i, j);
 	if (g_data.error_flag)
+	{
+		ft_putstr_fd("BnM bash: ", 2);
 		ft_putendl_fd(strerror(errno), 2);
+	}
 	*i = *j + 1;
 	if (g_data.ops_array[*j] == 1)
 		g_data.pipe_flag = 1;

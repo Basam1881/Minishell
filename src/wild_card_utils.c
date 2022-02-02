@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wild_card_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 11:38:41 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 14:36:55 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:56:48 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	check_name(char *name, char *wild_card)
 		next_wild_part(wild_card);
 	}
 	free_2d(&(g_data.wv->res));
+	free(g_data.wv);
 	return (1);
 }
 

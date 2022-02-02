@@ -32,14 +32,7 @@ C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		get_expand_value.c failed_malloc.c w_zero_flag.c is_op.c \
 		shell_split_helper.c create_sep_cmd.c assign_q_and_star_arrays.c\
 		cmd_checker_utils.c redirections_utils.c ft_export_utils.c \
-		wild_card_utils.c expand_wild_card.c
-		ft_cmdcmp.c
-
-B_FILES = $(addsuffix _bonus.c,$(B_DIR)$(C_FILES))
-
-B_NAME = $(addprefix $(B_DIR), ${B_FILES:%.c=%$(B_DIR)*_bonus.c)
-
-B_DIR = ./bonus/
+		wild_card_utils.c expand_wild_card.c ft_cmdcmp.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))

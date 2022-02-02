@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:23:38 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 09:07:09 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:33:39 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	is_pipe(void)
 	n = g_data.x;
 	if (g_data.x >= g_data.op_cnt)
 		return (0);
-	if (g_data.x == 1)
-		return (1);
 	while (n < g_data.op_cnt)
 	{
 		if (g_data.ops_array[n] == 4 || g_data.ops_array[n] == 7)

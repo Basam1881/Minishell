@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 10:03:10 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:49:38 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,8 @@ void	execute_commands(int i)
 	else
 	{
 		if (g_data.is_path_flag && access(g_data.cmd_path, R_OK))
-		{
 			exit_shell(126);
-			return ;
-		}
-		if (execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
+		else if (execve(g_data.cmd_path, g_data.cmd[i], g_data.environ) == -1)
 		{
 			if (g_data.is_path_flag)
 			{
