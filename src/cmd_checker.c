@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 09:19:55 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 14:52:54 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,8 @@ void	execute_commands(int i)
 		ft_env();
 	else
 	{
-		if (access(g_data.cmd_path, R_OK))
+		if (g_data.is_path_flag && access(g_data.cmd_path, R_OK))
 		{
-			ft_putstr_fd("BnM bash: ", 2);
-			ft_putstr_fd(g_data.cmd[i][0], 2);
-			ft_putstr_fd(": ", 2);
-			ft_putendl_fd(strerror(13), 2);
 			exit_shell(126);
 			return ;
 		}
@@ -73,8 +69,6 @@ int	is_pipe()
 	n = g_data.x;
 	if(g_data.x >= g_data.op_cnt)
 		return 0;
-	if(g_data.x == 1)
-		return 1;
 	while(n < g_data.op_cnt)
 	{
 		if(g_data.ops_array[n] == 4 || g_data.ops_array[n] == 7)
@@ -84,7 +78,7 @@ int	is_pipe()
 		n++;
 	}
 	return 1;
-} 
+}
 
 /*
 	this is the last step in the while loop, this function will check the command and execute it after all the redirections, piping are done privously
@@ -107,7 +101,7 @@ void	handle_cmd(void)
 		g_data.wait_n++;
 		g_data.c_pid = fork();
 		if (g_data.c_pid != 0)
-		{	
+		{
 			close(g_data.fd[g_data.pipes][1]);
 			g_data.cmd_flag = 0;
 			if (g_data.x >= g_data.op_cnt)

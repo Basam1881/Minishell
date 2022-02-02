@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 00:36:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 09:19:23 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 12:43:59 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,16 @@ void	cmd_filter(int i)
 	if (g_data.cmd[i][0][0] == '/' || g_data.cmd[i][0][0] == '.')
 	{
 		if (!access(g_data.cmd[i][0], R_OK))
-		{
 			g_data.cmd_path = ft_strdup(g_data.cmd[i][0]);
-			g_data.is_path_flag = 1;
+		else
+		{
+			g_data.cmd_path = NULL;
+			ft_putstr_fd("BnM bash: ", 2);
+			ft_putstr_fd(g_data.cmd[i][0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(13), 2);
 		}
+		g_data.is_path_flag = 1;
 	}
 	else
 		is_not_path(i);

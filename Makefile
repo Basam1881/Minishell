@@ -33,6 +33,12 @@ C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		shell_split_helper.c create_sep_cmd.c assign_q_and_star_arrays.c\
 		ft_cmdcmp.c
 
+B_FILES = $(addsuffix _bonus.c,$(B_DIR)$(C_FILES))
+
+B_NAME = $(addprefix $(B_DIR), ${B_FILES:%.c=%$(B_DIR)*_bonus.c)
+
+B_DIR = ./bonus/
+
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
 

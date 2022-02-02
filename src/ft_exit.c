@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/19 08:48:02 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 16:49:04 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 10:15:42 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	shell_atoi(char *str)
 	if (str[i] || (str[i - 1] == '+' || str[i - 1] == '-')
 		|| nb_cnt > 19 || nb > LONG_MAX)
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("exit", 2);
 		ft_putstr_fd("BnM bash: exit: ", 2);
 		ft_putstr_fd(str, 2);
 		ft_putendl_fd(": numeric argument required", 2);
@@ -69,7 +69,7 @@ void	ft_exit(void)
 
 	if (!g_data.cmd[g_data.y][1])
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("exit", 2);
 		printf("%s", NO_COLOR);
 		exit_shell(g_data.exit_status);
 	}
@@ -78,7 +78,7 @@ void	ft_exit(void)
 		n = shell_atoi(g_data.cmd[g_data.y][1]);
 		if (!g_data.accepted_exit_flag && g_data.cmd[g_data.y][2])
 		{
-			ft_putendl_fd("logout", 1);
+			ft_putendl_fd("exit", 2);
 			ft_putendl_fd("BnM bash: exit: too many arguments", 2);
 			g_data.exit_status = 1;
 			return ;

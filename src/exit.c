@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 16:27:19 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 13:01:56 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	free_all(void)
 		free(g_data.ops_array);
 	if (g_data.star_array)
 		free(g_data.star_array);
+	if (g_data.q_array)
+		free(g_data.q_array);
 	if (g_data.fd)
 	{
 		free(g_data.fd);

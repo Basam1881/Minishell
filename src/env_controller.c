@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 20:31:54 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 16:26:07 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 14:17:30 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void	no_env_in_no_qoutes(char *new_s, int *i, int *j, int *x)
 {
 	if (!new_s)
 	{
-		if (!g_data.double_qoute_flag && !g_data.single_qoute_flag && (g_data
-				.sep_cmds[g_data.n][*x - 1] == ' ' || !*i)
+		if (!g_data.double_qoute_flag && !g_data.single_qoute_flag && (!g_data.n || g_data
+				.sep_cmds[g_data.n][*x - 1] == ' ')
 				&& (g_data.sep_cmds[g_data.n][*x + ft_strlen_to_space(&g_data
 				.sep_cmds[g_data.n][*x + 1]) + 1] == ' ' || !g_data
 				.sep_cmds[g_data.n][*x + ft_strlen_to_space(&g_data

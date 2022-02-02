@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 15:25:55 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 16:05:56 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 13:09:26 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	print_echo_args(int *i, int *j, int *n_flag)
 {
-	while (g_data.cmd[g_data.y][*j][0] == '-')
+	while (g_data.cmd[g_data.y][*j] && g_data.cmd[g_data.y][*j][0] == '-')
 	{
 		*i = 1;
 		while (g_data.cmd[g_data.y][*j][*i] == 'n')
@@ -36,12 +36,12 @@ void	ft_echo(void)
 	int	i;
 
 	n_flag = 0;
-	if (!g_data.cmd[g_data.y][1])
+	j = 1;
+	if (!g_data.cmd[g_data.y][j])
 	{
 		ft_putchar_fd('\n', 1);
 		return ;
 	}
-	j = 1;
 	print_echo_args(&i, &j, &n_flag);
 	while (g_data.cmd[g_data.y][j])
 	{
