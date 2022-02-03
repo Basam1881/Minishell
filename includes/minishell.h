@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/03 12:23:05 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 19:10:35 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ typedef struct s_data
 	int		fdin;
 	char	*error_str;
 	int		error_flag;
+	int		p_flag;
 	char	pwd_dir_path[1000];
 	t_wild	*wv;
 	t_dir	dv;
@@ -271,5 +272,6 @@ int		wild_on_mid(char *name);
 int		wild_on_end(char *name);
 void	next_wild_part(char *wild_card);
 int		ft_cmdcmp(char *s1, char *s2);
+void	error_paren(int *i, int *j);
 
 #endif

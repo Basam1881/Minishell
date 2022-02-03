@@ -33,13 +33,31 @@ C_FILES = main.c exit.c cmd_checker.c env_controller.c\
 		shell_split_helper.c create_sep_cmd.c assign_q_and_star_arrays.c\
 		cmd_checker_utils.c redirections_utils.c ft_export_utils.c \
 		wild_card_utils.c expand_wild_card.c ft_cmdcmp.c assigning_ops.c\
-		parser_errors.c
+		errors.c
+
+B_FILES = main_bonus.c exit_bonus.c cmd_checker_bonus.c env_controller.c\
+		ft_export_bonus.c ft_unset_bonus.c shellsplit_bonus.c the_ultimate_split_bonus.c\
+		operators_bonus.c sig_handler_bonus.c cmd_filter_bonus.c ft_exit_bonus.c\
+		initialize_bonus.c wild_card_bonus.c ft_wild_split_bonus.c check_operators_bonus.c \
+		pipes_bonus.c redirections_bonus.c parenthesis_bonus.c and_or_ops_bonus.c ft_env_bonus.c \
+		ft_cd_bonus.c ft_echo_bonus.c ft_pwd_bonus.c ft_env_bonus.c expand_exit_status_bonus.c \
+		get_expand_value_bonus.c failed_malloc_bonus.c w_zero_flag_bonus.c is_op_bonus.c \
+		shell_split_helper_bonus.c create_sep_cmd_bonus.c assign_q_and_star_arrays_bonus.c\
+		cmd_checker_utils_bonus.c redirections_utils_bonus.c ft_export_utils_bonus.c \
+		wild_card_utils_bonus.c expand_wild_card_bonus.c ft_cmdcmp_bonus.c assigning_ops_bonus.c\
+		errors_bonus.c
 
 #These are the .c files for your project
 SRC_NAME =  $(addprefix $(SRC_DIR), $(C_FILES))
 
 #These are the .o files that will be created for your project
 OBJ_NAME = $(addprefix $(OBJ_DIR), ${C_FILES:%.c=%.o})
+
+#These are the .c files for your project
+BONUS_NAME =  $(addprefix $(B_DIR), $(BONUS_FILES))
+
+#These are the .o files that will be created for your project
+B_OBJ_NAME = $(addprefix $(OBJ_DIR), ${B_FILES:%.c=%.o})
 
 #mention the compilation flags here
 CFLAG = -Wall -Wextra -Werror
@@ -62,6 +80,9 @@ GNL_LIB = gnl.a
 #Here is the the source directory for .c files of your project
 SRC_DIR = ./src/
 
+#Here is the the bonus directory for .c files of your project
+B_DIR = ./bonus/
+
 #Here is the the objects directory for .c files of your project
 OBJ_DIR = ./objs/
 
@@ -74,8 +95,12 @@ LIBS_DIR = ./libraries/
 #Here is the temporary library that will be created from the source files
 NAME = minishell.a
 
+B_NAME = b_minishell.a
+
 #Here is the final library that contains all the objects files needed for this project
 ALL_LIBS = $(LIBS_DIR)$(NAME) $(LIBS_DIR)${LIBFT_LIB} $(LIBS_DIR)${GNL_LIB}
+
+B_ALL_LIBS = $(LIBS_DIR)$(B_NAME) $(LIBS_DIR)${LIBFT_LIB} $(LIBS_DIR)${GNL_LIB}
 
 #Here is the name of the executable file
 EXEC_NAME = minishell
@@ -87,11 +112,22 @@ all: header ${LIBFT_LIB} ${GNL_LIB} $(LIBS_DIR)$(NAME)
 	@echo "$(GREEN)*************************************************************************"
 	@echo "$(GREEN)*\t\t\t\t$(BYELLOW)READY\t\t\t\t\t$(GREEN)*"
 	@echo "$(GREEN)*************************************************************************$(NO_COLOR)"
-	@clear
+
+bonus: header ${LIBFT_LIB} ${GNL_LIB} $(LIBS_DIR)$(B_NAME)
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)MINISHELL Is Done\n$(NO_COLOR)"
+	@gcc $(B_ALL_LIBS) -lreadline -L/usr/local/Cellar/readline/8.1/lib -o $(EXEC_NAME)
+	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)Compilation Is Done\n$(NO_COLOR)"
+	@echo "$(GREEN)*************************************************************************"
+	@echo "$(GREEN)*\t\t\t\t$(BYELLOW)READY\t\t\t\t\t$(GREEN)*"
+	@echo "$(GREEN)*************************************************************************$(NO_COLOR)"
 
 ${LIBS_DIR}${NAME} : $(OBJ_NAME)
 	@ar -rc ${LIBS_DIR}$(NAME) $(OBJ_NAME)
 	@ranlib $(LIBS_DIR)$(NAME)
+
+${LIBS_DIR}${B_NAME} : $(B_OBJ_NAME)
+	@ar -rc ${LIBS_DIR}$(B_NAME) $(B_OBJ_NAME)
+	@ranlib $(LIBS_DIR)$(B_NAME)
 
 ${LIBFT_LIB}:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) all && cp $(LIBFT_DIR)$(LIBFT_LIB) $(LIBS_DIR)
@@ -102,6 +138,9 @@ ${GNL_LIB}:
 	@echo "\t$(NO_COLOR)[$(GREEN)✓$(NO_COLOR)]   $(IYELLOW)GNL Is Done\n"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
+	@gcc -fcommon ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
+
+$(OBJ_DIR)%.o : $(B_DIR)%.c
 	@gcc -fcommon ${CFLAG} -c $< -o $@ -I/usr/local/Cellar/readline/8.1/include
 
 header:
@@ -163,7 +202,7 @@ header:
 clean:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
 	@$(MAKE) --no-print-directory -C $(GNL_DIR) clean
-	@rm -rf $(OBJ_NAME) $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean

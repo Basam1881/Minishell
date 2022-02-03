@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_errors.c                                    :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 13:52:23 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/03 13:53:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 19:10:27 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,24 @@ int	unexpected_msg(int x, int flag, char *s)
 		ft_putendl_fd(s, 2);
 	g_data.exit_status = 258;
 	return (1);
+}
+
+void	error_paren(int *i, int *j)
+{
+	g_data.p_flag = 1;
+	while (g_data.ops_array[*j])
+	{
+		if (g_data.paren_array[g_data.paren_cnt] == 3)
+			break ;
+		(*i)++;
+		(*j)++;
+		g_data.y = *i;
+		g_data.x = *j;
+		if (g_data.ops_array[*j] == 8)
+			g_data.parentheses_cnt++;
+		else if (g_data.ops_array[*j] == 9)
+			g_data.parentheses_cnt--;
+		if (g_data.ops_array[*j] == 8 || g_data.ops_array[*j] == 9)
+			g_data.paren_cnt++;
+	}
 }
