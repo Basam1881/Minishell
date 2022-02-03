@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 21:16:22 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 18:13:06 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 09:17:49 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ static int	split_into_arg(void)
 char	**cmd_split(void)
 {
 	int		words;
+	int		i;
 
 	if (!*g_data.sep_cmds[g_data.n] || is_sep_empty())
 	{
@@ -126,6 +127,9 @@ char	**cmd_split(void)
 	g_data.cmd[g_data.n] = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!(g_data.cmd[g_data.n]))
 		return (NULL);
+	i = 0;
+	while (i < words + 1)
+		g_data.cmd[g_data.n][i++] = NULL;
 	g_data.split_flag = 1;
 	if (split_into_arg() == -1)
 		return (NULL);

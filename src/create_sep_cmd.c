@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_sep_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 19:20:13 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 10:05:14 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/03 13:51:15 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,12 @@ int	sep_cmds_creator(void)
 	while (g_data.cmdline[x])
 	{
 		qoutes_checker_3d(&x);
-		operators_checker(&x, &ops_cnt, 1);
+		if (operators_checker(&x, &ops_cnt, 1))
+			return (1);
 		g_data.ops_array[g_data.op_cnt] = '\0';
 		if (ops_cnt != i)
-		{
 			if (alloc_cmd(&i, &old_x, x))
 				return (1);
-		}
 		q_and_star_assigner(x++, 1);
 	}
 	if (alloc_last_cmd(&i, &old_x, &x))

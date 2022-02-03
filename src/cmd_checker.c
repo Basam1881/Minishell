@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:02:06 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 18:31:55 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 14:21:07 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,25 @@ void	compare_command(int	*k)
 	}
 }
 
+static int	preparation(int *i, int *j, int *error_flag)
+{
+	if (setup_for_command(i, j, error_flag))
+		return (1);
+	if (!g_data.cmd[g_data.x][0])
+	{
+		if (!g_data.x)
+			return (1);
+		else
+			if (g_data.ops_array[g_data.x - 1] != 9)
+				return (1);
+	}
+	return (0);
+}
+
 /*
 	this is the last step in the while loop, this function will check the 
 	command and execute it after all the redirections, piping are done privously
 */
-
 void	check_cmd(void)
 {
 	int		i;
@@ -97,16 +111,11 @@ void	check_cmd(void)
 	write(1, BYELLOW, 8);
 	while (g_data.cmd[i])
 	{
-		if (setup_for_command(&i, &j, &error_flag))
+		if (preparation(&i, &j, &error_flag))
 			break ;
-		if (!g_data.cmd[g_data.x][0])
-		{
-			if (!g_data.x)
-				break ;
-			else
-				if (g_data.ops_array[g_data.x - 1] != 9)
-					break ;
-		}
 		setup_operators(&i, &j, error_flag);
 	}
+	dup2(g_data.fdin, STDIN_FILENO);
+	dup2(g_data.fdout, STDOUT_FILENO);
+	write(1, NO_COLOR, 4);
 }

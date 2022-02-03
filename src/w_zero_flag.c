@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:17:19 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 18:17:58 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 12:26:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,19 @@ static int	single_no_arg(int *x)
 	return (0);
 }
 
-int	single_w_zero_flag(int *x)
+int	single_w_zero_flag(int *x, int flag)
 {
 	if (g_data.cmdline[(*x)] == '(')
+	{
+		g_data.paren_cnt++;
 		g_data.parentheses_cnt++;
+	}
 	else if (g_data.cmdline[(*x)] == ')')
 	{
 		if (!g_data.parentheses_cnt)
-			return (unexpected_msg(*x, 4, FIRST_PARENTH_MSG));
+			return (unexpected_msg(*x, 4, LAST_PARENTH_MSG));
 		g_data.parentheses_cnt--;
+		g_data.paren_cnt++;
 	}
 	if (g_data.empty_flag)
 	{
@@ -54,11 +58,11 @@ int	single_w_zero_flag(int *x)
 		if (single_no_arg(x))
 			return (1);
 	}
-	ops_assigner(x, 1, &g_data.last_op);
+	ops_assigner(x, 1, &g_data.last_op, flag);
 	return (0);
 }
 
-int	double_w_zero_flag(int *x)
+int	double_w_zero_flag(int *x, int flag)
 {
 	if (g_data.empty_flag)
 		g_data.empty_flag = 0;
@@ -78,6 +82,6 @@ int	double_w_zero_flag(int *x)
 			if (is_op_redir(0, g_data.cmdline[(*x)], 1))
 				return (unexpected_msg(*x, 1, NULL));
 	}
-	ops_assigner(x, 0, &g_data.last_op);
+	ops_assigner(x, 0, &g_data.last_op, flag);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:46:43 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 18:29:44 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/02 19:06:35 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	reset_other_ints(void)
 	g_data.parentheses_cnt = 0;
 	g_data.star_cnt = 0;
 	g_data.question_cnt = 0;
+	g_data.paren_cnt = 0;
 	g_data.closing_parenthese = 0;
 	g_data.c_pid = 0;
 	g_data.sub_pid = 0;
@@ -48,6 +49,7 @@ static void	reset_strs(void)
 	g_data.ops_array = NULL;
 	g_data.star_array = NULL;
 	g_data.q_array = NULL;
+	g_data.paren_array = NULL;
 	g_data.cmd_path = NULL;
 }
 

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 06:23:38 by mal-guna          #+#    #+#             */
-/*   Updated: 2022/02/02 15:33:39 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 15:48:04 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_pipe(void)
 		return (0);
 	while (n < g_data.op_cnt)
 	{
-		if (g_data.ops_array[n] == 4 || g_data.ops_array[n] == 7)
+		if (g_data.ops_array[g_data.x] == 7 || g_data.ops_array[g_data.x] == 4)
 			return (0);
 		if (g_data.ops_array[n] == 1)
 			return (1);

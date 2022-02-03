@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mal-guna <mal-guna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 04:03:24 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 14:57:40 by mal-guna         ###   ########.fr       */
+/*   Updated: 2022/02/03 12:23:05 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@
 \033[1;35m(\033[1;37m⌐■\033[1;35m_\033[1;37m■\033[1;35m)-\
 -\033[1;33m︻╦╤─\033[m - -\033[1;32m> \033[1;37m"
 # define LINUX_PROMPT "BnM_Minishell--$> "
-# define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
+# define FIRST_PARENTH_MSG "BNM bash: syntax error near unexpected token `('"
+# define LAST_PARENTH_MSG "BNM bash: syntax error near unexpected token `)'"
 # define NEWLINE_MSG "BNM bash: syntax error near unexpected token `newline'"
 # define UNCLOSED_SINGLE "BNM bash: syntax error (unclosed single qoutes)"
 # define UNCLOSED_DOUBLE "BNM bash: syntax error (unclosed double qoutes)"
@@ -118,7 +119,6 @@ typedef struct s_data
 	char	*cmd_path;
 	char	*cmdline;
 	char	**sep_cmds;
-	char	**env;
 	int		split_flag;
 	int		single_qoute_flag;
 	int		double_qoute_flag;
@@ -129,6 +129,7 @@ typedef struct s_data
 	int		*ops_array;
 	int		*star_array;
 	int		*q_array;
+	int		*paren_array;
 	int		star_array_index;
 	int		star_index_temp;
 	int		op_cnt;
@@ -159,6 +160,7 @@ typedef struct s_data
 	int		under_process_flag;
 	int		last_op;
 	int		parentheses_cnt;
+	int		paren_cnt;
 	int		star_cnt;
 	int		question_cnt;
 	int		x;
@@ -240,9 +242,9 @@ int		is_single_op(int x);
 int		is_double_op(int x);
 int		is_op(int *x, int *ops_cnt, int flag);
 int		is_op_redir(int op, char op_c, int flag);
-int		single_w_zero_flag(int *x);
-int		double_w_zero_flag(int *x);
-void	ops_assigner(int *x, int is_single, int *var);
+int		single_w_zero_flag(int *x, int flag);
+int		double_w_zero_flag(int *x, int flag);
+int		ops_assigner(int *x, int is_single, int *var, int flag);
 int		is_in_qoutes(int x, int flag);
 void	qoutes_checker(int *x, int *i, int *j);
 int		is_sep_empty(void);

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:11:00 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 17:58:40 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 12:44:52 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,20 @@ int	is_op(int *x, int *ops_cnt, int flag)
 	if (is_single_op(*x))
 	{
 		if (flag)
-			ops_assigner(x, 1, &g_data.ops_array[g_data.op_cnt++]);
+		{
+			if (ops_assigner(x, 1, &g_data.ops_array[g_data.op_cnt++], flag))
+				return (1);
+		}
 		else
-			if (single_w_zero_flag(x))
+			if (single_w_zero_flag(x, flag))
 				return (1);
 	}
 	else if (is_double_op(*x))
 	{
 		if (flag)
-			ops_assigner(x, 0, &g_data.ops_array[g_data.op_cnt++]);
+			ops_assigner(x, 0, &g_data.ops_array[g_data.op_cnt++], flag);
 		else
-			if (double_w_zero_flag(x))
+			if (double_w_zero_flag(x, flag))
 				return (1);
 		g_data.dbl_op_f = 1;
 		(*x)++;

@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:23:26 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/02 18:32:16 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 14:13:26 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ void	free_big_g_data(void)
 
 void	free_all(void)
 {
-	dup2(g_data.fdin, STDIN_FILENO);
-	dup2(g_data.fdout, STDOUT_FILENO);
-	write(1, NO_COLOR, 4);
 	if (!g_data.cmdline)
 		return ;
 	if (*g_data.cmdline)
@@ -59,6 +56,8 @@ void	free_all(void)
 		free(g_data.star_array);
 	if (g_data.q_array)
 		free(g_data.q_array);
+	if (g_data.paren_array)
+		free(g_data.paren_array);
 	if (g_data.fd)
 	{
 		free(g_data.fd);

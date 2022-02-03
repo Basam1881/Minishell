@@ -6,7 +6,7 @@
 /*   By: bnaji <bnaji@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:08:30 by bnaji             #+#    #+#             */
-/*   Updated: 2022/02/01 19:25:03 by bnaji            ###   ########.fr       */
+/*   Updated: 2022/02/03 13:43:45 by bnaji            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,25 @@ void	qoutes_checker_3d(int *x)
 	}
 }
 
+static void	quick_reset_in_between(int ops_cnt)
+{
+	int	i;
+
+	i = 0;
+	while (i < ops_cnt + 2)
+		g_data.cmd[i++] = NULL;
+	i = 0;
+	while (i < ops_cnt + 2)
+		g_data.sep_cmds[i++] = NULL;
+	g_data.star_array[g_data.star_cnt] = 0;
+	g_data.q_array[g_data.question_cnt] = 0;
+	g_data.paren_array[g_data.paren_cnt] = 0;
+	g_data.paren_cnt = 0;
+	g_data.star_cnt = 0;
+	g_data.question_cnt = 0;
+	g_data.op_cnt = 0;
+}
+
 static int	ultimate_helper(int x, int ops_cnt)
 {
 	if (ops_cnt && !g_data.empty_flag && g_data.last_op != 9)
@@ -52,16 +71,14 @@ static int	ultimate_helper(int x, int ops_cnt)
 	g_data.ops_array = (int *)malloc(sizeof(int) * (ops_cnt + 1));
 	g_data.star_array = (int *)malloc(sizeof(int) * (g_data.star_cnt + 1));
 	g_data.q_array = (int *)malloc(sizeof(int) * (g_data.question_cnt + 1));
+	g_data.paren_array = (int *)malloc(sizeof(int) * (g_data.paren_cnt + 1));
 	if (!g_data.cmd || !g_data.sep_cmds
 		|| !g_data.ops_array || !g_data.star_array)
 	{
 		error_printer();
 		return (1);
 	}
-	g_data.star_array[g_data.star_cnt] = 0;
-	g_data.star_cnt = 0;
-	g_data.question_cnt = 0;
-	g_data.op_cnt = 0;
+	quick_reset_in_between(ops_cnt);
 	return (0);
 }
 
@@ -92,7 +109,8 @@ int	ultimate_3d_split(void)
 	int	x;
 	int	ops_cnt;
 
-	check_to_store(&x, &ops_cnt);
+	if (check_to_store(&x, &ops_cnt))
+		return (1);
 	if (ultimate_helper(x, ops_cnt))
 		return (1);
 	if (sep_cmds_creator())
